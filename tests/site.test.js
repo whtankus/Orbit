@@ -74,8 +74,8 @@ test("Night Sky page exposes star search, magnitude and layer controls", () => {
 
 
 test("the observatory redesign establishes readable typography and responsive page layouts", () => {
-  assert.match(html, /IBM Plex Mono:wght@400;500;600/);
-  assert.match(html, /Space Grotesk:wght@400;500;600;700/);
+  assert.match(html, /IBM[+ ]Plex[+ ]Mono:wght@400;500;600/);
+  assert.match(html, /Space[+ ]Grotesk:wght@400;500;600;700/);
   assert.match(styles, /ORBIT 4\.0 — deliberate observatory design system/);
   assert.match(styles, /\.page-intro\{[^}]*font-size:16px/);
   assert.match(styles, /\.research-card p\{[^}]*font-size:15px/);
