@@ -42,3 +42,11 @@ These tests validate the calculation code, not browser rendering or the full pre
 ## Project layout
 
 The application shell now loads a standalone stylesheet and an ES-module entry point. Astronomical calculations are isolated under `src/astronomy/`, with automated tests under `tests/`. The deployment workflow runs syntax checks and the test suite before publishing GitHub Pages.
+
+## Fixed-star planetarium
+
+The Night Sky page uses a compact 9,029-row HYG v4.4 subset (Hipparcos, Yale Bright Star Catalogue and Gliese) with J2000 right ascension/declination, visual magnitude, B−V colour, proper name, Bayer designation and constellation abbreviation where supplied. The source data are CC BY-SA 4.0; derived catalogue data remain CC BY-SA 4.0. Attribution is displayed in the Night Sky page.
+
+Constellation stick figures and their HIP identifiers are taken from Stellarium's Western sky culture index. The 781 IAU/Delporte boundary edges are supplied in B1875.0 coordinates from the upstream boundary data cited in that index. The chart transforms star coordinates from J2000 and boundary coordinates from B1875.0 to the selected epoch using an IAU 1976 precession approximation, then calculates local geometric altitude/azimuth and projects objects above the horizon using a zenith-centred stereographic projection.
+
+Limitations: this catalogue subset does not carry proper motions, so stellar motion is not propagated; no nutation, aberration, atmospheric refraction or terrain horizon is applied. The magnitude slider is limited to V=6.5; this is not a Gaia-depth survey. Star altitude/azimuth is geometric and is not the same as naked-eye visibility under real light-pollution or weather conditions.
