@@ -38,6 +38,32 @@ export function eclipticJ2000ToEquatorial(vector) {
  * Greenwich mean sidereal time approximation.
  * Suitable for this educational observer display; not a precision timing standard.
  */
+/**
+ * Precess J2000 mean-equatorial coordinates to the mean equator/equinox of date.
+ * IAU 1976 precession angles; appropriate as an educational approximation
+ * over the JPL element model's 1800–2050 interval.
+ */
+export function precessJ2000EquatorialToDate(raDeg, decDeg, date) {
+  const jd = julianDayUTC(date);
+  const T = (jd - 2451545.0) / 36525;
+  const arcsecToRad = Math.PI / (180 * 3600);
+  const zeta = (2306.2181 * T + 0.30188 * T * T + 0.017998 * T * T * T) * arcsecToRad;
+  const z = (2306.2181 * T + 1.09468 * T * T + 0.018203 * T * T * T) * arcsecToRad;
+  const theta = (2004.3109 * T - 0.42665 * T * T - 0.041833 * T * T * T) * arcsecToRad;
+  const alpha = Number(raDeg) * DEG;
+  const delta = Number(decDeg) * DEG;
+  if (!Number.isFinite(alpha) || !Number.isFinite(delta) || Math.abs(decDeg) > 90) {
+    throw new RangeError("Invalid J2000 equatorial coordinates.");
+  }
+  const A = Math.cos(delta) * Math.sin(alpha + zeta);
+  const B = Math.cos(theta) * Math.cos(delta) * Math.cos(alpha + zeta) - Math.sin(theta) * Math.sin(delta);
+  const C = Math.sin(theta) * Math.cos(delta) * Math.cos(alpha + zeta) + Math.cos(theta) * Math.sin(delta);
+  return {
+    rightAscensionDeg: normalizeDegrees(Math.atan2(A, B) + z) * RAD,
+    declinationDeg: Math.asin(Math.max(-1, Math.min(1, C))) * RAD
+  };
+}
+
 export function greenwichMeanSiderealTime(date = new Date()) {
   const jd = julianDayUTC(date);
   const t = (jd - 2451545.0) / 36525;
