@@ -114,7 +114,30 @@ let cameraTween=null;function animateCamera(position,target){soundEffect('travel
 function resetView(){cameraTween=null;camera.position.set(0,25,43);controls.target.set(0,0,0);controls.update();selectBody('Earth');toast('FULL SYSTEM VIEW RESTORED')}
 function toast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),1900)}
 function pick(event){const rect=renderer.domElement.getBoundingClientRect();pointer.x=((event.clientX-rect.left)/rect.width)*2-1;pointer.y=-((event.clientY-rect.top)/rect.height)*2+1;raycaster.setFromCamera(pointer,camera);const targets=Object.entries(planetObjects).map(([name,o])=>{o.mesh.userData.body=name;return o.mesh}).concat(sun);const hits=raycaster.intersectObjects(targets,false);if(hits.length){const name=hits[0].object.userData.body||'Sun';selectBody(name,true)} }
-renderer.domElement.addEventListener('click',pick);renderer.domElement.addEventListener('pointermove',e=>{const rect=renderer.domElement.getBoundingClientRect();pointer.set(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(Object.values(planetObjects).map(o=>o.mesh).concat(sun),false);const hit=hits[0]?.object;renderer.domElement.style.cursor=hit?'pointer':'grab';if(hit){const n=hit.userData.body||'Sun';if(hovered!==n){hovered=n;}}else hovered=null;});
+const celestialHover=document.createElement('div');celestialHover.className='celestial-hover';celestialHover.id='celestialHover';celestialHover.setAttribute('role','status');celestialHover.setAttribute('aria-live','polite');celestialHover.setAttribute('aria-hidden','true');document.body.append(celestialHover);
+function hideCelestialHover(){celestialHover.classList.remove('visible');celestialHover.setAttribute('aria-hidden','true');hovered=null;}
+renderer.domElement.addEventListener('click',pick);
+renderer.domElement.addEventListener('dblclick',event=>{
+ const rect=renderer.domElement.getBoundingClientRect();pointer.set(((event.clientX-rect.left)/rect.width)*2-1,-((event.clientY-rect.top)/rect.height)*2+1);raycaster.setFromCamera(pointer,camera);
+ const targets=Object.entries(planetObjects).map(([name,o])=>{o.mesh.userData.body=name;return o.mesh}).concat(sun);
+ const hit=raycaster.intersectObjects(targets,false)[0]?.object;if(!hit)return;
+ const name=hit.userData.body||'Sun';selectBody(name,false);
+ const object=name==='Sun'?sun:planetObjects[name].group;const target=object.getWorldPosition(new THREE.Vector3());
+ const direction=new THREE.Vector3().subVectors(camera.position,target).normalize();const radius=name==='Sun'?data.Sun.radius:planetObjects[name].d.radius;
+ animateCamera(target.clone().add(direction.multiplyScalar(Math.max(2.8,radius*3.4))),target);
+ toast('CLOSE APPROACH · '+name.toUpperCase());
+});
+renderer.domElement.addEventListener('pointermove',e=>{
+ const rect=renderer.domElement.getBoundingClientRect();pointer.set(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);raycaster.setFromCamera(pointer,camera);
+ const hits=raycaster.intersectObjects(Object.values(planetObjects).map(o=>o.mesh).concat(sun),false),hit=hits[0]?.object;
+ renderer.domElement.style.cursor=hit?'pointer':'grab';
+ if(!hit){hideCelestialHover();return;}
+ const name=hit.userData.body||'Sun',profile=data[name];hovered=name;
+ celestialHover.innerHTML='<strong></strong><span></span>';celestialHover.querySelector('strong').textContent=name.toUpperCase();celestialHover.querySelector('span').textContent=profile.type+' · '+(name==='Sun'?'CENTRAL STAR':profile.diameter);
+ celestialHover.style.left=Math.min(e.clientX+16,innerWidth-210)+'px';celestialHover.style.top=Math.min(e.clientY+16,innerHeight-74)+'px';
+ celestialHover.classList.add('visible');celestialHover.setAttribute('aria-hidden','false');
+});
+renderer.domElement.addEventListener('pointerleave',hideCelestialHover);
 $('playBtn').addEventListener('click',()=>{paused=!paused;$('playBtn').innerHTML=paused?'▶&nbsp; PLAY':'Ⅱ&nbsp; PAUSE';toast(paused?'MOTION PAUSED':'MOTION RESUMED')});$('speed').addEventListener('input',e=>{timeScale=Number(e.target.value)===0?.01:Math.pow(10,(Number(e.target.value)-1)*.45);$('speedValue').textContent=timeScale.toFixed(2)+' d/s'});$('orbitsBtn').addEventListener('click',()=>{showOrbits=!showOrbits;orbitGroup.visible=showOrbits;$('orbitsBtn').classList.toggle('active',showOrbits)});$('labelsBtn').addEventListener('click',()=>{showLabels=!showLabels;Object.values(labels).forEach(el=>el.style.display=showLabels?'block':'none');$('labelsBtn').classList.toggle('active',showLabels)});$('resetBtn').addEventListener('click',resetView);$('helpBtn').addEventListener('click',()=>$('help').classList.add('open'));$('closeHelp').addEventListener('click',()=>$('help').classList.remove('open'));$('help').addEventListener('click',e=>{if(e.target===$('help'))$('help').classList.remove('open')});window.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target.tagName!=='INPUT'){$('playBtn').click();e.preventDefault()}if(e.key==='Escape')$('help').classList.remove('open');if(e.key.toLowerCase()==='r')resetView()});
 buildNav();selectBody('Earth');
 setSimulationDate(simulationDate,false);
