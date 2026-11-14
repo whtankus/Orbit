@@ -464,7 +464,7 @@ function musicNote(frequency,duration,level,pan=0,wave='sine',cutoff=1800){
  osc.type=wave;osc.frequency.setValueAtTime(Math.max(24,frequency),now);
  filter.type='lowpass';filter.frequency.setValueAtTime(cutoff,now);filter.Q.value=.55;
  gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(level,now+.2);
- gain.gain.setTargetAtTime(.0001,now+duration*.58,Math.max(.16,duration*.2));
+ gain.gain.setTargetAtTime(.0001,now+duration*.42,Math.max(.14,duration*.12));
  osc.connect(filter);filter.connect(gain);
  if(panner){panner.pan.value=Math.max(-1,Math.min(1,pan));gain.connect(panner);panner.connect(musicBus);gain.connect(send)}
  else{gain.connect(musicBus);gain.connect(send)}
