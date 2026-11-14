@@ -43,25 +43,51 @@ export function eclipticJ2000ToEquatorial(vector) {
  * IAU 1976 precession angles; appropriate as an educational approximation
  * over the JPL element model's 1800–2050 interval.
  */
-export function precessJ2000EquatorialToDate(raDeg, decDeg, date) {
-  const jd = julianDayUTC(date);
-  const T = (jd - 2451545.0) / 36525;
-  const arcsecToRad = Math.PI / (180 * 3600);
-  const zeta = (2306.2181 * T + 0.30188 * T * T + 0.017998 * T * T * T) * arcsecToRad;
-  const z = (2306.2181 * T + 1.09468 * T * T + 0.018203 * T * T * T) * arcsecToRad;
-  const theta = (2004.3109 * T - 0.42665 * T * T - 0.041833 * T * T * T) * arcsecToRad;
+/**
+ * IAU 1976 precession of mean equatorial coordinates between arbitrary epochs.
+ * Epochs are Julian Days (TT/UT approximation); the model omits nutation.
+ */
+export function precessEquatorialBetweenEpochs(raDeg, decDeg, fromJulianDay, toJulianDay) {
   const alpha = Number(raDeg) * DEG;
   const delta = Number(decDeg) * DEG;
-  if (!Number.isFinite(alpha) || !Number.isFinite(delta) || Math.abs(decDeg) > 90) {
-    throw new RangeError("Invalid J2000 equatorial coordinates.");
+  const jd1 = Number(fromJulianDay), jd2 = Number(toJulianDay);
+  if (![alpha, delta, jd1, jd2].every(Number.isFinite) || Math.abs(decDeg) > 90) {
+    throw new RangeError("Invalid equatorial coordinates or precession epochs.");
   }
+  if (Math.abs(jd2 - jd1) < 1e-9) {
+    return { rightAscensionDeg: normalizeDegrees(raDeg), declinationDeg: decDeg };
+  }
+  const T = (jd1 - 2451545.0) / 36525;
+  const t = (jd2 - jd1) / 36525;
+  const arcsecToRad = Math.PI / (180 * 3600);
+  const zeta = (
+    (2306.2181 + 1.39656 * T - 0.000139 * T * T) * t +
+    (0.30188 - 0.000344 * T) * t * t +
+    0.017998 * t * t * t
+  ) * arcsecToRad;
+  const z = (
+    (2306.2181 + 1.39656 * T - 0.000139 * T * T) * t +
+    (1.09468 + 0.000066 * T) * t * t +
+    0.018203 * t * t * t
+  ) * arcsecToRad;
+  const theta = (
+    (2004.3109 - 0.85330 * T - 0.000217 * T * T) * t -
+    (0.42665 + 0.000217 * T) * t * t -
+    0.041833 * t * t * t
+  ) * arcsecToRad;
   const A = Math.cos(delta) * Math.sin(alpha + zeta);
-  const B = Math.cos(theta) * Math.cos(delta) * Math.cos(alpha + zeta) - Math.sin(theta) * Math.sin(delta);
-  const C = Math.sin(theta) * Math.cos(delta) * Math.cos(alpha + zeta) + Math.cos(theta) * Math.sin(delta);
+  const B = Math.cos(theta) * Math.cos(delta) * Math.cos(alpha + zeta) -
+    Math.sin(theta) * Math.sin(delta);
+  const C = Math.sin(theta) * Math.cos(delta) * Math.cos(alpha + zeta) +
+    Math.cos(theta) * Math.sin(delta);
   return {
     rightAscensionDeg: normalizeDegrees(Math.atan2(A, B) + z) * RAD,
     declinationDeg: Math.asin(Math.max(-1, Math.min(1, C))) * RAD
   };
+}
+
+export function precessJ2000EquatorialToDate(raDeg, decDeg, date) {
+  return precessEquatorialBetweenEpochs(raDeg, decDeg, 2451545.0, julianDayUTC(date));
 }
 
 export function greenwichMeanSiderealTime(date = new Date()) {
