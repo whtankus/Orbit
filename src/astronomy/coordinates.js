@@ -81,7 +81,7 @@ export function precessEquatorialBetweenEpochs(raDeg, decDeg, fromJulianDay, toJ
   const C = Math.sin(theta) * Math.cos(delta) * Math.cos(alpha + zeta) +
     Math.cos(theta) * Math.sin(delta);
   return {
-    rightAscensionDeg: normalizeDegrees(Math.atan2(A, B) + z) * RAD,
+    rightAscensionDeg: normalizeDegrees((Math.atan2(A, B) + z) * RAD),
     declinationDeg: Math.asin(Math.max(-1, Math.min(1, C))) * RAD
   };
 }
