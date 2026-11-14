@@ -162,3 +162,18 @@ test("desktop and mobile layouts have dedicated Sound Studio and observatory com
   assert.match(styles, /button:hover/);
   assert.match(html, /STUDIO&nbsp; \+/);
 });
+
+
+test("responsive navigation preserves readable controls instead of shrinking the header", () => {
+  assert.match(styles, /Responsive foundation — predictable layouts across viewport sizes/);
+  assert.match(styles, /grid-template-rows:1fr 1fr/);
+  assert.match(styles, /overflow-x:auto/);
+  assert.match(styles, /env\\(safe-area-inset-bottom\\)/);
+  assert.match(styles, /100dvh/);
+});
+
+test("the 3D renderer uses a lower pixel ratio on compact screens", () => {
+  assert.match(app, /matchMedia\\('\\(max-width: 700px\\)'\\)\\.matches\\?1\\.2:1\\.55/);
+  assert.match(app, /if\\(document\\.hidden\\)return/);
+  assert.match(app, /document\\.addEventListener\\('visibilitychange'/);
+});
