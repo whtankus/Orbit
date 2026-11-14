@@ -60,7 +60,7 @@ export function horizontalCoordinates(raDeg, decDeg, localSiderealDeg, latitudeD
 
 export function stereographicProject(altitudeDeg, azimuthDeg, cx, cy, radius) {
   if (!Number.isFinite(altitudeDeg) || altitudeDeg < 0 || altitudeDeg > 90) return null;
-  const rho = Math.tan((90 - altitudeDeg) * DEG / 2) / Math.tan(45 * DEG / 2);
+  const rho = Math.tan((90 - altitudeDeg) * DEG / 2) / Math.tan(45 * DEG);
   const az = azimuthDeg * DEG;
   return {
     x: cx + radius * rho * Math.sin(az),
@@ -154,6 +154,8 @@ function buildStarMaps(starRows) {
 export async function createPlanetarium({
   canvas,
   constellationSelect,
+  constellationTitle,
+  constellationText,
   dateInput,
   latitudeInput,
   longitudeInput,
@@ -513,6 +515,12 @@ export async function createPlanetarium({
     }
     const selected = constellationByCode.get(selectedCode);
     if (selected && constellationSelect) constellationSelect.value = selectedCode;
+    if (selected && constellationTitle) constellationTitle.textContent = selected.name + " · " + selected.iau;
+    if (selected && constellationText) {
+      constellationText.textContent =
+        (selected.common ? selected.common + ". " : "") +
+        "Official IAU sky region. Its boundary is based on Delporte's B1875.0 definition; the illustrated figure connects measured Hipparcos stars using the Stellarium Western sky culture.";
+    }
     const local = date.toLocaleString();
     if (selectedStarOutput?.dataset?.placeholder !== "locked") {
       // Keep the selected-star field independent from the observing readout.
