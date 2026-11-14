@@ -266,7 +266,7 @@ let telemetryTick=0;function updateTelemetry(){const range=camera.position.dista
 const telemetryTimer=setInterval(updateTelemetry,500);
 
 /* ORBIT 3.0 — layered cinematic sound design. Starts only after an explicit visitor gesture. */
-let soundEnabled=false,audioCtx=null,masterGain=null,spaceReverb=null,reverbReturn=null,noiseBuffer=null;
+let soundEnabled=false,audioCtx=null,masterGain=null,spaceReverb=null,reverbReturn=null,noiseBuffer=null,musicBus=null;
 let ambientNodes=[],ambienceEnabled=true,effectsEnabled=true;
 function makeImpulse(ctx,seconds=4.2,decay=2.8){
  const length=Math.floor(ctx.sampleRate*seconds),buffer=ctx.createBuffer(2,length,ctx.sampleRate);
@@ -279,6 +279,7 @@ function ensureAudio(){
   audioCtx=new AC({latencyHint:'interactive'});masterGain=audioCtx.createGain();masterGain.gain.value=.62;
   const compressor=audioCtx.createDynamicsCompressor();compressor.threshold.value=-22;compressor.knee.value=24;compressor.ratio.value=3.4;compressor.attack.value=.012;compressor.release.value=.28;
   masterGain.connect(compressor);compressor.connect(audioCtx.destination);
+  musicBus=audioCtx.createGain();musicBus.gain.value=musicVolume;musicBus.connect(masterGain);
   spaceReverb=audioCtx.createConvolver();spaceReverb.buffer=makeImpulse(audioCtx);
   reverbReturn=audioCtx.createGain();reverbReturn.gain.value=.24;spaceReverb.connect(reverbReturn);reverbReturn.connect(masterGain);
   noiseBuffer=audioCtx.createBuffer(1,audioCtx.sampleRate*3,audioCtx.sampleRate);
@@ -404,6 +405,94 @@ function startAmbient(){
  addTexture('bandpass',480,.65,.0011,.28,.019);
  addTexture('bandpass',1450,.5,.00035,.42,.009);
 }
+let musicTimer=null,musicStep=0,activeTrack='horizon',musicVolume=.42;
+const soundtracks={
+ horizon:{
+  title:'EVENT HORIZON',bpm:56,interval:2142,
+  chords:[[55,82.41,110],[49,73.42,98],[43.65,65.41,87.31],[65.41,98,130.81]],
+  melody:[220,261.63,293.66,261.63,196,220,164.81,196],shape:'sine',level:.0047
+ },
+ solar:{
+  title:'SOLAR WIND',bpm:82,interval:1463,
+  chords:[[65.41,98,130.81],[73.42,110,146.83],[55,82.41,110],[61.74,92.5,123.47]],
+  melody:[261.63,329.63,392,329.63,293.66,349.23,440,392],shape:'triangle',level:.0038
+ },
+ deep:{
+  title:'DEEP FIELD',bpm:64,interval:1875,
+  chords:[[49,73.42,110],[55,82.41,123.47],[65.41,98,146.83],[43.65,65.41,98]],
+  melody:[392,523.25,659.25,587.33,440,523.25,783.99,659.25],shape:'sine',level:.0035
+ }
+};
+function musicNote(frequency,duration,level,pan=0,wave='sine',cutoff=1800){
+ if(!soundEnabled||!ensureAudio()||!musicBus)return;
+ const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain(),send=audioCtx.createGain();
+ const panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null;
+ osc.type=wave;osc.frequency.setValueAtTime(Math.max(24,frequency),now);
+ filter.type='lowpass';filter.frequency.setValueAtTime(cutoff,now);filter.Q.value=.55;
+ gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(level,now+.2);
+ gain.gain.setTargetAtTime(.0001,now+duration*.58,Math.max(.16,duration*.2));
+ osc.connect(filter);filter.connect(gain);
+ if(panner){panner.pan.value=Math.max(-1,Math.min(1,pan));gain.connect(panner);panner.connect(musicBus);gain.connect(send)}
+ else{gain.connect(musicBus);gain.connect(send)}
+ send.gain.value=.18;send.connect(spaceReverb);
+ osc.start(now);osc.stop(now+duration+.2);
+}
+function soundtrackPulse(){
+ if(!musicTimer||!soundEnabled)return;
+ const track=soundtracks[activeTrack];if(!track)return;
+ const chord=track.chords[Math.floor(musicStep/4)%track.chords.length];
+ const duration=track.interval/1000*3.4;
+ chord.forEach((frequency,index)=>{
+  musicNote(frequency,duration,track.level*(index===0?1.15:.72),-.28+index*.27,'sine',index===0?380:720);
+ });
+ const melody=track.melody[musicStep%track.melody.length];
+ if(activeTrack==='solar'||musicStep%2===0){
+  musicNote(melody,track.interval/1000*(activeTrack==='solar'?1.8:2.3),track.level*.85,
+    musicStep%2===0?.34:-.34,track.shape,activeTrack==='deep'?2600:1900);
+ }
+ if(activeTrack==='deep'&&musicStep%4===2){
+  musicNote(melody*2,1.2,track.level*.32,.44,'triangle',3400);
+ }
+ musicStep++;
+}
+function updateTrackUI(){
+ const track=soundtracks[activeTrack];
+ document.querySelectorAll('[data-track]').forEach(button=>{
+  const active=button.dataset.track===activeTrack;
+  button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));
+ });
+ $('musicTrackName').textContent=track.title;
+ $('musicTrackState').textContent=musicTimer?'PLAYING · '+track.bpm+' BPM':'READY TO PLAY';
+ $('musicPlayBtn').textContent=musicTimer?'Ⅱ  PAUSE SOUNDTRACK':'▶  PLAY SOUNDTRACK';
+ $('musicPlayBtn').classList.toggle('active',!!musicTimer);
+ $('soundMixer').classList.toggle('music-playing',!!musicTimer);
+}
+function stopMusicTrack(){
+ if(musicTimer){clearInterval(musicTimer);musicTimer=null;}
+ updateTrackUI();
+}
+function startMusicTrack(){
+ if(musicTimer){stopMusicTrack();return;}
+ if(!soundEnabled){
+  soundEnabled=true;ensureAudio();if(ambienceEnabled)startAmbient();updateSoundUI();
+ }
+ if(!ensureAudio())return;
+ musicStep=0;soundtrackPulse();
+ musicTimer=setInterval(soundtrackPulse,soundtracks[activeTrack].interval);
+ updateTrackUI();
+}
+document.querySelectorAll('[data-track]').forEach(button=>button.addEventListener('click',()=>{
+ const wasPlaying=!!musicTimer;stopMusicTrack();activeTrack=button.dataset.track;
+ updateTrackUI();if(wasPlaying)startMusicTrack();else soundEffect('toggle');
+}));
+$('musicPlayBtn').addEventListener('click',()=>{if(musicTimer)stopMusicTrack();else startMusicTrack()});
+$('musicStopBtn').addEventListener('click',stopMusicTrack);
+$('musicVolume').addEventListener('input',event=>{
+ musicVolume=Number(event.target.value)/100;$('musicVolumeValue').textContent=event.target.value+'%';
+ if(ensureAudio()&&musicBus)setParam(musicBus.gain,musicVolume,.1);
+});
+updateTrackUI();
+
 function stopAmbient(){
  if(!audioCtx){ambientNodes=[];return}
  const now=audioCtx.currentTime;ambientNodes.forEach(n=>{try{n.gain.gain.cancelScheduledValues(now);n.gain.gain.setTargetAtTime(.0001,now,.16);n.source.stop(now+.75);n.lfo.stop(now+.75)}catch(e){}});
@@ -414,7 +503,7 @@ function updateSoundUI(){
  $('mixerState').textContent=soundEnabled?'ACTIVE':'STANDBY';$('soundMixer').classList.toggle('active',soundEnabled);
 }
 $('soundToggle').addEventListener('click',()=>{
- soundEnabled=!soundEnabled;if(soundEnabled){ensureAudio();if(ambienceEnabled)startAmbient();updateSoundUI();soundEffect('toggle')}else{stopAmbient();updateSoundUI()}
+ soundEnabled=!soundEnabled;if(soundEnabled){ensureAudio();if(ambienceEnabled)startAmbient();updateSoundUI();soundEffect('toggle')}else{stopMusicTrack();stopAmbient();updateSoundUI()}
 });
 $('soundMixerToggle').addEventListener('click',()=>{
  const open=!$('soundMixer').classList.contains('open');$('soundMixer').classList.toggle('open',open);$('soundMixer').setAttribute('aria-hidden',String(!open));
