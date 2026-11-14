@@ -1,0 +1,43 @@
+name: Feature request
+description: Propose a focused improvement to ORBIT
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: "Describe the user problem first. Search existing issues and discussions before submitting."
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem should this solve?
+      placeholder: I find it difficult to...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed improvement
+      description: Explain the behaviour you would like to see.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: ORBIT area
+      options:
+        - 3D Solar System
+        - Night Sky planetarium
+        - Deep-sky atlas
+        - Cosmic history
+        - Research library
+        - Accessibility or responsive design
+        - Performance
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered or supporting references
+      description: For astronomy-related proposals, include authoritative sources when possible.
