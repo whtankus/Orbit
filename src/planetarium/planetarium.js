@@ -231,7 +231,7 @@ export async function createPlanetarium({
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     return {
       w, h, cx: w / 2, cy: h / 2,
-      radius: Math.min(w, h) * 0.405 * zoomFactor,
+      radius: Math.min(w, h) * 0.45 * zoomFactor,
       dpr, date,
       latitude: Number(latitudeInput?.value ?? 0),
       longitude: Number(longitudeInput?.value ?? 0)
@@ -419,9 +419,9 @@ export async function createPlanetarium({
       }
       if (points > 1) {
         ctx.strokeStyle = segment.thin ? "rgba(255,205,139,.82)" : "rgba(151,220,255,.96)";
-        ctx.lineWidth = segment.thin ? 1.05 : 2.15;
+        ctx.lineWidth = segment.thin ? 1.8 : 3.15;
         ctx.shadowColor = segment.thin ? "#f4bd78" : "#6bcfff";
-        ctx.shadowBlur = segment.thin ? 5 : 9;
+        ctx.shadowBlur = segment.thin ? 7 : 13;
         ctx.setLineDash(segment.thin ? [3, 4] : []);
         ctx.stroke();
       }
@@ -441,13 +441,13 @@ export async function createPlanetarium({
       const projected = projectedById.get(star.id);
       if (!projected?.point) continue;
       const point = projected.point;
-      const size = clamp(5.2 - (star.magnitude + 1.4) * .53, 1.1, 5.7);
+      const size = clamp(6.7 - (star.magnitude + 1.4) * .62, 1.65, 7.6) * (selectedIds.has(star.id) ? 1.16 : 1);
       ctx.beginPath();
       ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
       ctx.fillStyle = starColour(star.bv);
       if (star.magnitude < 1.5) {
         ctx.shadowColor = starColour(star.bv);
-        ctx.shadowBlur = star.magnitude < .5 ? 13 : 9;
+        ctx.shadowBlur = star.magnitude < .5 ? 17 : 12;
       } else ctx.shadowBlur = 0;
       ctx.fill();
       ctx.shadowBlur = 0;
@@ -461,12 +461,12 @@ export async function createPlanetarium({
       );
       if (eligible) {
         const label = star.name || (bayerLabel(star.bayer) + " " + star.constellation).trim();
-        const x = point.x + 9, y = point.y - 7;
+        const x = point.x + 12, y = point.y - 9;
         const width = Math.min(130, label.length * 6.8);
-        const collides = labelAnchors.some(a => Math.abs(a.x - x) < (a.w + width) * .42 && Math.abs(a.y - y) < 17);
+        const collides = labelAnchors.some(a => Math.abs(a.x - x) < (a.w + width) * .42 && Math.abs(a.y - y) < 21);
         if (label && !collides) {
           labelAnchors.push({ x, y, w: width });
-          ctx.font = "600 11px Space Grotesk, sans-serif";
+          ctx.font = "600 13px Space Grotesk, sans-serif";
           ctx.textAlign = "left";
           ctx.lineWidth = 3.5;
           ctx.strokeStyle = "rgba(2,8,18,.96)";
@@ -480,7 +480,7 @@ export async function createPlanetarium({
       const selected = projectedById.get(selectedStarId);
       if (selected?.point) {
         ctx.beginPath();
-        ctx.arc(selected.point.x, selected.point.y, 11, 0, Math.PI * 2);
+        ctx.arc(selected.point.x, selected.point.y, 15, 0, Math.PI * 2);
         ctx.strokeStyle = "#ffe2a7";
         ctx.lineWidth = 1.3;
         ctx.shadowColor = "#ffc86e";
