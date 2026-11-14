@@ -71,3 +71,28 @@ test("Night Sky page exposes star search, magnitude and layer controls", () => {
   assert.match(html, /id="skyShowLines"/);
   assert.match(html, /id="skyShowLabels"/);
 });
+
+
+test("the observatory redesign establishes readable typography and responsive page layouts", () => {
+  assert.match(html, /IBM Plex Mono:wght@400;500;600/);
+  assert.match(html, /Space Grotesk:wght@400;500;600;700/);
+  assert.match(styles, /ORBIT 4\.0 — deliberate observatory design system/);
+  assert.match(styles, /\.page-intro\{[^}]*font-size:16px/);
+  assert.match(styles, /\.research-card p\{[^}]*font-size:15px/);
+  assert.match(styles, /@media\(max-width:600px\)/);
+  assert.match(html, /page-reference-note/);
+});
+
+test("the soundscape uses layered ambient tones and page-specific interaction feedback", () => {
+  assert.match(app, /Soft, widely spaced harmonic layers/);
+  assert.match(app, /function soundEffect\(kind='ui'\)/);
+  assert.match(app, /tone\(659\.25/);
+  assert.match(app, /b\.classList\.contains\('nav-tab'\)/);
+  assert.match(app, /kind='page'/);
+});
+
+test("planetarium canvas labels use the refreshed readable type scale", () => {
+  assert.match(planetarium, /11px IBM Plex Mono/);
+  assert.match(planetarium, /10px IBM Plex Mono/);
+  assert.match(planetarium, /600 12px Space Grotesk/);
+});
