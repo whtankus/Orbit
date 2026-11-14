@@ -134,7 +134,7 @@ export function observerEphemeris(body, date, latitudeDeg, longitudeDeg) {
     date, latitudeDeg, longitudeDeg
   );
   return {
-    body, distanceAU: equatorial.distance,
+    body, distanceAU: equatorialJ2000.distance,
     rightAscensionDeg: equatorial.rightAscensionDeg,
     declinationDeg: equatorial.declinationDeg,
     ...horizontal
