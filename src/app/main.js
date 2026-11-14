@@ -125,7 +125,7 @@ function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMa
 
 // ORBIT 2.0 — expanded instruments, moons, history archive and sky chart.
 const navButtons=[...document.querySelectorAll('[data-page]')];
-function openPage(which){const active=!!which&&which!=='explore';document.querySelectorAll('.page-overlay').forEach(p=>p.classList.toggle('open',active&&p.id===which+'Page'));document.querySelector('.ui').classList.toggle('page-mode',active);navButtons.forEach(b=>b.classList.toggle('active',b.dataset.page===(which||'explore')));if(which==='sky')drawSkyChart();if(which==='history'||which==='research')soundEffect('history');}
+function openPage(which){const active=!!which&&which!=='explore';document.querySelectorAll('.page-overlay').forEach(p=>{const visible=active&&p.id===which+'Page';p.classList.toggle('open',visible);p.setAttribute('aria-hidden',String(!visible));});document.querySelector('.ui').classList.toggle('page-mode',active);navButtons.forEach(b=>{const selected=b.dataset.page===(which||'explore');b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});if(which==='sky')drawSkyChart();if(which==='history'||which==='research')soundEffect('history');}
 function closePages(){openPage(null)}
 navButtons.forEach(b=>b.addEventListener('click',()=>openPage(b.dataset.page)));
 document.querySelectorAll('[data-close-page]').forEach(b=>b.addEventListener('click',closePages));
@@ -553,7 +553,7 @@ $('soundToggle').addEventListener('click',()=>{
  soundEnabled=!soundEnabled;if(soundEnabled){ensureAudio();if(ambienceEnabled)startAmbient();updateSoundUI();soundEffect('toggle')}else{stopMusicTrack();stopAmbient();updateSoundUI()}
 });
 $('soundMixerToggle').addEventListener('click',()=>{
- const open=!$('soundMixer').classList.contains('open');$('soundMixer').classList.toggle('open',open);$('soundMixer').setAttribute('aria-hidden',String(!open));
+ const open=!$('soundMixer').classList.contains('open');$('soundMixer').classList.toggle('open',open);$('soundMixer').setAttribute('aria-hidden',String(!open));if(open)$('soundMixer').removeAttribute('inert');else $('soundMixer').setAttribute('inert','');
  $('soundMixerToggle').setAttribute('aria-expanded',String(open));$('soundMixerToggle').textContent=open?'STUDIO  −':'STUDIO  +';
 });
 $('soundMasterVolume').addEventListener('input',e=>{
