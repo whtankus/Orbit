@@ -293,3 +293,49 @@ button:focus-visible,input:focus-visible{outline:2px solid #a9e7ff;outline-offse
 @media(max-width:900px){.sky-canvas-wrap{height:min(68vw,470px)}}
 @media(max-width:600px){.sky-canvas-wrap{height:72vw;min-height:285px}.sky-search-panel,.sky-layer-panel{padding:10px}.sky-layer-panel>label{font-size:7px}.sky-source-links{gap:8px}.sky-source-links a{font-size:7px}}
 
+
+
+/* ORBIT observatory polish: clearer scientific graphics and restrained visual hierarchy */
+:root{--grid-line:rgba(159,194,232,.12);--panel-edge:rgba(167,205,244,.2);--text-strong:#f1f7ff;--text-secondary:#b1c0d4}
+button,input,select{accent-color:#9edcff}
+:where(.history-info,.sky-info,.research-card,.history-stage,.sky-frame,.timeline-control,.command-window){border-color:var(--panel-edge)}
+:where(.page-intro,.history-info p,.sky-info p,.research-card p){color:var(--text-secondary);text-wrap:pretty}
+:where(.history-stat,.stats,.sky-readout,.sky-chart-foot,.sky-chart-status,.sky-planet-list,.research-note){font-variant-numeric:tabular-nums}
+.sky-frame{background:linear-gradient(155deg,rgba(14,27,46,.94),rgba(5,11,22,.96));}
+.sky-canvas-wrap{border:1px solid rgba(153,196,239,.16);background:radial-gradient(ellipse at 50% 44%,#18375a 0%,#0a1930 52%,#040a16 100%);box-shadow:inset 0 0 55px #0008}
+.sky-overlay-label{padding:7px 9px;border:1px solid #9edcff28;border-radius:5px;background:#030916b8;backdrop-filter:blur(8px);letter-spacing:.13em}
+.sky-legend{gap:10px 18px;padding:10px 12px;border:1px solid #9db9df20;border-radius:7px;background:#050c18a8}
+.sky-legend span{display:inline-flex;align-items:center;color:#aabbd1;font-size:8px;letter-spacing:.08em}
+.sky-legend span:before{flex:0 0 auto}
+.sky-chart-foot,.sky-chart-status{margin-top:9px;padding:9px 11px;border-radius:6px;background:#9edcff08;color:#9eb2cc;font:8px/1.7 var(--mono);letter-spacing:.06em}
+.sky-chart-status{border-left:2px solid #8bd9ff;color:#d3e9ff}
+.sky-readout{border:1px solid #9edcff25;border-left:2px solid var(--cyan);border-radius:6px;background:linear-gradient(90deg,#9edcff12,#9edcff04);color:#d0e1f4;line-height:1.9}
+.sky-planet-list{margin-top:14px;padding:12px;border:1px solid #9db9df24;border-radius:8px;background:#030a15a8}
+.sky-planet-head,.sky-planet-row{display:grid;grid-template-columns:1.1fr .9fr .9fr;gap:8px;align-items:center}
+.sky-planet-head{padding-bottom:8px;border-bottom:1px solid var(--grid-line);color:#8298b5;font:8px var(--mono);letter-spacing:.1em}
+.sky-planet-row{padding:8px 0;border-bottom:1px solid rgba(157,185,223,.09);font:9px var(--mono);font-variant-numeric:tabular-nums}
+.sky-planet-row:last-child{border-bottom:0;padding-bottom:1px}
+.sky-planet-row strong{font:500 10px var(--sans);color:#e5f1ff}
+.sky-planet-row span:nth-child(2){color:#cfe7fb}
+.sky-planet-row .planet-state-up{color:#8ce0bd}
+.sky-planet-row .planet-state-down{color:#8794aa}
+:where(.stat,.history-stat>div,.research-card,.timeline-marker,.command-item){transition:border-color .2s ease,background .2s ease,transform .2s ease}
+:where(.stat,.research-card){border-color:rgba(170,194,230,.16)}
+:where(.stat:hover,.research-card:hover){border-color:#9edcff55;background:#9edcff0b}
+:where(.sky-select,.sky-star-search,.command-search){outline-offset:2px}
+:where(.sky-select:focus-visible,.sky-star-search:focus-visible,.command-search:focus-visible){outline:2px solid #9edcff}
+:where(.page-kicker,.eyebrow,.panel-head span){text-shadow:0 0 18px #9edcff22}
+.sound-mixer{border-color:#9edcff44;box-shadow:0 20px 70px #0009,inset 0 1px #ffffff08}
+.sound-mixer-note{max-width:34ch;line-height:1.65;color:#9aabc2}
+.telemetry{border-color:#9edcff2c;background:linear-gradient(145deg,#071222e8,#030914e8);box-shadow:0 12px 38px #0006}
+.telemetry b{color:#d9efff;font-variant-numeric:tabular-nums}
+@media(max-width:700px){
+ .sky-legend{gap:8px 12px}
+ .sky-legend span{font-size:7px}
+ .sky-planet-list{padding:9px}
+ .sky-planet-row{font-size:8px}
+ .sky-planet-row strong{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+ .sky-planet-row,.stat,.research-card,.timeline-marker{transition:none}
+}
