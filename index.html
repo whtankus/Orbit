@@ -297,7 +297,7 @@ function renderCommands(query=''){const q=query.trim().toLowerCase();const filte
 function openCommandDeck(){commandDeck.classList.add('open');renderCommands();commandSearch.value='';setTimeout(()=>commandSearch.focus(),30)}
 $('commandOpen').addEventListener('click',openCommandDeck);$('commandClose').addEventListener('click',()=>commandDeck.classList.remove('open'));commandDeck.addEventListener('click',e=>{if(e.target===commandDeck)commandDeck.classList.remove('open')});commandSearch.addEventListener('input',e=>renderCommands(e.target.value));
 window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCommandDeck()}if(e.key==='Escape')commandDeck.classList.remove('open')});
-let telemetryTick=0;function updateTelemetry(){const range=camera.position.distanceTo(controls.target);$('telemetryFocus').textContent=selected.toUpperCase();$('telemetryRange').textContent=range.toFixed(1)+' AU*';$('telemetryTime').textContent=(Math.floor(elapsed/60)%60).toString().padStart(2,'0')+':'+Math.floor(elapsed%60).toString().padStart(2,'0');}
+let telemetryTick=0;function updateTelemetry(){const range=camera.position.distanceTo(controls.target);$('telemetryFocus').textContent=selected.toUpperCase();$('telemetryRange').textContent=range.toFixed(1)+' SCENE UNITS';$('telemetryTime').textContent=(Math.floor(elapsed/60)%60).toString().padStart(2,'0')+':'+Math.floor(elapsed%60).toString().padStart(2,'0');}
 const telemetryTimer=setInterval(updateTelemetry,500);
 // Start only after moon objects, clouds, and all page instruments are initialized.
 try { animate(); setTimeout(()=>$('loading').classList.add('hide'),700); }
