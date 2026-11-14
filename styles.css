@@ -729,3 +729,282 @@ input[type=range]{cursor:pointer}
   .planet-preview{animation:none}
   .research-card,.nav-tab,.top-btn,.tool-btn{transition:none}
 }
+
+
+/* ORBIT 5.0 — bold controls, uncluttered explorer and immersive sky atlas */
+.panel{display:none!important}
+.telemetry{display:none!important}
+.hero{width:min(470px,40vw);top:clamp(120px,14vh,170px);left:clamp(28px,5vw,86px)}
+.hero h1{font-size:clamp(54px,6.2vw,88px);max-width:8ch}
+.hero p{font-size:16px;max-width:410px;line-height:1.78;color:#d8e4f2}
+.top{height:86px;padding-inline:clamp(20px,3.5vw,58px)}
+:root{--topbar-size:86px}
+.brand-name{font-size:18px}
+.main-nav{gap:7px}
+.nav-tab{min-height:46px;padding:12px 17px;font-size:11px;font-weight:600;letter-spacing:.08em;border-radius:10px}
+.top-btn{min-height:44px;padding:11px 15px;font-size:11px;font-weight:600;border-radius:10px}
+.command-launch{box-shadow:0 0 24px #54b9ee20,inset 0 1px #fff2}
+.sound-wrap{gap:7px}
+.bottom{gap:12px}
+.body-strip,.controls{padding:10px;border-radius:14px;gap:8px}
+.body-btn{min-height:46px;padding:11px 15px;font-size:11px;font-weight:600;letter-spacing:.06em}
+.tool-btn{min-height:44px;padding:11px 15px;font-size:11px;font-weight:600;letter-spacing:.05em}
+.controls .range-wrap{font-size:11px}
+.controls .range-wrap input[type=range]{width:125px;height:6px}
+#speed{height:7px}
+.astro-timebar{min-height:58px}
+#simulationDate{min-height:43px;font-size:12px}
+.astro-timebar .tool-btn{min-height:42px;font-size:11px}
+.page-close{min-height:46px;padding:12px 17px;font-size:11px;font-weight:600}
+.command-item{min-height:66px;padding:15px 17px;font-size:14px}
+.command-item b{font-size:14px}
+.command-item small{font-size:12px}
+.help-card button{min-height:46px;font-size:12px;padding:12px 18px}
+
+/* The history panel becomes a sequence of distinct illustrated cosmic environments. */
+.history-stage{
+  min-height:500px;border-radius:22px;isolation:isolate;
+  background:#030914;box-shadow:0 30px 90px #0008,inset 0 1px #fff2;
+}
+.cosmic-scene{transition:background 1s ease,filter 1s ease;isolation:isolate}
+.epoch-particles{transition:opacity .8s ease,filter .8s ease}
+.epoch-core{transition:all .85s cubic-bezier(.2,.8,.2,1);z-index:2}
+.epoch-orbit{z-index:1;transition:all .9s ease}
+.history-stage:after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(2,5,12,.08) 20%,rgba(2,5,12,.03) 48%,rgba(2,5,12,.7) 100%);
+}
+.history-stage .stage-caption,.history-stage .stage-date{z-index:3}
+.history-stage .stage-caption{
+  display:inline-flex;align-self:flex-start;max-width:min(80%,620px);
+  padding:11px 14px;border:1px solid #c3e5ff35;border-radius:10px;
+  background:rgba(3,10,20,.58);backdrop-filter:blur(12px);
+  color:#d9efff;font-size:11px;line-height:1.5;letter-spacing:.1em;
+}
+.history-stage .stage-date{
+  max-width:850px;padding:14px 18px;border-left:3px solid #e5c48d;
+  background:linear-gradient(90deg,rgba(3,9,17,.8),rgba(3,9,17,.16));
+  font-size:clamp(27px,3.7vw,48px);line-height:1.08;
+}
+.history-stage[data-epoch="0"] .cosmic-scene{
+  background:radial-gradient(ellipse at 52% 50%,#ffd58d66 0 2%,#b66a5744 8%,transparent 35%),
+  repeating-radial-gradient(ellipse at 52% 50%,#f6d4a31b 0 2px,transparent 3px 24px),
+  linear-gradient(135deg,#15132a,#07172b 48%,#040a16);
+}
+.history-stage[data-epoch="0"] .epoch-core{
+  width:clamp(160px,24vw,270px);background:radial-gradient(circle,#fff4ca 0 2%,#f3c27a 8%,#c66a68 27%,#5b528d 52%,transparent 72%);
+  box-shadow:0 0 50px #f6c47a99,0 0 150px #c06c9c66;
+}
+.history-stage[data-epoch="0"] .epoch-orbit{width:85%;height:70%;border:1px solid #f1c98a55;transform:translate(-50%,-50%) rotate(-18deg);box-shadow:0 0 55px #d9999a22}
+.history-stage[data-epoch="1"] .cosmic-scene{
+  background:radial-gradient(circle at 28% 38%,#b6a2ff77 0 2px,transparent 9px),
+  radial-gradient(circle at 72% 63%,#ffcf9277 0 2px,transparent 12px),
+  radial-gradient(circle at 54% 24%,#9bdcff55 0 2px,transparent 8px),
+  linear-gradient(135deg,#03050d,#11102b 55%,#030914);
+}
+.history-stage[data-epoch="1"] .epoch-core{width:clamp(90px,13vw,150px);background:radial-gradient(circle,#fff 0 1%,#b8a6ff 10%,#604b9b 30%,#10152c 66%,transparent 72%);box-shadow:0 0 40px #a89bffb8,0 0 120px #876fff65}
+.history-stage[data-epoch="1"] .epoch-orbit{width:58%;height:21%;border:1px dashed #a89bff66;transform:translate(-50%,-50%) rotate(24deg)}
+.history-stage[data-epoch="2"] .cosmic-scene{
+  background:radial-gradient(ellipse at 50% 50%,#ffcf9560,transparent 8%),
+  repeating-conic-gradient(from 24deg at 50% 50%,#8a78d025 0 8deg,transparent 9deg 21deg),
+  radial-gradient(ellipse at 50% 50%,#263b79,#09132a 55%,#020711);
+}
+.history-stage[data-epoch="2"] .epoch-core{width:clamp(110px,17vw,190px);background:radial-gradient(circle,#fff8d9 0 2%,#f6bf83 5%,#a17cdb 14%,#3c4c8e 42%,transparent 73%);box-shadow:0 0 75px #ffcd9c8a,0 0 180px #9a7bff52}
+.history-stage[data-epoch="2"] .epoch-orbit{width:78%;height:45%;border:2px solid #a1baff4d;transform:translate(-50%,-50%) rotate(-34deg);box-shadow:0 0 34px #8dbfff44,inset 0 0 40px #8dbfff1e}
+.history-stage[data-epoch="3"] .cosmic-scene{
+  background:radial-gradient(ellipse at 52% 49%,#fff0c755,transparent 5%),
+  repeating-conic-gradient(from 5deg at 52% 50%,#9c8aff20 0 5deg,transparent 6deg 16deg),
+  radial-gradient(ellipse at center,#243b73,#0b1831 48%,#030914);
+}
+.history-stage[data-epoch="3"] .epoch-core{width:clamp(130px,19vw,220px);background:radial-gradient(circle,#fff4d0 0 2%,#e7b47e 7%,#8276c9 20%,#293a78 48%,transparent 72%);box-shadow:0 0 90px #b6a2ff77,0 0 200px #608bff33}
+.history-stage[data-epoch="3"] .epoch-orbit{width:90%;height:27%;border:2px solid #b6d2ff66;transform:translate(-50%,-50%) rotate(-20deg);box-shadow:0 0 20px #84bbff55}
+.history-stage[data-epoch="4"] .cosmic-scene{
+  background:radial-gradient(ellipse at 33% 48%,#ea9a8b66,transparent 32%),
+  radial-gradient(ellipse at 68% 55%,#8d79db66,transparent 34%),
+  radial-gradient(ellipse at 52% 28%,#6bbce066,transparent 24%),
+  linear-gradient(125deg,#11152f,#241a3e 45%,#071629);
+}
+.history-stage[data-epoch="4"] .epoch-core{width:clamp(115px,15vw,175px);background:radial-gradient(circle at 35% 32%,#fff6d1,#ffd07f 22%,#ec865d 48%,#8f4d91 76%,transparent 82%);box-shadow:0 0 70px #ffb86d99,0 0 170px #aa75df65}
+.history-stage[data-epoch="4"] .epoch-orbit{width:82%;height:23%;border:3px solid #d8c4f277;transform:translate(-50%,-50%) rotate(-22deg);box-shadow:0 0 28px #f5b9a944}
+.history-stage[data-epoch="5"] .cosmic-scene{
+  background:radial-gradient(ellipse at 50% 50%,#fff2bb 0 1%,#e6a86d66 7%,transparent 16%),
+  repeating-radial-gradient(ellipse at 50% 50%,#e1bb8c32 0 2px,transparent 4px 22px),
+  linear-gradient(145deg,#11182a,#1c243d 48%,#050b17);
+}
+.history-stage[data-epoch="5"] .epoch-core{width:clamp(48px,7vw,82px);background:radial-gradient(circle,#fff8d6,#ffc36b 48%,#bd704c 76%);box-shadow:0 0 44px #ffca7e}
+.history-stage[data-epoch="5"] .epoch-orbit{width:94%;height:44%;border:5px solid #b6c5e36e;transform:translate(-50%,-50%) rotate(-16deg);box-shadow:0 0 0 11px #a4c8e51b,0 0 0 24px #a4c8e510,inset 0 0 30px #e5c68f2d}
+.history-stage[data-epoch="6"] .cosmic-scene{
+  background:radial-gradient(ellipse at 50% 57%,#ffbb6a77,transparent 18%),
+  radial-gradient(ellipse at 51% 58%,#bd563b88,transparent 38%),
+  linear-gradient(160deg,#14192c,#301e31 55%,#050b17);
+}
+.history-stage[data-epoch="6"] .epoch-core{width:clamp(130px,19vw,220px);background:radial-gradient(circle at 32% 30%,#fff1be,#f5ae63 25%,#bf563e 57%,#442e4b 84%);box-shadow:0 0 65px #ff995e9c,0 0 160px #ea684c55}
+.history-stage[data-epoch="6"] .epoch-orbit{width:80%;height:24%;border:2px dashed #f6c18888;transform:translate(-50%,-50%) rotate(24deg);box-shadow:0 0 28px #ffb66a44}
+.history-stage[data-epoch="7"] .cosmic-scene{
+  background:radial-gradient(ellipse at 50% 65%,#175f61 0 8%,#0d3547 30%,transparent 62%),
+  radial-gradient(circle at 24% 32%,#96e4bd30 0 10%,transparent 11%),
+  radial-gradient(circle at 78% 40%,#8ee7bf2a 0 9%,transparent 10%),
+  linear-gradient(180deg,#061425,#071e2a 70%,#0b393e);
+}
+.history-stage[data-epoch="7"] .epoch-core{width:clamp(110px,15vw,180px);background:radial-gradient(circle at 40% 35%,#c8f5ce 0 5%,#79d6a7 24%,#328a80 55%,#123e54 78%);box-shadow:0 0 55px #7ce0be88,0 0 120px #36a88b66}
+.history-stage[data-epoch="7"] .epoch-core:after{inset:-42%;border:2px solid #9ee9c966;transform:scaleY(.42) rotate(22deg)}
+.history-stage[data-epoch="7"] .epoch-orbit{width:70%;height:55%;border:1px solid #9ce6c94f;transform:translate(-50%,-50%) rotate(-16deg)}
+.history-stage[data-epoch="8"] .cosmic-scene{
+  background:radial-gradient(ellipse at 50% 78%,#53c3c555,transparent 42%),
+  linear-gradient(180deg,#091c3a 0 45%,#0c6872 75%,#0b2937);
+}
+.history-stage[data-epoch="8"] .epoch-core{width:clamp(150px,21vw,245px);background:radial-gradient(circle at 35% 30%,#e3f8ff,#72c9dc 25%,#268baf 58%,#12435e 82%);box-shadow:0 0 65px #73dce477,0 0 150px #48bacb55}
+.history-stage[data-epoch="8"] .epoch-orbit{width:88%;height:32%;border:1px solid #a3f0e47a;transform:translate(-50%,-50%) rotate(-19deg);box-shadow:0 0 0 14px #7ee1db0b}
+.history-stage[data-epoch="9"] .cosmic-scene{
+  background:radial-gradient(ellipse at 50% 78%,#2777a877,transparent 39%),
+  radial-gradient(circle at 79% 28%,#f1e2bd 0 1.8%,#f1e2bd38 2%,transparent 8%),
+  linear-gradient(160deg,#07172d,#0d2d53 48%,#030915);
+}
+.history-stage[data-epoch="9"] .epoch-core{width:clamp(155px,23vw,265px);background:radial-gradient(circle at 34% 28%,#dffaff,#5bafd9 29%,#1f629b 59%,#0c2c59 83%);box-shadow:0 0 60px #70c8ff99,0 0 170px #3185d255}
+.history-stage[data-epoch="9"] .epoch-orbit{width:72%;height:30%;border:1px solid #a8dcff77;transform:translate(-50%,-50%) rotate(32deg)}
+
+/* Night sky: show the map as a readable sky-dome, not an unexplained technical chart. */
+.sky-howto{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 20px;
+}
+.sky-howto-step{
+  display:flex;align-items:center;gap:13px;min-height:78px;padding:14px 17px;
+  border:1px solid #a8d9f239;border-radius:13px;
+  background:linear-gradient(135deg,#102a43ee,#08172aee);
+  box-shadow:inset 0 1px #fff1,0 10px 28px #0003;
+}
+.sky-howto-step>b{
+  display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:11px;
+  color:#071421;background:linear-gradient(140deg,#b9eeff,#76b9eb);
+  font:700 13px var(--mono);box-shadow:0 0 25px #7bcfff35;
+}
+.sky-howto-step span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.sky-howto-step strong{font-size:14px;color:#f3f8ff}
+.sky-howto-step small{font-size:12px;line-height:1.35;color:#b9cbe0}
+.sky-layout{grid-template-columns:minmax(0,1.65fr) minmax(350px,.7fr);align-items:start;gap:20px}
+.sky-frame{padding:20px;border-radius:20px}
+.sky-canvas-wrap{
+  height:clamp(500px,66vh,760px);border-radius:16px;
+  background:radial-gradient(ellipse at 50% 48%,#1b446a,#0a1c33 56%,#030914 100%);
+  box-shadow:inset 0 0 90px #0009,0 12px 32px #0005;
+}
+.sky-overlay-label{
+  top:30px;left:30px;padding:10px 13px;
+  color:#e1f4ff;background:#020a17d9;border:1px solid #a6dfff55;
+  font-size:10px;font-weight:600;border-radius:8px;letter-spacing:.1em;
+}
+.sky-info{padding:23px;border-radius:20px;position:relative}
+.sky-info h3{font-size:32px}
+.sky-info p{font-size:14px;line-height:1.72}
+.sky-quick-picks{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 15px}
+.sky-quick-picks button{
+  min-height:40px;padding:8px 12px;border:1px solid #a9d9f34a;border-radius:9px;
+  color:#d9f1ff;background:#9edcff0e;font:600 11px var(--sans);
+  transition:transform .2s,border-color .2s,background .2s;
+}
+.sky-quick-picks button:hover{transform:translateY(-2px);border-color:#b7eaff;background:#9edcff24}
+.sky-select-label{font-size:11px;letter-spacing:.07em;color:#d9e6f4}
+.sky-select,.sky-star-search,.sky-field input{min-height:48px;font-size:14px;border-radius:10px}
+.sky-search-panel,.sky-layer-panel{padding:17px;border-radius:14px}
+.sky-search-result{min-height:42px;padding:10px 12px;font-size:12px;border-radius:9px}
+.sky-selected-star{font-size:11px;line-height:1.8}
+.sky-layer-title{font-size:11px}
+.sky-layer-panel>label{min-height:38px;font-size:11px;gap:12px}
+.sky-layer-panel input[type=checkbox]{width:18px;height:18px}
+.sky-magnitude-row{font-size:11px}
+.sky-magnitude-row output{font-size:12px}
+.sky-controls{gap:10px}
+.sky-controls .tool-btn{min-height:48px;font-size:11px}
+.sky-observer-title{
+  display:flex;flex-direction:column;gap:4px;margin:20px 0 8px;padding:15px 16px;
+  border:1px solid #a9cde52b;border-radius:12px;background:#071729;
+}
+.sky-observer-title strong{font:600 11px var(--mono);letter-spacing:.1em;color:#d6efff}
+.sky-observer-title span{font-size:12px;color:#aebfd2}
+.sky-map-key{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:17px 0;padding:13px;
+  border:1px solid #b1d7ee2b;border-radius:13px;background:linear-gradient(145deg,#0e2137,#081628);
+}
+.sky-map-key>div{display:flex;flex-direction:column;gap:4px;padding:8px 9px;border-radius:8px;background:#ffffff05}
+.sky-map-key b{font:600 10px var(--mono);letter-spacing:.06em;color:#bdeaff}
+.sky-map-key span{font-size:11px;line-height:1.4;color:#c1d0e1}
+.sky-readout{font-size:10px}
+.sky-planet-list{margin-top:16px}
+.sky-planet-head{font-size:9px}
+.sky-planet-row{font-size:11px}
+.sky-science-note{font-size:11px;line-height:1.75;color:#c5d5e5}
+.sky-source-links a{font-size:10px}
+.sky-chart-foot,.sky-chart-status{font-size:10px}
+
+/* Map drawing is crisp and luminous, with the horizon clearly marked. */
+#skyCanvas{filter:saturate(1.1);cursor:crosshair}
+.sky-legend{gap:10px;padding:13px;border-radius:10px;background:#071323;border-color:#a7cde42a}
+.sky-legend span{font-size:10px;color:#ccdae9}
+.sky-legend span:before{width:8px;height:8px;box-shadow:0 0 12px currentColor}
+
+/* All touch targets remain legible and large on phones. */
+@media(max-width:900px){
+  :root{--topbar-size:74px}
+  .top{height:var(--topbar-size)}
+  .nav-tab{min-height:42px;padding:9px 10px;font-size:9px}
+  .top-btn{min-height:42px;padding:9px 10px;font-size:9px}
+  .sky-layout{grid-template-columns:1fr}
+  .sky-canvas-wrap{height:min(74vw,570px);min-height:360px}
+  .sky-info{padding:20px}
+}
+@media(max-width:600px){
+  :root{--topbar-size:66px}
+  .top{height:var(--topbar-size);padding-inline:8px}
+  .nav-tab{min-height:40px;padding:8px 6px;font-size:8px}
+  .top-btn{min-height:40px;padding:8px;font-size:8px}
+  .hero{left:12px;top:88px;width:44vw}
+  .hero h1{font-size:clamp(34px,9vw,46px)}
+  .hero p{font-size:12px;line-height:1.55}
+  .panel{display:none!important}
+  .body-strip,.controls{width:100%;min-height:48px}
+  .body-btn{min-height:42px;padding:9px 11px;font-size:9px}
+  .tool-btn{min-height:42px;padding:9px 11px;font-size:9px}
+  .astro-timebar{bottom:126px}
+  .page-overlay{inset:var(--topbar-size) 0 0;padding:18px 12px 28px}
+  .page-topline{align-items:flex-start;flex-direction:column}
+  .page-title{font-size:clamp(36px,10vw,48px)}
+  .page-intro{font-size:14px}
+  .sky-howto{grid-template-columns:1fr;gap:8px;margin-bottom:13px}
+  .sky-howto-step{min-height:62px;padding:10px 12px}
+  .sky-howto-step>b{flex-basis:34px;height:34px}
+  .sky-howto-step strong{font-size:13px}
+  .sky-howto-step small{font-size:11px}
+  .sky-layout{gap:12px;margin-top:14px}
+  .sky-frame{padding:9px;border-radius:14px}
+  .sky-canvas-wrap{height:100vw;min-height:310px;max-height:470px}
+  .sky-overlay-label{top:12px;left:12px;padding:8px;font-size:8px}
+  .sky-info{padding:15px;border-radius:14px}
+  .sky-info h3{font-size:27px}
+  .sky-quick-picks button{min-height:40px;font-size:10px}
+  .sky-select,.sky-star-search,.sky-field input{min-height:45px;font-size:13px}
+  .sky-map-key{grid-template-columns:1fr 1fr;gap:6px;padding:9px}
+  .sky-map-key span{font-size:10px}
+  .sky-controls{grid-template-columns:1fr 1fr}
+  .sky-controls .tool-btn{min-height:44px;font-size:10px;padding:9px 8px}
+  .sky-layer-panel>label{font-size:10px}
+  .sky-planet-row{font-size:9px}
+  .history-stage{min-height:370px}
+  .history-stage .stage-caption{font-size:9px;max-width:100%;padding:8px 10px}
+  .history-stage .stage-date{font-size:clamp(22px,7vw,31px);padding:10px 12px}
+  .history-info p{font-size:14px}
+  .history-stage[data-epoch="5"] .epoch-orbit{width:105%}
+  .research-card{padding:22px}
+  .command-item{min-height:58px}
+}
+@media(max-width:380px){
+  .brand-sub{display:none}
+  .nav-tab{font-size:7px;padding-inline:4px}
+  .top-btn{font-size:7px;padding-inline:6px}
+  .sky-map-key{grid-template-columns:1fr}
+  .controls{gap:4px}
+  .tool-btn{padding-inline:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .history-stage:after,.epoch-core,.epoch-orbit,.cosmic-scene,.epoch-particles{transition:none}
+  .sky-quick-picks button{transition:none}
+}
