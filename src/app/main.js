@@ -439,21 +439,22 @@ function startAmbient(){
  addTexture('bandpass',1450,.5,.00035,.42,.009);
 }
 let musicTimer=null,musicStep=0,activeTrack='horizon',musicVolume=.42;
+const musicVoices=new Set();
 const soundtracks={
  horizon:{
   title:'EVENT HORIZON',bpm:56,interval:2142,
   chords:[[55,82.41,110],[49,73.42,98],[43.65,65.41,87.31],[65.41,98,130.81]],
-  melody:[220,261.63,293.66,261.63,196,220,164.81,196],shape:'sine',level:.0047
+  melody:[220,261.63,293.66,261.63,196,220,164.81,196],shape:'sine',level:.018
  },
  solar:{
   title:'SOLAR WIND',bpm:82,interval:1463,
   chords:[[65.41,98,130.81],[73.42,110,146.83],[55,82.41,110],[61.74,92.5,123.47]],
-  melody:[261.63,329.63,392,329.63,293.66,349.23,440,392],shape:'triangle',level:.0038
+  melody:[261.63,329.63,392,329.63,293.66,349.23,440,392],shape:'triangle',level:.015
  },
  deep:{
   title:'DEEP FIELD',bpm:64,interval:1875,
   chords:[[49,73.42,110],[55,82.41,123.47],[65.41,98,146.83],[43.65,65.41,98]],
-  melody:[392,523.25,659.25,587.33,440,523.25,783.99,659.25],shape:'sine',level:.0035
+  melody:[392,523.25,659.25,587.33,440,523.25,783.99,659.25],shape:'sine',level:.0135
  }
 };
 function musicNote(frequency,duration,level,pan=0,wave='sine',cutoff=1800){
@@ -467,7 +468,9 @@ function musicNote(frequency,duration,level,pan=0,wave='sine',cutoff=1800){
  osc.connect(filter);filter.connect(gain);
  if(panner){panner.pan.value=Math.max(-1,Math.min(1,pan));gain.connect(panner);panner.connect(musicBus);gain.connect(send)}
  else{gain.connect(musicBus);gain.connect(send)}
- send.gain.value=.18;send.connect(spaceReverb);
+ send.gain.value=.2;send.connect(spaceReverb);
+ const voice={osc,gain};musicVoices.add(voice);
+ osc.onended=()=>musicVoices.delete(voice);
  osc.start(now);osc.stop(now+duration+.2);
 }
 function soundtrackPulse(){
@@ -502,6 +505,16 @@ function updateTrackUI(){
 }
 function stopMusicTrack(){
  if(musicTimer){clearInterval(musicTimer);musicTimer=null;}
+ if(audioCtx){
+  const now=audioCtx.currentTime;
+  musicVoices.forEach(voice=>{
+   try{
+    voice.gain.gain.cancelScheduledValues(now);
+    voice.gain.gain.setTargetAtTime(.0001,now,.11);
+    voice.osc.stop(now+.7);
+   }catch(error){}
+  });
+ }
  updateTrackUI();
 }
 function startMusicTrack(){
@@ -510,8 +523,9 @@ function startMusicTrack(){
   soundEnabled=true;ensureAudio();if(ambienceEnabled)startAmbient();updateSoundUI();
  }
  if(!ensureAudio())return;
- musicStep=0;soundtrackPulse();
+ musicStep=0;
  musicTimer=setInterval(soundtrackPulse,soundtracks[activeTrack].interval);
+ soundtrackPulse();
  updateTrackUI();
 }
 document.querySelectorAll('[data-track]').forEach(button=>button.addEventListener('click',()=>{
