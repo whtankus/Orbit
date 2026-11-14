@@ -1275,6 +1275,16 @@ button:focus-visible{outline:2px solid #c4f0ff;outline-offset:4px;box-shadow:0 0
 
 
 
+/* Research cards use a stable content-to-action rhythm at every width. */
+.research-grid{align-items:stretch}
+.research-card{display:flex;flex-direction:column;align-items:stretch;min-width:0}
+.research-card h3{max-width:100%;min-height:2.2em;text-wrap:balance}
+.research-card p{flex:1}
+.research-tags{margin:17px 0 14px}
+.research-links{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;width:100%;margin-top:auto}
+.research-card .research-links a{display:flex;align-items:center;justify-content:flex-start;width:100%;min-width:0;min-height:44px;margin:0;padding:10px 12px;border:1px solid #a8d8f24a;border-radius:10px;background:linear-gradient(135deg,#9edcff12,#9edcff05);color:#d7efff;font:600 10px/1.45 var(--mono);letter-spacing:.025em;text-decoration:none;overflow-wrap:anywhere}
+.research-card .research-links a:hover{border-color:#a8e4ff99;background:#9edcff1c;color:#fff;text-decoration:none;box-shadow:0 7px 22px #0004}
+@media(max-width:600px){.research-card h3{min-height:0}.research-tags{margin:14px 0 11px}.research-links{gap:7px}.research-card .research-links a{min-height:42px;font-size:9px}}
 /* Responsive foundation — predictable layouts across viewport sizes. */
 @media(max-width:900px){
 :root{--topbar-size:112px}
