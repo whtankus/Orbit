@@ -260,3 +260,36 @@ button:focus-visible,input:focus-visible{outline:2px solid #a9e7ff;outline-offse
 @media(max-width:760px){.astro-timebar{bottom:112px;max-width:calc(100vw - 24px);width:calc(100vw - 24px);justify-content:center;gap:7px;padding:7px}.astro-time-label{min-width:90px}.astro-time-label span,.astro-model-tag{font-size:6px}#simulationDate{width:175px;font-size:9px}.astro-timebar .tool-btn{font-size:7px;padding:7px}}
 @media(max-width:600px){.astro-timebar{bottom:116px;flex-wrap:wrap;justify-content:space-between}.astro-time-label{min-width:0}.astro-time-label b{font-size:8px}#simulationDate{width:min(56vw,190px)}.astro-timebar .tool-btn{font-size:7px}.sky-planet-row{grid-template-columns:minmax(0,1fr) 54px 54px;font-size:8px}}
 
+
+
+/* Measured-star planetarium console */
+.sky-canvas-wrap{height:clamp(330px,52vh,610px);position:relative;border-radius:10px;overflow:hidden;background:#061327}
+#skyCanvas{width:100%;height:100%;display:block;touch-action:pan-y}
+.sky-legend{display:flex;gap:13px;flex-wrap:wrap;margin-top:13px;font:8px var(--mono);letter-spacing:.09em;color:#9db2ca}
+.sky-legend span:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:#d8eaff;box-shadow:0 0 8px #8acfff}
+.sky-legend span:nth-child(2):before{background:#8edaff;border-radius:1px;width:12px;height:2px;vertical-align:middle}
+.sky-legend span:nth-child(3):before{background:#f1cc91;border-radius:0;width:12px;height:1px;vertical-align:middle}
+.sky-legend span:nth-child(4):before{background:#ffcf7c;box-shadow:0 0 9px #ffcf7c}
+.sky-chart-foot,.sky-chart-status{margin-top:10px;font:8px/1.7 var(--mono);letter-spacing:.07em;color:#9db6d1}
+.sky-chart-status{color:#80d8b2}
+.sky-search-panel,.sky-layer-panel{margin-top:15px;padding:13px;border:1px solid #9fc9ec27;border-radius:10px;background:linear-gradient(145deg,#081a2d,#06101e)}
+.sky-star-search{width:100%;padding:10px 11px;border:1px solid #9edcff45;border-radius:7px;background:#041020;color:#eaf6ff;font:10px var(--mono);outline:none}
+.sky-star-search:focus{border-color:#a9e4ff;box-shadow:0 0 0 3px #8bd7ff1c}
+.sky-search-results{display:grid;gap:5px;margin-top:7px;max-height:170px;overflow:auto}
+.sky-search-result{padding:8px 9px;border:1px solid #a5cfea1e;border-radius:6px;background:#9edcff08;color:#d4e6f7;text-align:left;font:8px var(--mono)}
+.sky-search-result:hover{border-color:#9edcff77;background:#9edcff15}
+.sky-search-empty{padding:8px;color:#9aacc0;font:8px/1.6 var(--mono)}
+.sky-selected-star{margin-top:9px;color:#aebfd2;font:8px/1.8 var(--mono);overflow-wrap:anywhere}
+.sky-layer-title{margin-bottom:10px;color:#a9d9f4;font:8px var(--mono);letter-spacing:.16em}
+.sky-layer-panel>label{display:flex;align-items:center;gap:8px;margin:9px 0;color:#bfcee0;font:8px var(--mono);letter-spacing:.06em}
+.sky-layer-panel input[type=checkbox]{accent-color:#9edcff}
+.sky-magnitude-row{display:flex;justify-content:space-between;align-items:center;margin-top:13px;color:#b9cce0;font:8px var(--mono);letter-spacing:.08em}
+.sky-magnitude-row output{color:#e5f6ff}
+#skyMagnitude{width:100%;margin:10px 0 0;accent-color:#9edcff}
+.sky-science-note{margin-top:14px;padding:12px;border-left:2px solid #8ccde9;background:#10253a88;color:#aebfd2;font-size:9px;line-height:1.8}
+.sky-source-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:11px}
+.sky-source-links a{color:#b4e4ff;font:8px var(--mono);letter-spacing:.08em;text-decoration:none}
+.sky-source-links a:hover{text-decoration:underline;color:white}
+@media(max-width:900px){.sky-canvas-wrap{height:min(68vw,470px)}}
+@media(max-width:600px){.sky-canvas-wrap{height:72vw;min-height:285px}.sky-search-panel,.sky-layer-panel{padding:10px}.sky-layer-panel>label{font-size:7px}.sky-source-links{gap:8px}.sky-source-links a{font-size:7px}}
+
