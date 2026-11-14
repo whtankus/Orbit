@@ -199,3 +199,15 @@ test("research cards group their reference links into aligned action areas", () 
   assert.match(styles, /\.research-links\{display:grid/);
   assert.match(styles, /\.research-card \.research-links a\{display:flex/);
 });
+
+
+test("planet hover reveals a compact accessible readout and double-click starts a closer approach", () => {
+  assert.match(app, /id='celestialHover'/);
+  assert.match(app, /aria-live','polite'/);
+  assert.match(app, /function hideCelestialHover\(\)/);
+  assert.match(app, /renderer\.domElement\.addEventListener\('pointerleave',hideCelestialHover\)/);
+  assert.match(app, /renderer\.domElement\.addEventListener\('dblclick'/);
+  assert.match(app, /CLOSE APPROACH/);
+  assert.match(styles, /\.celestial-hover\.visible/);
+  assert.match(styles, /@media\(max-width:600px\)\{\.celestial-hover\{display:none\}\}/);
+});
