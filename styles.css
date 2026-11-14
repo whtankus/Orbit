@@ -1544,3 +1544,79 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 @media(max-width:760px){.sky-exploration{margin-top:30px;padding:19px 15px;border-radius:15px}.sky-section-heading{align-items:flex-start;flex-direction:column}.sky-section-count{font-size:8px}.deep-sky-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.sky-world-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.sky-world-card{min-height:190px;padding:13px 7px 11px}.sky-world-card strong{font-size:13px}.sky-world-card em{font-size:7px}.deep-sky-detail,.sky-world-detail{align-items:flex-start;flex-direction:column}.deep-sky-detail-meta{text-align:left}.sky-world-focus{width:100%}}
 @media(max-width:540px){#skyPage .page-topline{gap:12px}#skyPage .page-title{font-size:37px}#skyPage .page-intro{font-size:12px}#skyPage .sky-howto{grid-template-columns:1fr;gap:8px}#skyPage .sky-howto-step{min-height:0;padding:12px 14px}#skyPage .sky-howto-step b{font-size:16px}#skyPage .sky-howto-step small{font-size:9px}#skyPage .sky-frame{padding:10px}#skyPage .sky-canvas-wrap{height:88vw;min-height:300px;max-height:440px}#skyPage .sky-info{display:block;padding:15px}.deep-sky-grid{grid-template-columns:1fr}.deep-sky-image{aspect-ratio:1.6/1}.sky-world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sky-world-card{min-height:195px}.sky-world-sphere{width:100px}.deep-sky-card-copy strong{font-size:16px}.sky-section-heading p{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.deep-sky-card,.deep-sky-image img,.sky-world-card,.sky-world-focus{transition:none}}
+/* ORBIT visual correction pass — constellation hierarchy and science-led history scenes */
+#skyPage .sky-legend{display:flex;flex-wrap:wrap;gap:8px 16px;padding:12px 4px 2px}
+#skyPage .sky-legend span{display:inline-flex;align-items:center;gap:7px;color:#a9bfd6;font-size:9px;letter-spacing:.07em}
+#skyPage .sky-legend span:before{content:"";width:13px;height:2px;border-radius:2px;background:#8bdcff;box-shadow:0 0 8px #65c9ff66}
+#skyPage .sky-legend span:nth-child(2):before{background:#9edfff}
+#skyPage .sky-legend span:nth-child(3):before{height:0;border-top:1px dashed #e7bd80;background:none;box-shadow:none}
+#skyPage .sky-legend span:nth-child(4):before{width:7px;height:7px;border:1px solid #ffe2a7;border-radius:50%;background:transparent;box-shadow:0 0 7px #ffc86e}
+#skyPage .sky-info>p#constellationText{padding:13px 14px;margin:12px 0 16px;border-left:2px solid #82cfff;background:linear-gradient(90deg,#80cfff12,transparent);color:#c2d5e8;font-size:12px;line-height:1.75}
+#skyPage .sky-quick-picks{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+#skyPage .sky-quick-picks button[aria-pressed=true]{border-color:#8bdcff;background:#8bdcff1c;color:#fff;box-shadow:0 0 18px #6acaff18}
+#skyPage .sky-layer-panel{padding:15px 16px;border:1px solid #9bc8ed20;border-radius:11px;background:#071322a8}
+#skyPage .sky-layer-panel label{display:flex;align-items:center;gap:9px;min-height:32px;color:#c3d4e6;font-size:10px}
+#skyPage .sky-layer-panel input[type=checkbox]{accent-color:#7bcfff;width:15px;height:15px}
+#skyPage .sky-map-key{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}
+#skyPage .sky-map-key>div{padding:10px 11px;border:1px solid #9bc8ed17;border-radius:8px;background:#0713228a}
+#skyPage .sky-map-key b{display:block;margin-bottom:4px;color:#a9dfff;font:9px var(--mono);letter-spacing:.08em}
+#skyPage .sky-map-key span{color:#a9b9cc;font-size:10px;line-height:1.5}
+#skyPage .sky-canvas-wrap{background:radial-gradient(ellipse at 50% 45%,#102b49 0%,#08172a 54%,#020711 100%)}
+#skyPage .sky-frame{background:linear-gradient(155deg,#0b1a2d,#040a14)}
+#skyPage .sky-chart-status{border-left-color:#8bdcff}
+@media(max-width:540px){#skyPage .sky-map-key{grid-template-columns:1fr 1fr}}
+
+/* The history stage is a sequence of distinct physical scenes, not one generic glowing orb. */
+.history-stage{isolation:isolate;min-height:500px;overflow:hidden;background:#020713}
+.history-stage:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#02071308 25%,#02071308 58%,#020713c9 100%)}
+.history-stage .cosmic-scene{inset:0;filter:none;background:radial-gradient(ellipse at 50% 52%,#152b4c 0,#09172b 44%,#020610 82%);transition:background 1.2s ease,filter 1.2s ease}
+.history-stage .cosmic-scene:before,.history-stage .cosmic-scene:after{display:none}
+.history-stage .epoch-particles{opacity:.85;background-image:radial-gradient(1px 1px at 8% 18%,#fff 90%,transparent),radial-gradient(1.5px 1.5px at 18% 73%,#d8eaff 90%,transparent),radial-gradient(1px 1px at 28% 32%,#fff 90%,transparent),radial-gradient(2px 2px at 73% 17%,#fff 90%,transparent),radial-gradient(1px 1px at 86% 62%,#d4e8ff 90%,transparent),radial-gradient(1px 1px at 61% 82%,#fff 90%,transparent),radial-gradient(1px 1px at 43% 12%,#fff 90%,transparent);background-size:100% 100%;animation:historyStarDrift 34s linear infinite}
+.history-stage .epoch-nebula{position:absolute;inset:-15%;opacity:.8;filter:blur(18px);background:radial-gradient(ellipse at 28% 43%,#345d9a33,transparent 30%),radial-gradient(ellipse at 73% 61%,#8a58a733,transparent 26%);transition:all 1s ease}
+.history-stage .epoch-core{width:clamp(54px,8vw,104px);z-index:3;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9e6 0 3%,#ffd89b 15%,#f18b58 43%,#673b5a 72%,#151b35 100%);box-shadow:0 0 35px #ffbd6999,0 0 110px #f38d6b33;transition:all 1s cubic-bezier(.2,.7,.2,1)}
+.history-stage .epoch-core:before{content:"";position:absolute;inset:-8%;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff8 0,transparent 36%);mix-blend-mode:screen}
+.history-stage .epoch-core:after{content:"";position:absolute;inset:-14%;border:1px solid #fff5;border-radius:50%;transform:none;box-shadow:0 0 18px #9bdcff22}
+.history-stage .epoch-companion{position:absolute;z-index:3;left:50%;top:50%;width:0;height:0;border-radius:50%;opacity:0;transform:translate(-50%,-50%);transition:all 1s ease}
+.history-stage .epoch-orbit{z-index:2;left:50%;top:50%;width:70%;height:22%;border:0;border-radius:50%;background:radial-gradient(ellipse at center,#e3c28b55 0 1%,#c58a5733 20%,#8ca5d01c 48%,transparent 72%);box-shadow:0 0 28px #b7a2ff14;transform:translate(-50%,-50%) rotate(-18deg);animation:historyDiskTurn 42s linear infinite}
+.history-stage .epoch-debris{position:absolute;inset:0;z-index:2;opacity:0;pointer-events:none;background:radial-gradient(2px 2px at 24% 43%,#f3d5a7 95%,transparent),radial-gradient(3px 3px at 34% 61%,#b6a8a1 95%,transparent),radial-gradient(2px 2px at 69% 35%,#e9c58d 95%,transparent),radial-gradient(2px 2px at 77% 58%,#a8b8c6 95%,transparent),radial-gradient(3px 3px at 57% 68%,#d2ad82 95%,transparent)}
+.history-stage .stage-caption,.history-stage .stage-date{z-index:5}
+.history-stage[data-epoch="0"] .cosmic-scene{background:radial-gradient(ellipse at 50% 50%,#30254a 0,#10152c 43%,#030713 82%)}
+.history-stage[data-epoch="0"] .epoch-core{width:0;height:0;opacity:0;box-shadow:none}
+.history-stage[data-epoch="0"] .epoch-nebula{opacity:1;filter:blur(9px);background:radial-gradient(ellipse at 50% 50%,#e7b77b26 0 2%,transparent 45%),radial-gradient(ellipse at 38% 46%,#9f8bdf28,transparent 28%),radial-gradient(ellipse at 64% 58%,#79b7dc25,transparent 32%)}
+.history-stage[data-epoch="0"] .epoch-orbit{width:92%;height:68%;border:1px solid #e7c68a28;background:repeating-radial-gradient(ellipse at center,#d9c3a01a 0 1px,transparent 1px 13px);box-shadow:none;animation:none}
+.history-stage[data-epoch="1"] .cosmic-scene{background:radial-gradient(ellipse at 50% 50%,#17142e,#050a19 72%)}
+.history-stage[data-epoch="1"] .epoch-core{width:clamp(10px,1.5vw,18px);height:auto;aspect-ratio:1;background:#fff8d7;box-shadow:0 0 24px #c3a6ff,0 0 100px #8d75ff99}
+.history-stage[data-epoch="1"] .epoch-core:after{inset:-250%;border:0;background:radial-gradient(circle,#d5baff1e,transparent 65%)}
+.history-stage[data-epoch="1"] .epoch-orbit{width:44%;height:32%;background:none;border:1px dashed #a99aff38;box-shadow:none}
+.history-stage[data-epoch="2"] .cosmic-scene,.history-stage[data-epoch="3"] .cosmic-scene{background:radial-gradient(ellipse at 50% 50%,#132849,#030814 75%)}
+.history-stage[data-epoch="2"] .epoch-core,.history-stage[data-epoch="3"] .epoch-core{width:clamp(125px,20vw,230px);height:auto;aspect-ratio:1;background:conic-gradient(from 20deg,#f1d7a4,#8ab6e5,#6656a5,#e5a7c2,#75a8d2,#e8c58d);filter:blur(.3px);box-shadow:0 0 28px #9ccaff55,0 0 110px #846bdb55}
+.history-stage[data-epoch="2"] .epoch-core:after,.history-stage[data-epoch="3"] .epoch-core:after{inset:-16% -45%;border:2px solid #c6d9ff55;transform:rotate(-23deg) scaleY(.34);box-shadow:0 0 20px #9dbdff44}
+.history-stage[data-epoch="2"] .epoch-orbit,.history-stage[data-epoch="3"] .epoch-orbit{width:54%;height:18%;background:none;border:1px solid #a8c8ff3d;box-shadow:0 0 24px #a4caff22}
+.history-stage[data-epoch="3"] .epoch-core{width:clamp(160px,24vw,275px);background:conic-gradient(from 65deg,#8b7ac5,#e6c3a1,#5e91c3,#b37b9e,#799ec8,#8b7ac5)}
+.history-stage[data-epoch="4"] .cosmic-scene{background:radial-gradient(ellipse at 50% 50%,#392746,#10152a 50%,#030713 82%)}
+.history-stage[data-epoch="4"] .epoch-core{width:clamp(35px,5vw,64px);background:radial-gradient(circle at 35% 30%,#fff8d7,#ffe0a0 22%,#f29a4d 60%,#8c4a34);box-shadow:0 0 36px #ffb85f,0 0 100px #ff9b4c55}
+.history-stage[data-epoch="4"] .epoch-orbit{width:84%;height:30%;background:repeating-radial-gradient(ellipse at center,#e7c28b30 0 2px,#7e9fbd12 3px 7px,transparent 8px 15px);border:1px solid #d6b77b4d;box-shadow:0 0 42px #b3a0ce24}
+.history-stage[data-epoch="4"] .epoch-nebula{background:radial-gradient(ellipse at 50% 50%,#e6b77a22,#a46c9d22 38%,transparent 67%)}
+.history-stage[data-epoch="5"] .cosmic-scene{background:radial-gradient(ellipse at 50% 50%,#352a31,#0b1222 60%,#020711)}
+.history-stage[data-epoch="5"] .epoch-core{width:clamp(44px,6vw,74px);background:radial-gradient(circle at 35% 30%,#fff0c1,#d99a66 28%,#875a54 75%);box-shadow:0 0 25px #e4a36a88}
+.history-stage[data-epoch="5"] .epoch-orbit{width:95%;height:42%;background:repeating-radial-gradient(ellipse at center,#c8a27a30 0 1px,transparent 2px 8px);border:1px solid #c9b39a55}
+.history-stage[data-epoch="5"] .epoch-debris{opacity:.95;animation:debrisDrift 18s linear infinite}
+.history-stage[data-epoch="6"] .cosmic-scene{background:radial-gradient(ellipse at 50% 50%,#4b2829,#101321 62%,#020711)}
+.history-stage[data-epoch="6"] .epoch-core{width:clamp(130px,19vw,205px);background:radial-gradient(circle at 32% 27%,#ffe2ad 0 5%,#f0a06a 17%,#bd5143 46%,#713c45 72%,#26304c 100%);box-shadow:0 0 45px #ff8b5e99,0 0 130px #d45d4b44}
+.history-stage[data-epoch="6"] .epoch-core:after{inset:-8%;border:2px solid #ffb77b55;box-shadow:0 0 30px #ff986655}
+.history-stage[data-epoch="6"] .epoch-companion{opacity:1;left:69%;top:35%;width:clamp(18px,3vw,36px);aspect-ratio:1;background:radial-gradient(circle at 35% 30%,#fff0cb,#c69b79 50%,#564b50);box-shadow:0 0 18px #e7b58a66}
+.history-stage[data-epoch="6"] .epoch-orbit{width:58%;height:24%;background:none;border:1px dashed #ffbd8755}
+.history-stage[data-epoch="7"] .cosmic-scene,.history-stage[data-epoch="8"] .cosmic-scene{background:radial-gradient(ellipse at 50% 52%,#0e3544,#061322 62%,#020711)}
+.history-stage[data-epoch="7"] .epoch-core,.history-stage[data-epoch="8"] .epoch-core,.history-stage[data-epoch="9"] .epoch-core{width:clamp(155px,23vw,260px);background:radial-gradient(ellipse at 30% 25%,#fff8 0 2%,transparent 24%),radial-gradient(ellipse at 60% 68%,#277e72 0 11%,transparent 12%),radial-gradient(ellipse at 30% 58%,#5b9a70 0 14%,transparent 15%),radial-gradient(ellipse at 72% 35%,#4b916c 0 12%,transparent 13%),radial-gradient(circle at 35% 30%,#8bd4d2,#287d9a 52%,#102d50 78%,#071629 100%)}
+.history-stage[data-epoch="7"] .epoch-core:after,.history-stage[data-epoch="8"] .epoch-core:after,.history-stage[data-epoch="9"] .epoch-core:after{inset:-5%;border:2px solid #a8efff66;box-shadow:0 0 30px #64d7ff55}
+.history-stage[data-epoch="7"] .epoch-nebula{background:radial-gradient(ellipse at 50% 80%,#62d7a522,transparent 45%)}
+.history-stage[data-epoch="8"] .epoch-nebula{background:radial-gradient(ellipse at 50% 70%,#5ed5d922,transparent 48%)}
+.history-stage[data-epoch="9"] .cosmic-scene{background:radial-gradient(ellipse at 50% 52%,#12375a,#061222 65%,#020711)}
+.history-stage[data-epoch="9"] .epoch-core{background:radial-gradient(ellipse at 30% 25%,#fff9 0 2%,transparent 24%),radial-gradient(ellipse at 62% 62%,#2d8c6e 0 10%,transparent 11%),radial-gradient(ellipse at 27% 58%,#6a9f65 0 15%,transparent 16%),radial-gradient(ellipse at 74% 36%,#568f65 0 12%,transparent 13%),radial-gradient(circle at 35% 30%,#b5e8ed,#368eb0 48%,#14517f 76%,#092440 100%);box-shadow:0 0 42px #71cfff88,0 0 130px #3185d255}
+.history-stage[data-epoch="9"] .epoch-core:before{inset:-1%;background:radial-gradient(ellipse at 70% 25%,#fff5,transparent 42%),radial-gradient(ellipse at 50% 75%,#dffcff22,transparent 38%)}
+.history-stage[data-epoch="9"] .epoch-orbit{width:54%;height:18%;background:none;border:1px solid #9edcff33;box-shadow:none}
+@keyframes historyStarDrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-18px,12px,0)}}
+@keyframes historyDiskTurn{from{rotate:0deg}to{rotate:360deg}}
+@keyframes debrisDrift{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.04)}100%{transform:rotate(360deg) scale(1)}}
+@media(max-width:700px){.history-stage{min-height:390px}.history-stage .epoch-core{max-width:45vw}.history-stage .stage-date{max-width:100%;font-size:clamp(20px,6vw,32px)}}
+@media(prefers-reduced-motion:reduce){.history-stage .epoch-particles,.history-stage .epoch-orbit,.history-stage .epoch-debris{animation:none!important}}
