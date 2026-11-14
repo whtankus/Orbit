@@ -268,3 +268,23 @@ test("the main Solar System gives atmospheric planets subtle limb scattering and
   assert.match(app, /addRing\(2\.02,2\.35/);
   assert.match(app, /new THREE\.RingGeometry\(d\.radius\*innerRadius,d\.radius\*outerRadius,192\)/);
 });
+
+
+test("Night Sky stars and constellation figures use a more legible display scale", () => {
+  assert.match(planetarium, /0\.45 \* zoomFactor/);
+  assert.match(planetarium, /1\.65, 7\.6/);
+  assert.match(planetarium, /segment\.thin \? 1\.8 : 3\.15/);
+  assert.match(planetarium, /600 13px Space Grotesk/);
+});
+
+test("cosmic history uses one continuous stage and no horizontal era-button strip", () => {
+  assert.doesNotMatch(html, /id="historyMarkers"/);
+  assert.doesNotMatch(app, /historyMarkers/);
+  assert.match(html, /CONTINUOUS COSMIC JOURNEY/);
+  assert.match(styles, /\.history-layout\{display:grid;grid-template-columns:minmax\(0,1fr\)/);
+});
+
+test("section overlays align below the actual desktop and mobile headers", () => {
+  assert.match(styles, /@media\(max-width:900px\)[\s\S]*?\.page-overlay\{inset:76px 0 0\}/);
+  assert.match(styles, /@media\(max-width:600px\)[\s\S]*?\.page-overlay\{inset:62px 0 0/);
+});
