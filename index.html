@@ -182,7 +182,7 @@ function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMa
 
 // ORBIT 2.0 — expanded instruments, moons, history archive and sky chart.
 const navButtons=[...document.querySelectorAll('[data-page]')];
-function openPage(which){document.querySelectorAll('.page-overlay').forEach(p=>p.classList.toggle('open',p.id===which+'Page'));document.querySelector('.ui').classList.toggle('page-mode',!!which);navButtons.forEach(b=>b.classList.toggle('active',b.dataset.page===which));if(which==='sky')drawSkyChart();}
+function openPage(which){const active=!!which&&which!=='explore';document.querySelectorAll('.page-overlay').forEach(p=>p.classList.toggle('open',active&&p.id===which+'Page'));document.querySelector('.ui').classList.toggle('page-mode',active);navButtons.forEach(b=>b.classList.toggle('active',b.dataset.page===(which||'explore')));if(which==='sky')drawSkyChart();}
 function closePages(){openPage(null)}
 navButtons.forEach(b=>b.addEventListener('click',()=>openPage(b.dataset.page)));
 document.querySelectorAll('[data-close-page]').forEach(b=>b.addEventListener('click',closePages));
