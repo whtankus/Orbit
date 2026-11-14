@@ -261,12 +261,12 @@ test("cosmic history uses distinct physical scene treatments for the Big Bang af
 });
 
 
-test("the main Solar System gives atmospheric planets subtle limb scattering and Saturn's rings multiple bands", () => {
-  assert.match(app, /rimColour=name==='Earth'/);
-  assert.match(app, /name==='Jupiter'\?'0\.92,0\.66,0\.42'/);
-  assert.match(app, /addRing\(1\.38,1\.66/);
-  assert.match(app, /addRing\(2\.18,2\.35/);
-  assert.match(app, /new THREE\.RingGeometry\(d\.radius\*innerRadius,d\.radius\*outerRadius,256\)/);
+test("the main Solar System gives atmospheric planets limb scattering and Saturn a detailed textured ring", () => {
+  assert.ok(app.includes("rimColour=name==='Earth'"));
+  assert.ok(app.includes("name==='Jupiter'?'0.92,0.66,0.42'"));
+  assert.ok(app.includes("makeSaturnRingTexture"));
+  assert.ok(app.includes("new THREE.RingGeometry(d.radius*1.12,d.radius*2.35,384)"));
+  assert.ok(app.includes("new THREE.MeshStandardMaterial({map:makeSaturnRingTexture()"));
 });
 
 
@@ -287,4 +287,14 @@ test("cosmic history uses one continuous stage and no horizontal era-button stri
 test("section overlays align below the actual desktop and mobile headers", () => {
   assert.match(styles, /@media\(max-width:900px\)[\s\S]*?\.page-overlay\{inset:76px 0 0\}/);
   assert.match(styles, /@media\(max-width:560px\)\{\.page-overlay\{inset:62px 0 0/);
+});
+
+
+test("planetary rendering uses high-detail globe geometry and mapped Earth night/cloud layers", () => {
+  assert.match(app, /sphereSegments=.*128/);
+  assert.match(app, /2k_earth_clouds\.jpg/);
+  assert.match(app, /2k_earth_nightmap\.jpg/);
+  assert.match(app, /nightSide\*smoothstep/);
+  assert.match(app, /makeSaturnRingTexture/);
+  assert.match(app, /RingGeometry\(d\.radius\*1\.12,d\.radius\*2\.35,384\)/);
 });
