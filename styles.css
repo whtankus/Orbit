@@ -1475,3 +1475,5 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
  button{transition:none!important}
  .history-stage:after,.epoch-core,.epoch-orbit,.cosmic-scene,.epoch-particles{transition:none}
 }
+
+@media(max-width:600px){.celestial-hover{display:none}}
