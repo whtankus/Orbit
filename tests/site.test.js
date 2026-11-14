@@ -192,3 +192,10 @@ test("section navigation and hidden panels expose accurate accessibility state",
   assert.ok(app.includes("b.setAttribute('aria-pressed',String(selected))"));
   assert.ok(app.includes("setAttribute('inert','')"));
 });
+
+
+test("research cards group their reference links into aligned action areas", () => {
+  assert.equal((html.match(/class="research-links"/g) || []).length, 5);
+  assert.match(styles, /\.research-links\{display:grid/);
+  assert.match(styles, /\.research-card \.research-links a\{display:flex/);
+});
