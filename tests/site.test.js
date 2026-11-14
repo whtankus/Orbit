@@ -288,3 +288,12 @@ test("section overlays align below the actual desktop and mobile headers", () =>
   assert.match(styles, /@media\(max-width:900px\)[\s\S]*?\.page-overlay\{inset:76px 0 0\}/);
   assert.match(styles, /@media\(max-width:560px\)\{\.page-overlay\{inset:62px 0 0/);
 });
+
+\ntest("planetary rendering uses high-detail globe geometry and mapped Earth night/cloud layers", () => {
+  assert.match(app, /sphereSegments=.*128/);
+  assert.match(app, /2k_earth_clouds\.jpg/);
+  assert.match(app, /2k_earth_nightmap\.jpg/);
+  assert.match(app, /nightSide\*smoothstep/);
+  assert.match(app, /makeSaturnRingTexture/);
+  assert.match(app, /RingGeometry\(d\.radius\*1\.12,d\.radius\*2\.35,384\)/);
+});
