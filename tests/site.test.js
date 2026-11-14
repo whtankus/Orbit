@@ -213,14 +213,14 @@ test("planet hover reveals a compact accessible readout and double-click starts 
 });
 
 
-test("cosmic timeline announces progress and exposes playback and selected-era state", () => {
+test("cosmic timeline announces progress and supports continuous playback without era button strips", () => {
   assert.match(html, /id="timelineProgress" role="status" aria-live="polite"/);
   assert.match(html, /id="historyPlay"[^>]*aria-pressed="false"/);
-  assert.match(app, /aria-label="Go to era /);
-  assert.match(app, /b\.setAttribute\('aria-pressed',String\(selected\)\)/);
-  assert.match(app, /b\.setAttribute\('aria-current','step'\)/);
-  assert.match(app, /\$\('historyPlay'\)\.setAttribute\('aria-pressed','true'\)/);
-  assert.match(app, /\$\('historyPlay'\)\.setAttribute\('aria-pressed','false'\)/);
+  assert.match(app, /function renderEpoch\(i\)/);
+  assert.match(app, /function playHistory\(\)/);
+  assert.match(app, /setInterval\(\(\)=>\{if\(epochIndex>=epochs.length-1\)/);
+  assert.doesNotMatch(html, /timeline-marker|historyMarkers/);
+  assert.doesNotMatch(app, /historyMarkers/);
 });
 
 
@@ -264,7 +264,27 @@ test("cosmic history uses distinct physical scene treatments for the Big Bang af
 test("the main Solar System gives atmospheric planets subtle limb scattering and Saturn's rings multiple bands", () => {
   assert.match(app, /rimColour=name==='Earth'/);
   assert.match(app, /name==='Jupiter'\?'0\.92,0\.66,0\.42'/);
-  assert.match(app, /addRing\(1\.38,1\.92/);
-  assert.match(app, /addRing\(2\.02,2\.35/);
-  assert.match(app, /new THREE\.RingGeometry\(d\.radius\*innerRadius,d\.radius\*outerRadius,192\)/);
+  assert.match(app, /addRing\(1\.38,1\.66/);
+  assert.match(app, /addRing\(2\.18,2\.35/);
+  assert.match(app, /new THREE\.RingGeometry\(d\.radius\*innerRadius,d\.radius\*outerRadius,256\)/);
+});
+
+
+test("Night Sky stars and constellation figures use a more legible display scale", () => {
+  assert.match(planetarium, /0\.45 \* zoomFactor/);
+  assert.match(planetarium, /1\.65, 7\.6/);
+  assert.match(planetarium, /segment\.thin \? 1\.8 : 3\.15/);
+  assert.match(planetarium, /600 13px Space Grotesk/);
+});
+
+test("cosmic history uses one continuous stage and no horizontal era-button strip", () => {
+  assert.doesNotMatch(html, /id="historyMarkers"/);
+  assert.doesNotMatch(app, /historyMarkers/);
+  assert.match(html, /CONTINUOUS COSMIC JOURNEY/);
+  assert.match(styles, /\.history-layout\{display:grid;grid-template-columns:minmax\(0,1fr\)/);
+});
+
+test("section overlays align below the actual desktop and mobile headers", () => {
+  assert.match(styles, /@media\(max-width:900px\)[\s\S]*?\.page-overlay\{inset:76px 0 0\}/);
+  assert.match(styles, /@media\(max-width:560px\)\{\.page-overlay\{inset:62px 0 0/);
 });
