@@ -172,7 +172,7 @@ const epochs=[
 {era:'ERA 10 · PRESENT DAY',title:'A world that observes',label:'HUMANS STUDY THE COSMOS FROM ONE SMALL PLANET',date:'TODAY · 13.8 BILLION YEARS OF COSMIC HISTORY',age:'0',temp:'~288 K GLOBAL MEAN',text:'On Earth, life has evolved into organisms capable of studying the universe that made them. Telescopes, spacecraft and laboratories let us reconstruct cosmic history from light, rocks and particles.',color:'#83caff',scale:1.3}
 ];
 let epochIndex=0,historyTimer=null;
-function renderEpoch(i){epochIndex=Math.max(0,Math.min(epochs.length-1,i));const e=epochs[epochIndex];$('historyRange').value=epochIndex;$('timelineProgress').textContent=String(epochIndex+1).padStart(2,'0')+' / 10';$('historyEra').textContent=e.era;$('historyTitle').textContent=e.title;$('historyText').textContent=e.text;$('historyStageLabel').textContent=e.label;$('historyStageDate').textContent=e.date;$('historyAge').textContent=e.age;$('historyTemp').textContent=e.temp;$('historyEraTiny').textContent=e.era.replace(/^ERA \d+ · /,'');$('epochCore').style.transform='translate(-50%,-50%) scale('+e.scale+')';$('epochCore').style.background='radial-gradient(circle at 35% 32%,#fff8df,'+e.color+' 28%,#6b4d82 75%,transparent 100%)';$('historyMarkers').querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===epochIndex));}
+function renderEpoch(i){epochIndex=Math.max(0,Math.min(epochs.length-1,i));const e=epochs[epochIndex];$('historyStage').dataset.epoch=String(epochIndex);$('historyRange').value=epochIndex;$('timelineProgress').textContent=String(epochIndex+1).padStart(2,'0')+' / 10';$('historyEra').textContent=e.era;$('historyTitle').textContent=e.title;$('historyText').textContent=e.text;$('historyStageLabel').textContent=e.label;$('historyStageDate').textContent=e.date;$('historyAge').textContent=e.age;$('historyTemp').textContent=e.temp;$('historyEraTiny').textContent=e.era.replace(/^ERA \d+ · /,'');$('epochCore').style.transform='translate(-50%,-50%) scale('+e.scale+')';$('epochCore').style.background='radial-gradient(circle at 35% 32%,#fff8df,'+e.color+' 28%,#6b4d82 75%,transparent 100%)';$('historyMarkers').querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===epochIndex));}
 $('historyMarkers').innerHTML=epochs.map((e,i)=>'<button class="timeline-marker" data-epoch="'+i+'">'+String(i+1).padStart(2,'0')+' · '+e.title.toUpperCase()+'</button>').join('');
 $('historyMarkers').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{stopHistory();renderEpoch(Number(b.dataset.epoch))}));
 $('historyRange').addEventListener('input',e=>{stopHistory();renderEpoch(Number(e.target.value))});
@@ -240,6 +240,9 @@ $('skyNow').addEventListener('click',()=>{
 $('skyReset').addEventListener('click',()=>{
  $('skyLat').value='28.61';$('skyLon').value='77.21';drawSkyChart();
 });
+document.querySelectorAll('[data-sky-constellation]').forEach(button=>button.addEventListener('click',()=>{
+ ensurePlanetarium().then(view=>{view.selectConstellation(button.dataset.skyConstellation);soundEffect('chart')}).catch(()=>{});
+}));
 
 /* Mission Control: searchable destinations, camera presets and live telemetry. */
 const commandDeck=$('commandDeck'),commandSearch=$('commandSearch'),commandResults=$('commandResults');
