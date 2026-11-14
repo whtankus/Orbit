@@ -235,3 +235,27 @@ test("Night Sky includes an interactive deep-sky atlas and mapped Solar System p
   assert.match(styles, /\.deep-sky-grid/);
   assert.match(styles, /\.sky-world-sphere/);
 });
+
+
+test("the night-sky chart emphasizes one selected constellation instead of drawing all 88 figures and borders", () => {
+  assert.match(planetarium, /if \(!selected\) continue;/);
+  assert.match(planetarium, /const selected = constellationByCode\.get\(selectedCode\);/);
+  assert.match(planetarium, /selectedIds\.has\(star\.id\)/);
+  assert.match(planetarium, /labelAnchors\.some/);
+  assert.match(planetarium, /data-sky-constellation/);
+  assert.match(html, /id="skyShowBoundaries" type="checkbox"/);
+  assert.match(html, /id="skyShowLabels" type="checkbox"/);
+});
+
+test("cosmic history uses distinct physical scene treatments for the Big Bang afterglow, solar nebula, impact era and Earth", () => {
+  assert.match(html, /epoch-nebula/);
+  assert.match(html, /epoch-companion/);
+  assert.match(html, /epoch-debris/);
+  for (const epoch of [0,1,2,3,4,5,6,7,8,9]) {
+    assert.match(styles, new RegExp('\\.history-stage\\[data-epoch="' + epoch + '"\\]'));
+  }
+  assert.match(styles, /historyDiskTurn/);
+  assert.match(styles, /debrisDrift/);
+  assert.match(app, /style\.setProperty\('--epoch-accent'/);
+  assert.match(app, /},4200\)\)/);
+});
