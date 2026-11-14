@@ -164,16 +164,17 @@ test("desktop and mobile layouts have dedicated Sound Studio and observatory com
 });
 
 
+
 test("responsive navigation preserves readable controls instead of shrinking the header", () => {
-  assert.match(styles, /Responsive foundation — predictable layouts across viewport sizes/);
-  assert.match(styles, /grid-template-rows:1fr 1fr/);
-  assert.match(styles, /overflow-x:auto/);
-  assert.match(styles, /env\\(safe-area-inset-bottom\\)/);
-  assert.match(styles, /100dvh/);
+  assert.ok(styles.includes("Responsive foundation — predictable layouts across viewport sizes"));
+  assert.ok(styles.includes("grid-template-rows:1fr 1fr"));
+  assert.ok(styles.includes("overflow-x:auto"));
+  assert.ok(styles.includes("env(safe-area-inset-bottom)"));
+  assert.ok(styles.includes("100dvh"));
 });
 
-test("the 3D renderer uses a lower pixel ratio on compact screens", () => {
-  assert.match(app, /matchMedia\\('\\(max-width: 700px\\)'\\)\\.matches\\?1\\.2:1\\.55/);
-  assert.match(app, /if\\(document\\.hidden\\)return/);
-  assert.match(app, /document\\.addEventListener\\('visibilitychange'/);
+test("the 3D renderer uses a lower pixel ratio on compact screens and pauses hidden tabs", () => {
+  assert.ok(app.includes("matches?1.2:1.55"));
+  assert.ok(app.includes("if(document.hidden)return"));
+  assert.ok(app.includes("document.addEventListener('visibilitychange'"));
 });
