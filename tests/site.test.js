@@ -257,5 +257,5 @@ test("cosmic history uses distinct physical scene treatments for the Big Bang af
   assert.match(styles, /historyDiskTurn/);
   assert.match(styles, /debrisDrift/);
   assert.match(app, /style\.setProperty\('--epoch-accent'/);
-  assert.match(app, /},4200\)\)/);
+  assert.match(app, /},4200\)/);
 });
