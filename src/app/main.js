@@ -300,6 +300,47 @@ document.querySelectorAll('[data-sky-star]').forEach(button=>button.addEventList
  const input=$('skyStarSearch');input.value=button.dataset.skyStar;input.dispatchEvent(new Event('input',{bubbles:true}));soundEffect('chart');
 }));
 
+// Deep-sky atlas: NASA telescope imagery linked to the constellation sky map.
+const deepSkyCatalog=[
+ {id:'andromeda',name:'Andromeda Galaxy',catalog:'M31 · NGC 224',type:'SPIRAL GALAXY',distance:'~2.5 MILLION LIGHT-YEARS',constellation:'And',image:'https://assets.science.nasa.gov/dynamicimage/assets/science/missions/hubble/releases/2012/01/STScI-01EVVHBN057NF9YF8SZ6K3Q2PQ.tif?w=1200',credit:'NASA / NOAO',description:'A vast spiral galaxy and the nearest major galactic neighbour to the Milky Way. It is a member of our Local Group.'},
+ {id:'whirlpool',name:'Whirlpool Galaxy',catalog:'M51 · NGC 5194',type:'INTERACTING SPIRAL',distance:'~23 MILLION LIGHT-YEARS',constellation:'CVn',image:'https://assets.science.nasa.gov/dynamicimage/assets/science/missions/hubble/releases/1996/04/STScI-01EVTAPW3CHJF1XCHXVW16CB1F.tif?w=1200',credit:'NASA / ESA / STScI',description:'A face-on spiral galaxy whose graceful arms and companion galaxy reveal how gravity shapes galactic structure.'},
+ {id:'sombrero',name:'Sombrero Galaxy',catalog:'M104 · NGC 4594',type:'EDGE-ON LENTICULAR',distance:'~29 MILLION LIGHT-YEARS',constellation:'Vir',image:'https://assets.science.nasa.gov/dynamicimage/assets/science/missions/webb/science/2024/11/STScI-01JCGZ1J3640GDB30E1CTHN4YD.png?fit=clip&h=1200&w=1800',credit:'NASA / ESA / CSA / STScI',description:'A nearly edge-on galaxy with a bright central bulge and a prominent dusty disk, observed here in infrared light by Webb.'}
+];
+const deepSkyGrid=$('deepSkyGrid');
+if(deepSkyGrid){
+ deepSkyGrid.innerHTML=deepSkyCatalog.map((object,index)=>'<button class="deep-sky-card" type="button" data-deep-sky="'+object.id+'" aria-pressed="'+(index===0)+'"><span class="deep-sky-image"><img src="'+object.image+'" alt="'+object.name+' telescope image" loading="lazy" decoding="async"><span class="deep-sky-type">'+object.type+'</span></span><span class="deep-sky-card-copy"><strong>'+object.name+'</strong><small>'+object.catalog+' · '+object.distance+'</small><span>'+object.description+'</span></span></button>').join('');
+ const showDeepSky=object=>{
+  $('deepSkyDetailTitle').textContent=object.name+' · '+object.catalog;
+  $('deepSkyDetailCopy').textContent=object.description+' Image credit: '+object.credit+'.';
+  $('deepSkyDetailMeta').textContent=object.distance;
+  deepSkyGrid.querySelectorAll('[data-deep-sky]').forEach(card=>card.setAttribute('aria-pressed',String(card.dataset.deepSky===object.id)));
+  ensurePlanetarium().then(view=>view.selectConstellation(object.constellation)).catch(()=>{});
+ };
+ deepSkyGrid.querySelectorAll('[data-deep-sky]').forEach(card=>card.addEventListener('click',()=>{
+  const object=deepSkyCatalog.find(item=>item.id===card.dataset.deepSky);if(object)showDeepSky(object);
+ }));
+}
+const skyWorldNames=['Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune'];
+const skyWorldGrid=$('skyWorldGrid');
+let selectedSkyWorld='Earth';
+function renderSkyWorlds(){
+ if(!skyWorldGrid)return;
+ skyWorldGrid.innerHTML=skyWorldNames.map(name=>{
+  const spec=data[name];
+  return '<button class="sky-world-card" type="button" data-world-name="'+name+'" aria-pressed="'+(name===selectedSkyWorld)+'"><span class="sky-world-sphere '+name.toLowerCase()+'" style="--world-map:url(\''+textureBase+spec.texture+'\')" aria-hidden="true"></span><strong>'+name+'</strong><small>'+spec.type+'</small><em>'+spec.diameter+'</em></button>';
+ }).join('');
+}
+function selectSkyWorld(name){
+ const spec=data[name];if(!spec)return;selectedSkyWorld=name;
+ $('skyWorldDetailTitle').textContent=name;
+ $('skyWorldDetailCopy').textContent=spec.desc;
+ $('skyWorldDetailStats').textContent=spec.diameter+' · '+spec.year+' orbital period · '+spec.moons+' moons';
+ skyWorldGrid?.querySelectorAll('[data-world-name]').forEach(card=>card.setAttribute('aria-pressed',String(card.dataset.worldName===name)));
+}
+renderSkyWorlds();
+selectSkyWorld('Earth');
+skyWorldGrid?.querySelectorAll('[data-world-name]').forEach(card=>card.addEventListener('click',()=>selectSkyWorld(card.dataset.worldName)));
+$('skyWorldFocus')?.addEventListener('click',()=>{const name=selectedSkyWorld;openPage(null);selectBody(name,true);});
 /* Mission Control: searchable destinations, camera presets and live telemetry. */
 const commandDeck=$('commandDeck'),commandSearch=$('commandSearch'),commandResults=$('commandResults');
 const missionCommands=[

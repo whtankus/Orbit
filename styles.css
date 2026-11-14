@@ -1477,3 +1477,70 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 }
 
 @media(max-width:600px){.celestial-hover{display:none}}
+
+
+/* ORBIT Night Sky Observatory — deep-sky atlas and planetary gallery */
+#skyPage .page-shell{max-width:1680px}
+#skyPage .page-topline{align-items:flex-end;margin-bottom:25px}
+#skyPage .page-title{font-size:clamp(36px,5vw,66px);letter-spacing:-.065em;line-height:.98}
+#skyPage .page-intro{max-width:650px;font-size:14px;line-height:1.8}
+#skyPage .sky-howto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 22px}
+#skyPage .sky-howto-step{min-height:76px;padding:16px 18px;border:1px solid rgba(151,196,238,.18);border-radius:12px;background:linear-gradient(125deg,rgba(14,31,53,.9),rgba(5,12,24,.9));box-shadow:inset 0 1px rgba(255,255,255,.035)}
+#skyPage .sky-howto-step b{font-size:20px;color:#9edcff}
+#skyPage .sky-howto-step strong{font-size:12px;letter-spacing:.04em}
+#skyPage .sky-howto-step small{font-size:10px;color:#9eafc6}
+#skyPage .sky-layout{grid-template-columns:minmax(0,1.62fr) minmax(330px,.78fr);gap:18px;align-items:start;margin-top:0}
+#skyPage .sky-frame,#skyPage .sky-info{border-radius:16px;border-color:rgba(151,196,238,.22);background:linear-gradient(155deg,rgba(12,27,47,.97),rgba(4,10,21,.98));box-shadow:0 24px 70px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.035)}
+#skyPage .sky-frame{padding:18px}
+#skyPage .sky-info{padding:22px}
+#skyPage .sky-canvas-wrap{height:clamp(420px,56vh,680px);border-radius:12px;border-color:rgba(145,204,245,.23);background:radial-gradient(ellipse at 50% 46%,#17365b 0%,#0a1a31 54%,#020711 100%);box-shadow:inset 0 0 90px rgba(0,0,0,.7),0 0 35px rgba(75,160,220,.08)}
+#skyPage .sky-map-toolbar{padding:5px 2px 13px;color:#b7d7f0;font-size:10px;letter-spacing:.15em}
+#skyPage .sky-zoom-controls button{min-width:36px;min-height:34px;border:1px solid rgba(153,203,239,.22);border-radius:8px;background:rgba(105,169,220,.08);color:#e7f6ff}
+#skyPage .sky-info h3{font-size:clamp(24px,2.2vw,32px)}
+#skyPage .sky-select-label,#skyPage .sky-layer-title{font-size:9px}
+#skyPage .sky-quick-picks button,#skyPage .sky-star-shortcuts button{padding:8px 10px;border:1px solid rgba(151,196,238,.2);border-radius:7px;background:rgba(112,177,226,.08);color:#d6eaff;font-size:10px}
+#skyPage .sky-controls .tool-btn,#skyPage .sky-locate-row .tool-btn{min-height:42px;border-radius:8px;font-size:10px}
+.sky-exploration{margin-top:48px;padding:28px;border:1px solid rgba(151,196,238,.18);border-radius:20px;background:radial-gradient(ellipse at 82% 0%,rgba(69,94,159,.13),transparent 42%),linear-gradient(145deg,rgba(10,22,40,.97),rgba(3,8,17,.98));box-shadow:0 28px 85px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.035)}
+.sky-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:22px}
+.sky-section-heading h3{margin:7px 0 8px;color:#f0f7ff;font-size:clamp(28px,3vw,40px);letter-spacing:-.055em;line-height:1.05}
+.sky-section-heading p{max-width:650px;margin:0;color:#aebfd3;font-size:13px;line-height:1.8}
+.sky-section-count{flex:0 0 auto;padding:9px 11px;border:1px solid rgba(151,196,238,.18);border-radius:7px;color:#9fc8e8;font:9px var(--mono);letter-spacing:.1em}
+.deep-sky-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.deep-sky-card{position:relative;display:flex;min-width:0;flex-direction:column;overflow:hidden;padding:0;border:1px solid rgba(151,196,238,.2);border-radius:13px;background:#050c18;color:#eaf5ff;text-align:left;cursor:pointer;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.deep-sky-card:hover,.deep-sky-card[aria-pressed=true]{transform:translateY(-4px);border-color:rgba(145,210,255,.68);box-shadow:0 16px 40px rgba(0,0,0,.35),0 0 28px rgba(89,167,224,.12)}
+.deep-sky-image{position:relative;display:block;width:100%;aspect-ratio:1.55/1;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#243d65,#060d1c 70%)}
+.deep-sky-image img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .55s ease,filter .35s ease;filter:saturate(1.08) contrast(1.06)}
+.deep-sky-card:hover .deep-sky-image img{transform:scale(1.055)}
+.deep-sky-image:after{content:"";position:absolute;inset:30% 0 0;background:linear-gradient(transparent,rgba(3,8,17,.9))}
+.deep-sky-type{position:absolute;z-index:1;top:12px;left:12px;padding:6px 8px;border:1px solid rgba(255,255,255,.2);border-radius:5px;background:rgba(3,8,17,.65);backdrop-filter:blur(8px);color:#dceeff;font:8px var(--mono);letter-spacing:.12em}
+.deep-sky-card-copy{display:grid;gap:7px;padding:15px 16px 17px}
+.deep-sky-card-copy strong{font-size:18px;letter-spacing:-.035em}
+.deep-sky-card-copy small{color:#a8bdd4;font:9px var(--mono);letter-spacing:.08em}
+.deep-sky-card-copy span{color:#bac9dc;font-size:11px;line-height:1.65}
+.deep-sky-loading{grid-column:1/-1;padding:24px;border:1px dashed rgba(151,196,238,.2);border-radius:12px;color:#9db5ce}
+.deep-sky-detail,.sky-world-detail{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:18px;padding:19px 21px;border:1px solid rgba(151,196,238,.2);border-radius:12px;background:linear-gradient(100deg,rgba(39,76,116,.24),rgba(6,15,29,.85))}
+.deep-sky-detail h4,.sky-world-detail h4{margin:4px 0 5px;color:#f2f8ff;font-size:21px;letter-spacing:-.04em}
+.deep-sky-detail p,.sky-world-detail p{margin:0;color:#b3c4d8;font-size:12px;line-height:1.65}
+.deep-sky-detail-mark{color:#9bd9ff;font:8px var(--mono);letter-spacing:.17em}
+.deep-sky-detail-meta{flex:0 0 auto;color:#e1c99d;font:10px var(--mono);letter-spacing:.08em;text-align:right}
+.sky-world-explorer{margin-top:24px}
+.sky-world-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.sky-world-card{display:flex;min-width:0;min-height:225px;flex-direction:column;align-items:center;justify-content:flex-start;padding:17px 12px 14px;border:1px solid rgba(151,196,238,.17);border-radius:13px;background:linear-gradient(155deg,rgba(18,34,56,.85),rgba(4,10,20,.94));color:#eaf5ff;cursor:pointer;transition:transform .25s ease,border-color .25s ease,background .25s ease}
+.sky-world-card:hover,.sky-world-card[aria-pressed=true]{transform:translateY(-4px);border-color:rgba(145,210,255,.65);background:linear-gradient(155deg,rgba(24,53,83,.95),rgba(5,12,24,.98))}
+.sky-world-sphere{position:relative;display:block;width:clamp(76px,8vw,112px);aspect-ratio:1;border-radius:50%;background-color:#142a42;background-image:var(--world-map);background-position:center;background-repeat:no-repeat;background-size:auto 100%;box-shadow:inset -17px -10px 24px rgba(0,0,0,.78),inset 7px 5px 12px rgba(255,255,255,.16),0 0 24px rgba(104,175,232,.12);isolation:isolate}
+.sky-world-sphere:before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse at 29% 22%,rgba(255,255,255,.32),transparent 30%),linear-gradient(100deg,rgba(255,255,255,.08),transparent 42%,rgba(0,0,0,.56) 100%);pointer-events:none}
+.sky-world-sphere:after{content:"";position:absolute;inset:-3px;border:1px solid rgba(202,231,255,.15);border-radius:inherit}
+.sky-world-sphere.saturn:after{inset:31% -30%;border:8px solid rgba(208,190,151,.68);border-left-color:rgba(208,190,151,.25);border-right-color:rgba(208,190,151,.25);border-radius:50%;transform:rotate(-19deg);z-index:-1}
+.sky-world-card strong{margin-top:13px;font-size:15px}
+.sky-world-card small{margin-top:4px;color:#91a9c4;font:8px var(--mono);letter-spacing:.1em}
+.sky-world-card em{margin-top:10px;color:#a9dfff;font:normal 8px var(--mono);letter-spacing:.1em}
+.sky-world-detail-copy{min-width:0}
+.sky-world-stats{margin-top:9px;color:#e0c99d;font:9px var(--mono);letter-spacing:.06em}
+.sky-world-focus{flex:0 0 auto;min-height:42px;padding:0 17px;border:1px solid rgba(145,210,255,.42);border-radius:8px;background:linear-gradient(110deg,rgba(76,148,199,.22),rgba(101,119,193,.14));color:#eaf7ff;font:9px var(--mono);letter-spacing:.1em;cursor:pointer;transition:background .2s ease,transform .2s ease}
+.sky-world-focus:hover{transform:translateY(-2px);background:rgba(103,179,232,.25)}
+.sky-world-focus span{margin-left:8px;color:#a8e4ff}
+.sky-world-note{margin:13px 2px 0;color:#879bb4;font-size:10px;line-height:1.7}
+@media(max-width:1050px){#skyPage .sky-layout{grid-template-columns:minmax(0,1fr)}#skyPage .sky-canvas-wrap{height:clamp(370px,58vw,590px)}#skyPage .sky-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}#skyPage .sky-info>.page-kicker,#skyPage .sky-info>h3,#skyPage .sky-info>p,#skyPage .sky-info>.sky-observer-title,#skyPage .sky-info>.sky-map-key,#skyPage .sky-info>.sky-readout,#skyPage .sky-info>.sky-planet-list,#skyPage .sky-info>.sky-science-note,#skyPage .sky-info>.sky-source-links{grid-column:1/-1}}
+@media(max-width:760px){.sky-exploration{margin-top:30px;padding:19px 15px;border-radius:15px}.sky-section-heading{align-items:flex-start;flex-direction:column}.sky-section-count{font-size:8px}.deep-sky-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.sky-world-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.sky-world-card{min-height:190px;padding:13px 7px 11px}.sky-world-card strong{font-size:13px}.sky-world-card em{font-size:7px}.deep-sky-detail,.sky-world-detail{align-items:flex-start;flex-direction:column}.deep-sky-detail-meta{text-align:left}.sky-world-focus{width:100%}}
+@media(max-width:540px){#skyPage .page-topline{gap:12px}#skyPage .page-title{font-size:37px}#skyPage .page-intro{font-size:12px}#skyPage .sky-howto{grid-template-columns:1fr;gap:8px}#skyPage .sky-howto-step{min-height:0;padding:12px 14px}#skyPage .sky-howto-step b{font-size:16px}#skyPage .sky-howto-step small{font-size:9px}#skyPage .sky-frame{padding:10px}#skyPage .sky-canvas-wrap{height:88vw;min-height:300px;max-height:440px}#skyPage .sky-info{display:block;padding:15px}.deep-sky-grid{grid-template-columns:1fr}.deep-sky-image{aspect-ratio:1.6/1}.sky-world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sky-world-card{min-height:195px}.sky-world-sphere{width:100px}.deep-sky-card-copy strong{font-size:16px}.sky-section-heading p{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.deep-sky-card,.deep-sky-image img,.sky-world-card,.sky-world-focus{transition:none}}

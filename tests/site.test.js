@@ -222,3 +222,16 @@ test("cosmic timeline announces progress and exposes playback and selected-era s
   assert.match(app, /\$\('historyPlay'\)\.setAttribute\('aria-pressed','true'\)/);
   assert.match(app, /\$\('historyPlay'\)\.setAttribute\('aria-pressed','false'\)/);
 });
+
+
+test("Night Sky includes an interactive deep-sky atlas and mapped Solar System planet gallery", () => {
+  assert.match(html, /id="deepSkyGrid"/);
+  assert.match(html, /id="skyWorldGrid"/);
+  assert.match(html, /id="skyWorldFocus"/);
+  assert.match(app, /deepSkyCatalog/);
+  assert.match(app, /NASA \/ ESA \/ CSA \/ STScI/);
+  assert.match(app, /renderSkyWorlds\(\)/);
+  assert.match(app, /selectBody\(name,true\)/);
+  assert.match(styles, /\.deep-sky-grid/);
+  assert.match(styles, /\.sky-world-sphere/);
+});
