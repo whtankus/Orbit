@@ -148,13 +148,114 @@
 #soundToggle.sound-on{border-color:#8ee3bd77;color:#c9ffe2;background:#69d99b14}
 @media(max-width:900px){.research-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.research-grid{grid-template-columns:1fr}.research-card{min-height:0;padding:19px}.page-topline{align-items:flex-start;flex-direction:column}.page-close{align-self:flex-start}.main-nav{gap:1px;margin:0 3px}.nav-tab{padding:8px 6px;font-size:7px}.top-right{gap:5px}.top-btn#soundToggle{font-size:0;padding:8px}.top-btn#soundToggle:after{content:'♫';font-size:12px}.page-overlay{inset:62px 0 0}}
+
+/* ORBIT 3.0 — cinematic observatory visual system */
+:root{--bg:#02050d;--ink:#f4f8ff;--muted:#b7c6db;--faint:#8194af;--line:rgba(162,198,235,.19);--glass:rgba(5,12,25,.78);--cyan:#9be4ff;--gold:#f4d29a;--ice:#d8f5ff;--mono:'DM Mono',ui-monospace,monospace;--sans:'Manrope',system-ui,sans-serif}
+html,body{background:#02050d}
+#space{background:radial-gradient(ellipse at 52% 48%,#10213b 0%,#050c18 43%,#02050d 78%)}
+#space canvas{filter:saturate(1.13) contrast(1.045)}
+.ui{isolation:isolate}
+.ui:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6;background:radial-gradient(ellipse at 50% 48%,transparent 30%,rgba(1,4,12,.12) 67%,rgba(1,4,12,.58) 100%),linear-gradient(rgba(121,177,225,.027) 1px,transparent 1px),linear-gradient(90deg,rgba(121,177,225,.027) 1px,transparent 1px);background-size:auto,72px 72px,72px 72px;mask-image:linear-gradient(180deg,black 0%,transparent 86%)}
+.top{position:relative;z-index:8;height:82px;padding:0 clamp(18px,3.2vw,52px);border-bottom:1px solid rgba(165,206,246,.16);background:linear-gradient(180deg,rgba(3,8,18,.94),rgba(3,8,18,.66));box-shadow:0 12px 42px rgba(0,0,0,.2);backdrop-filter:blur(26px) saturate(145%)}
+.brand{gap:13px}.mark{width:37px;height:37px;border-radius:12px;border:1px solid #9bdfff88;background:radial-gradient(circle at 34% 28%,#f5fdff 0%,#85d6ff 8%,#256a9d 39%,#07172c 72%);box-shadow:inset 0 0 14px #b5edff44,0 0 24px #53bfff35,0 0 48px #3879ba18}
+.mark:before{inset:8px;border-color:#dbf7ff;box-shadow:0 0 9px #a9eaff66}.mark:after{width:6px;height:6px;top:3px;right:1px;background:#f4d29a;box-shadow:0 0 12px #f4d29a}
+.brand-name{font-size:15px;letter-spacing:.32em;color:#f5fbff}.brand-sub{font-size:8px;color:#9db4d0;letter-spacing:.19em}
+.top-right{gap:9px}.main-nav{padding:4px;border:1px solid rgba(161,201,238,.13);border-radius:11px;background:#071222a8;gap:3px}
+.nav-tab{position:relative;padding:10px 12px;border-radius:7px;color:#a9bad0;font-size:9px;letter-spacing:.13em;transition:background .25s,border-color .25s,color .25s}
+.nav-tab:hover{color:#fff;background:#9edcff0d}.nav-tab.active{color:#e9f8ff;background:linear-gradient(135deg,#28608b66,#16324d66);box-shadow:inset 0 0 0 1px #9edcff26,0 0 20px #3b9ed016}
+.nav-tab.active:before{height:2px;bottom:2px;left:25%;right:25%;background:linear-gradient(90deg,transparent,#a8e8ff,transparent);box-shadow:0 0 10px #a8e8ff}
+.status{padding:9px 11px;border:1px solid #8de4b333;border-radius:8px;background:#54c8920b;color:#b8ddce;font-size:8px;letter-spacing:.13em}.status i{box-shadow:0 0 12px #6cf0b2}
+.top-btn,.tool-btn{border:1px solid rgba(158,203,241,.2);border-radius:8px;background:linear-gradient(180deg,#14243aaf,#071221c9);color:#d4e8fb;letter-spacing:.09em;transition:transform .22s,border-color .22s,background .22s,box-shadow .22s}
+.top-btn:hover,.tool-btn:hover{transform:translateY(-1px);border-color:#9edcff88;background:linear-gradient(180deg,#1b3754,#0b1a2e);box-shadow:0 8px 26px #0005,0 0 18px #69cfff14}
+.top-btn:active,.tool-btn:active{transform:translateY(0) scale(.98)}
+#soundToggle.sound-on{border-color:#8ee3bd88;color:#d8ffed;background:linear-gradient(140deg,#16483388,#071b17);box-shadow:0 0 22px #50d99b22}
+.hero{top:clamp(118px,15vh,176px);left:clamp(22px,4.3vw,76px);width:min(410px,35vw);z-index:2}
+.hero .eyebrow,.eyebrow{color:#b6d4ee;font-size:9px;letter-spacing:.22em}
+.hero .eyebrow:before{content:"";display:inline-block;width:24px;height:1px;margin:0 10px 3px 0;background:linear-gradient(90deg,#78cfff,#f4d29a)}
+.hero h1{margin:19px 0 16px;font-size:clamp(48px,5.5vw,78px);line-height:.93;letter-spacing:-.075em;font-weight:650;color:#f6fbff;text-shadow:0 7px 44px #0009}
+.hero p{max-width:360px;color:#d0dced;font-size:13px;line-height:1.9;text-shadow:0 2px 12px #000}
+.hero-meta{gap:23px;margin-top:26px}.meta-item{padding-left:12px;border-left:1px solid #a4c8e94a}.meta-item b{font-size:24px;color:#f0f8ff;font-weight:550}.meta-item small{font-size:8px;color:#adbed2;letter-spacing:.14em}
+.panel{z-index:3;right:clamp(18px,3vw,52px);top:clamp(104px,13vh,132px);width:326px;max-height:calc(100% - 244px);border:1px solid rgba(165,208,245,.24);border-radius:17px;background:linear-gradient(145deg,rgba(9,20,37,.86),rgba(3,9,20,.84));backdrop-filter:blur(28px) saturate(145%);box-shadow:0 28px 95px #0009,inset 0 1px 0 #d9f2ff12,0 0 44px #4388bd0b}
+.panel:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(125deg,#bceaff12,transparent 30%,transparent 68%,#f4d29a08)}
+.panel-head{padding:15px 19px;border-bottom:1px solid #a8cbea20}.panel-head span,.index{font-size:8px;letter-spacing:.17em;color:#b4c7dd}
+.planet-art{height:142px}.planet-art:after{background:radial-gradient(ellipse at center,#8bcfff18,transparent 68%)}
+.planet-preview{filter:saturate(1.15);box-shadow:inset -16px -11px 23px #000b,0 0 38px #83cfff3a!important}
+.panel-body{padding:0 20px 20px}.planet-kicker{color:#a8d8f4;letter-spacing:.15em}.planet-title{font-size:34px;letter-spacing:-.055em;color:#f4f9ff}.planet-desc{font-size:11px;line-height:1.8;color:#c1d0e2}
+.stats{gap:8px;margin-top:16px}.stat{padding:11px 10px;border:1px solid #a7cbe51e;border-radius:9px;background:linear-gradient(145deg,#14253b88,#07132299)}
+.stat small{font-size:7px;color:#9cb0c9;letter-spacing:.13em}.stat b{font-size:12px;color:#eff8ff}.fact{margin-top:13px;padding:12px 13px;border-left:2px solid #f0ce8c;background:linear-gradient(90deg,#c99a4216,transparent);color:#e5d6b9;font-size:10px;line-height:1.65}
+.bottom{z-index:4;bottom:22px;left:clamp(18px,3vw,52px);right:clamp(18px,3vw,52px);align-items:center}
+.body-strip,.controls{padding:7px;border:1px solid rgba(167,204,239,.22);border-radius:13px;background:linear-gradient(145deg,rgba(8,18,33,.89),rgba(3,9,19,.86));backdrop-filter:blur(24px) saturate(145%);box-shadow:0 18px 55px #0007,inset 0 1px 0 #e2f5ff0d}
+.body-btn{padding:10px 12px;border-radius:8px;color:#aabbd0;font-size:8px;letter-spacing:.09em}.body-btn:hover{background:#b5e7ff12;color:#eaf8ff}
+.body-btn.active{border-color:#8bdcff58;background:linear-gradient(145deg,#24577b88,#0b2035);color:#e7f7ff;box-shadow:inset 0 0 0 1px #b8eaff14,0 0 18px #55baff1a}
+.controls{gap:8px}.tool-btn{padding:10px 12px;font-size:8px}.range-wrap{color:#bbccdf}input[type=range]{accent-color:#8bdcff}
+.hint,.corner{color:#adc2d9;text-shadow:0 2px 12px #000}.telemetry{border:1px solid #a9d9f02d;border-radius:12px;background:linear-gradient(145deg,#08182acb,#030a16c9);box-shadow:0 12px 42px #0005;color:#aec2d9}.telemetry b{color:#e4f5ff}
+.page-overlay{inset:82px 0 0;padding:clamp(22px,4vw,58px);background:radial-gradient(ellipse at 78% 6%,#2473a42b,transparent 38%),radial-gradient(ellipse at 10% 86%,#7450a51a,transparent 35%),linear-gradient(135deg,rgba(3,8,18,.975),rgba(5,14,29,.97) 54%,rgba(3,7,16,.985));backdrop-filter:blur(28px) saturate(130%)}
+.page-shell{max-width:1420px}.page-topline{padding-bottom:20px;border-bottom:1px solid #a8cbea1c}.page-kicker{font-size:9px;color:#9edcff;letter-spacing:.24em}
+.page-title{font-size:clamp(37px,5vw,62px);line-height:1;letter-spacing:-.065em;color:#f6fbff;text-shadow:0 8px 40px #0008}
+.page-intro{max-width:750px;margin-top:13px;color:#c9d7e8;font-size:14px;line-height:1.8}
+.page-close{padding:11px 14px;border:1px solid #a8cbea33;border-radius:9px;background:#0b192b;color:#d2e6f6;font-size:8px;letter-spacing:.11em}.page-close:hover{border-color:#9edcff88;background:#16314a}
+.history-layout,.sky-layout{gap:22px;margin-top:30px}
+.history-stage,.sky-frame,.history-info,.sky-info{border:1px solid #9fc9ec2c;border-radius:17px;background:linear-gradient(145deg,#0d1c31d9,#050d1bdc);box-shadow:0 22px 70px #0006,inset 0 1px 0 #e7f7ff0b}
+.history-stage{min-height:425px;padding:30px}.cosmic-scene{filter:drop-shadow(0 0 36px #4e9fff30)}.epoch-core{box-shadow:0 0 48px #7acfff9a,0 0 110px #478dff5c}
+.stage-caption,.stage-date{color:#d1e7f7;text-shadow:0 2px 12px #000}.stage-date{font-size:clamp(20px,3vw,32px);letter-spacing:-.035em}
+.history-info{padding:30px}.history-info .era{color:#9edcff;font-size:9px;letter-spacing:.18em}.history-info h3{font-size:clamp(30px,3.2vw,43px);line-height:1.08;letter-spacing:-.06em;color:#f2f8ff}.history-info p,.sky-info p{font-size:13px;line-height:1.9;color:#c9d7e8}
+.history-stat{padding:14px;border:1px solid #a5cce624;border-radius:10px;background:#0c1a2c}.history-stat b{font-size:23px;color:#f0f8ff}.history-stat small{color:#adc1d8;font-size:8px}
+.timeline-control{padding:20px;border:1px solid #9fc9ec30;border-radius:14px;background:linear-gradient(145deg,#0d1d32e8,#050d1be8)}.timeline-head{color:#c0d5e9}
+.timeline-marker{border-radius:7px;background:#0b1929;color:#aebfd3}.timeline-marker.active{background:#1d4663;color:#effaff;box-shadow:inset 0 0 0 1px #a2e3ff55,0 0 18px #60c6ff16}
+.sky-frame{padding:18px;min-height:480px}.sky-info{padding:24px}.sky-info h3{font-size:27px;letter-spacing:-.05em;color:#f3f9ff}.sky-controls{gap:10px}
+.sky-field{padding:10px;border:1px solid #9fc9ec23;border-radius:9px;background:#071426}.sky-field label{color:#aabed4}
+.sky-field input,.sky-select{border-color:#a1cae044;border-radius:8px;background:#061224;color:#f0f8ff}.sky-readout{padding:13px;border:1px solid #9fc9ec26;border-radius:9px;background:#081629;color:#c4d8ec}
+.research-grid{gap:18px}.research-card{position:relative;overflow:hidden;padding:28px;min-height:285px;border:1px solid #9fc9ec35;border-radius:17px;background:radial-gradient(ellipse at 100% 0%,#2e679433,transparent 43%),linear-gradient(145deg,#122640ed,#071222f5 72%);box-shadow:0 22px 65px #0005,inset 0 1px 0 #e6f7ff0b;transition:transform .28s,border-color .28s,box-shadow .28s}
+.research-card:after{content:"";position:absolute;right:-52px;bottom:-95px;width:210px;height:210px;border:1px solid #9edcff16;border-radius:50%;box-shadow:0 0 0 18px #9edcff06,0 0 0 38px #9edcff04;pointer-events:none}
+.research-card:hover{transform:translateY(-4px);border-color:#9edcff70;box-shadow:0 28px 80px #0008,0 0 35px #4b9fdd12}
+.research-index{color:#a8e6ff;font-size:9px}.research-card h3{font-size:clamp(23px,2.5vw,31px);letter-spacing:-.055em}
+.research-card p,.research-note p{position:relative;z-index:1;color:#cbd9e9;font-size:13px;line-height:1.9}
+.research-tags span{border-color:#9edcff38;background:#a7e5ff09;color:#d5f0ff}.research-card a{position:relative;z-index:1;font-size:9px;color:#b5e7ff}
+.research-note{border:1px solid #a3d2ee2a;border-left:3px solid #b4e8ff;border-radius:11px;background:linear-gradient(100deg,#14314b9c,#0815269c)}
+.toast{border:1px solid #9edcff55;border-radius:10px;background:#07172aef;color:#e8f7ff;box-shadow:0 12px 42px #0008,0 0 28px #4ca6db18}
+.command-window{border:1px solid #9edcff55;border-radius:17px;background:linear-gradient(145deg,#102139,#050c18);box-shadow:0 32px 110px #000b,0 0 50px #4a9bdb19}
+.command-head,.command-foot{border-color:#a8cbea25}.command-item{border-radius:10px;background:#a7e4ff08}.command-item:hover{border-color:#9edcff77;background:#9edcff16}
+.help-card{border:1px solid #9edcff3c;border-radius:16px;background:linear-gradient(145deg,#12243b,#050d19)}
+.loading{background:radial-gradient(ellipse at 50% 48%,#153a60 0%,#08172c 36%,#030711 73%,#010309 100%)}
+.loading:before{border-color:#a7e7ff25;box-shadow:0 0 140px #428ed52b}.loading:after{border-color:#eacb8e22}
+.load-visual{box-shadow:inset 0 0 38px #59baff27,0 0 65px #4aaaff33}.load-visual b{box-shadow:0 0 38px #5dbdff99,0 0 90px #4299ff55}
+.load-track{height:3px;background:#a4dfff20;border-radius:6px}.load-track span{background:linear-gradient(90deg,transparent,#7bd9ff,#f6e4bb,#fff);box-shadow:0 0 17px #8ddcff}
+.sound-wrap{position:relative;display:flex;align-items:center;gap:5px}.sound-mixer-toggle{font-size:8px}
+.sound-mixer{position:absolute;right:0;top:calc(100% + 13px);z-index:40;width:290px;padding:17px;border:1px solid #9edcff55;border-radius:14px;background:linear-gradient(145deg,rgba(12,29,49,.98),rgba(3,9,19,.98));box-shadow:0 22px 70px #000a,0 0 36px #479ad31a;backdrop-filter:blur(24px);opacity:0;visibility:hidden;transform:translateY(-7px);transition:opacity .2s,transform .2s,visibility .2s;pointer-events:none}
+.sound-mixer.open{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+.sound-mixer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px;color:#e7f6ff;font:9px var(--mono);letter-spacing:.16em}.sound-mixer-head span:last-child{color:#8de4bd;font-size:8px}
+.sound-mixer label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:11px 0 7px;color:#b5c8dd;font:8px var(--mono);letter-spacing:.1em}.sound-mixer output{color:#e6f6ff}
+.sound-mixer input[type=range]{width:100%;height:4px;margin:4px 0 8px;accent-color:#9edcff;cursor:pointer}
+.sound-mixer .mix-check{display:flex;justify-content:flex-start;align-items:center;gap:9px;margin:12px 0;color:#c5d8e8;font:8px var(--mono);letter-spacing:.1em}.mix-check input{accent-color:#9edcff}
+.mixer-bars{height:22px;display:flex;align-items:center;gap:4px;margin:14px 0 7px}.mixer-bars i{display:block;width:3px;height:5px;border-radius:3px;background:#83d8ff;opacity:.5}
+.sound-mixer.active .mixer-bars i{opacity:.9;animation:mixPulse .8s ease-in-out infinite alternate}
+.sound-mixer.active .mixer-bars i:nth-child(3n){animation-delay:.18s}.sound-mixer.active .mixer-bars i:nth-child(3n+1){animation-delay:.37s}
+@keyframes mixPulse{from{height:4px;opacity:.35}to{height:19px;opacity:1}}
+.sound-mixer-note{margin:7px 0 0;color:#8199b4;font:8px/1.6 var(--mono)}
+button:focus-visible,input:focus-visible{outline:2px solid #a9e7ff;outline-offset:3px}
+@media(max-width:1050px){.top{padding:0 18px}.top-right{gap:5px}.nav-tab{padding:9px 8px}.status{display:none}.hero{width:min(350px,36vw)}.panel{width:300px}.brand-sub{font-size:7px}}
+@media(max-width:760px){.top{height:68px}.page-overlay{inset:68px 0 0}.hero{top:96px;left:20px;width:min(310px,47vw)}.hero h1{font-size:clamp(38px,7vw,55px)}.hero p{font-size:11px;max-width:280px}.panel{top:100px;right:14px;width:270px;max-height:calc(100% - 225px)}.bottom{bottom:12px;left:12px;right:12px;flex-wrap:wrap}.body-strip{max-width:100%;overflow-x:auto}.body-btn{padding:8px 9px}.history-layout,.sky-layout{grid-template-columns:1fr}.history-stage{min-height:330px}.sky-frame{min-height:350px}.sound-mixer{right:-62px}}
+@media(max-width:600px){.top{height:62px;padding:0 10px}.brand{gap:7px}.mark{width:29px;height:29px;border-radius:9px}.brand-name{font-size:12px}.brand-sub{font-size:6px}.top-right{gap:3px}.main-nav{padding:2px;gap:0}.nav-tab{padding:8px 5px;font-size:6px;letter-spacing:.06em}.top-btn{padding:7px 8px;font-size:7px}.command-launch{font-size:0;width:30px;height:30px;padding:0}.command-launch:after{content:"⌘";font-size:13px}.top-btn#soundToggle{font-size:0;width:30px;height:30px;padding:0}.top-btn#soundToggle:after{content:"♫";font-size:13px}.sound-mixer-toggle{display:none}.page-overlay{inset:62px 0 0;padding:18px 14px 26px}.hero{top:88px;left:16px;width:43vw;max-width:210px}.hero h1{font-size:clamp(32px,8vw,44px);margin:12px 0}.hero p{font-size:9px;line-height:1.65}.hero-meta{gap:10px;margin-top:15px}.meta-item{padding-left:7px}.meta-item b{font-size:17px}.meta-item small{font-size:6px}.panel{top:90px;right:10px;width:48vw;max-width:230px;max-height:calc(100% - 215px);border-radius:13px}.panel-head{padding:11px 12px}.planet-art{height:100px}.panel-body{padding:0 12px 13px}.planet-title{font-size:26px}.planet-desc{font-size:9px}.stat{padding:8px 6px}.stat b{font-size:10px}.fact{font-size:8px}.bottom{gap:7px}.body-strip{width:100%;order:2}.controls{width:100%;justify-content:center;order:1}.body-btn{font-size:7px;padding:8px}.tool-btn{font-size:7px;padding:8px 9px}.telemetry{display:none}.page-title{font-size:37px}.page-intro{font-size:12px}.history-stage{min-height:280px;padding:16px}.history-info{padding:19px}.timeline-control{padding:14px}.timeline-actions{flex-wrap:wrap}.research-card{padding:19px}}
+@media(prefers-reduced-motion:reduce){.research-card,.top-btn,.tool-btn,.nav-tab,.sound-mixer{transition:none}.sound-mixer.active .mixer-bars i{animation:none}}
+
 </style>
 </head>
 <body>
 <div id="space" aria-label="Interactive three-dimensional solar system"></div><div class="vignette"></div><div class="grain"></div>
 <div class="loading" id="loading"><div class="load-inner"><div class="load-brand"><span class="load-mark">O</span><span>ORBIT <small>DEEP SPACE NETWORK</small></span></div><div class="load-visual"><i></i><b></b><em></em><span></span></div><div class="load-title">INITIALIZING OBSERVATORY</div><div class="load-subtitle">CALIBRATING CELESTIAL INSTRUMENTS</div><div class="load-track"><span></span></div><div class="load-status">RENDER ENGINE&nbsp; · &nbsp;STARFIELD&nbsp; · &nbsp;PLANETARY SYSTEMS</div></div></div>
 <div class="ui">
-<header class="top"><div class="brand"><div class="mark"></div><div><div class="brand-name">ORBIT</div><div class="brand-sub">SOLAR SYSTEM OBSERVATORY</div></div></div><div class="top-right"><nav class="main-nav" aria-label="Observatory sections"><button class="nav-tab active" data-page="explore">EXPLORE</button><button class="nav-tab" data-page="history">HISTORY</button><button class="nav-tab" data-page="sky">NIGHT SKY</button><button class="nav-tab" data-page="research">RESEARCH</button></nav><div class="status"><i></i>LIVE SIMULATION</div><button class="top-btn" id="soundToggle" aria-pressed="false" title="Enable optional synthesized observatory audio">♫&nbsp; SOUND OFF</button><button class="top-btn command-launch" id="commandOpen">⌘&nbsp; COMMAND DECK</button><button class="top-btn" id="helpBtn">HOW TO EXPLORE&nbsp; ↗</button></div></header>
+<header class="top"><div class="brand"><div class="mark"></div><div><div class="brand-name">ORBIT</div><div class="brand-sub">SOLAR SYSTEM OBSERVATORY</div></div></div><div class="top-right"><nav class="main-nav" aria-label="Observatory sections"><button class="nav-tab active" data-page="explore">EXPLORE</button><button class="nav-tab" data-page="history">HISTORY</button><button class="nav-tab" data-page="sky">NIGHT SKY</button><button class="nav-tab" data-page="research">RESEARCH</button></nav><div class="status"><i></i>LIVE SIMULATION</div><div class="sound-wrap">
+<button class="top-btn" id="soundToggle" aria-pressed="false" title="Enable the observatory soundscape">♫&nbsp; SOUND OFF</button>
+<button class="top-btn sound-mixer-toggle" id="soundMixerToggle" aria-expanded="false" aria-controls="soundMixer">MIXER&nbsp; +</button>
+<div class="sound-mixer" id="soundMixer" aria-hidden="true">
+<div class="sound-mixer-head"><span>OBSERVATORY SOUND MIX</span><span id="mixerState">STANDBY</span></div>
+<label for="soundMasterVolume">MASTER LEVEL <output id="soundMasterValue">62%</output></label>
+<input id="soundMasterVolume" type="range" min="0" max="100" value="62">
+<label class="mix-check"><input id="ambienceCheck" type="checkbox" checked> DEEP-SPACE AMBIENCE</label>
+<label class="mix-check"><input id="effectsCheck" type="checkbox" checked> INSTRUMENT FEEDBACK</label>
+<div class="mixer-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<p class="sound-mixer-note">Synthetic cinematic sound design. Enable audio with the main switch; browser audio permissions are respected.</p>
+</div></div><button class="top-btn command-launch" id="commandOpen">⌘&nbsp; COMMAND DECK</button><button class="top-btn" id="helpBtn">HOW TO EXPLORE&nbsp; ↗</button></div></header>
 <section class="hero"><div class="eyebrow">01 / OUR NEIGHBOURHOOD</div><h1>A universe<br>in motion.</h1><p>Travel through our Solar System. Observe worlds shaped by gravity, sunlight and deep time — rendered in interactive three-dimensional space.</p><div class="hero-meta"><div class="meta-item"><b>4.6B</b><small>YEARS OLD</small></div><div class="meta-item"><b>8</b><small>PLANETS</small></div><div class="meta-item"><b>1</b><small>STAR</small></div></div></section>
 <aside class="panel"><div class="panel-head"><span>CELESTIAL PROFILE</span><div class="index" id="index">03 / 08</div></div><div class="planet-art"><div class="planet-preview" id="planetPreview"></div></div><div class="panel-body"><div class="planet-kicker" id="planetType">TERRESTRIAL PLANET</div><h2 class="planet-title" id="planetName">Earth</h2><p class="planet-desc" id="planetDesc">Our pale blue home, the only world currently known to support life.</p><div class="stats"><div class="stat"><small>DIAMETER</small><b id="diameter">12,742 km</b></div><div class="stat"><small>ORBITAL PERIOD</small><b id="year">365.25 days</b></div><div class="stat"><small>ROTATION</small><b id="day">23h 56m</b></div><div class="stat"><small>KNOWN MOONS</small><b id="moons">1</b></div></div><div class="fact"><strong>FIELD NOTE</strong><span id="fact">Earth's atmosphere scatters blue light, giving the planet its familiar colour.</span></div></div></aside>
 <div class="hint">DRAG TO ORBIT&nbsp; · &nbsp;SCROLL TO ZOOM&nbsp; · &nbsp;SELECT A WORLD TO INSPECT</div><div class="corner">DISTANCES AND SIZES VISUALLY COMPRESSED<br>TEXTURES: SOLAR SYSTEM SCOPE · CC BY 4.0</div><div class="mobile-note">DRAG TO ROTATE · PINCH TO ZOOM</div>
@@ -194,6 +295,10 @@
 <script type="module">
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 const $=id=>document.getElementById(id);
 const data={
 Sun:{type:'G2V MAIN-SEQUENCE STAR',diameter:'1.39 million km',year:'—',day:'~25 Earth days',moons:'0',desc:'A magnetically active sphere of hot plasma. Its gravity dominates the Solar System, while nuclear fusion in its core releases the energy that warms our worlds.',fact:'More than 99.8% of the Solar System’s total mass is concentrated in the Sun.',texture:'2k_sun.jpg',radius:2.05,dist:0,color:0xffb45a,emissive:true,rotation:.08},
@@ -209,7 +314,14 @@ Neptune:{type:'ICE GIANT',diameter:'49,244 km',year:'165 Earth years',day:'16h 6
 const names=Object.keys(data),textureBase='https://www.solarsystemscope.com/textures/download/';
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x03050b);scene.fog=new THREE.FogExp2(0x03050b,.0019);
 const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,500);camera.position.set(0,25,43);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;$('space').appendChild(renderer.domElement);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);
+renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.22;
+$('space').appendChild(renderer.domElement);
+// Cinematic HDR-style glow: emissive worlds and the solar corona bloom naturally.
+const composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,camera));
+const bloomPass=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.62,.78,.74);
+composer.addPass(bloomPass);composer.addPass(new OutputPass());
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.045;controls.minDistance=8;controls.maxDistance=95;controls.maxPolarAngle=Math.PI*.48;controls.target.set(0,0,0);controls.autoRotate=false;controls.enablePan=true;
 scene.add(new THREE.AmbientLight(0x8092b7,.38));const sunLight=new THREE.PointLight(0xffe1b0,160,180,1.45);sunLight.position.set(0,0,0);scene.add(sunLight);
 const loader=new THREE.TextureLoader();loader.crossOrigin='anonymous';const textures={};const planetObjects={};let selected='Earth',paused=false,showOrbits=true,showLabels=true,timeScale=1,elapsed=0;const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();let hovered=null;
@@ -253,8 +365,8 @@ $('playBtn').addEventListener('click',()=>{paused=!paused;$('playBtn').innerHTML
 buildNav();selectBody('Earth');
 const clock=new THREE.Clock();function updateLabels(){for(const [name,el] of Object.entries(labels)){const p=planetObjects[name].group.position.clone();p.y+=planetObjects[name].d.radius*1.6;p.project(camera);const x=(p.x*.5+.5)*innerWidth,y=(-p.y*.5+.5)*innerHeight;el.style.left=x+'px';el.style.top=y+'px';el.style.opacity=(p.z<1&&x>0&&x<innerWidth&&y>0&&y<innerHeight&&showLabels)?'.85':'0';}}
 function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);if(!paused){elapsed+=dt*timeScale;for(const [name,o] of Object.entries(planetObjects)){const d=o.d;o.angle+=dt*timeScale*(d.speed||.02)*.12;o.group.position.set(Math.cos(o.angle)*d.dist,Math.sin(elapsed*.11+o.angle)*.025,Math.sin(o.angle)*d.dist);o.mesh.rotation.y+=dt*d.rotation; }for(const m of moonObjects){m.angle+=dt*timeScale*m.spec.speed*.18;m.mesh.position.set(Math.cos(m.angle)*m.spec.distance,Math.sin(m.angle*.7)*.025,Math.sin(m.angle)*m.spec.distance);}earthClouds.rotation.y+=dt*.018*timeScale;sun.rotation.y+=dt*.025;stars.rotation.y+=dt*.000025;dust.rotation.y-=dt*.00005;belt.rotation.y+=dt*.0003;}
-if(cameraTween){const t=Math.min(1,(performance.now()-cameraTween.start)/cameraTween.duration),e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;camera.position.lerpVectors(cameraTween.from,cameraTween.to,e);controls.target.lerpVectors(cameraTween.fromTarget,cameraTween.toTarget,e);if(t>=1)cameraTween=null;}controls.update();updateLabels();renderer.render(scene,camera);}
-function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));}window.addEventListener('resize',resize);
+if(cameraTween){const t=Math.min(1,(performance.now()-cameraTween.start)/cameraTween.duration),e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;camera.position.lerpVectors(cameraTween.from,cameraTween.to,e);controls.target.lerpVectors(cameraTween.fromTarget,cameraTween.toTarget,e);if(t>=1)cameraTween=null;}controls.update();updateLabels();composer.render();}
+function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));composer.setSize(innerWidth,innerHeight);}window.addEventListener('resize',resize);
 
 // ORBIT 2.0 — expanded instruments, moons, history archive and sky chart.
 const navButtons=[...document.querySelectorAll('[data-page]')];
@@ -360,17 +472,111 @@ window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCa
 let telemetryTick=0;function updateTelemetry(){const range=camera.position.distanceTo(controls.target);$('telemetryFocus').textContent=selected.toUpperCase();$('telemetryRange').textContent=range.toFixed(1)+' SCENE UNITS';$('telemetryTime').textContent=(Math.floor(elapsed/60)%60).toString().padStart(2,'0')+':'+Math.floor(elapsed%60).toString().padStart(2,'0');}
 const telemetryTimer=setInterval(updateTelemetry,500);
 
-/* Optional synthesized observatory soundscape. No audio is played until enabled by the visitor. */
-let soundEnabled=false,audioCtx=null,masterGain=null,ambientNodes=[];
-function ensureAudio(){if(!audioCtx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;audioCtx=new AC();masterGain=audioCtx.createGain();masterGain.gain.value=.48;masterGain.connect(audioCtx.destination);}if(audioCtx.state==='suspended')audioCtx.resume();return true}
-function tone(freq=440,duration=.12,type='sine',volume=.035,endFreq=null){if(!soundEnabled||!ensureAudio())return;const now=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,now);if(endFreq)o.frequency.exponentialRampToValueAtTime(Math.max(20,endFreq),now+duration);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(volume,now+.018);g.gain.exponentialRampToValueAtTime(.0001,now+duration);o.connect(g);g.connect(masterGain);o.start(now);o.stop(now+duration+.03)}
-function soundEffect(kind='ui'){if(!soundEnabled)return;if(kind==='focus'){tone(180,.35,'sine',.045,520);setTimeout(()=>tone(620,.18,'triangle',.022,880),90)}else if(kind==='travel'){tone(95,.48,'sawtooth',.018,42);tone(330,.24,'sine',.012,180)}else if(kind==='history'){tone(220,.28,'sine',.025,440);setTimeout(()=>tone(440,.22,'sine',.018,660),100)}else if(kind==='chart'){tone(520,.16,'sine',.02,780)}else if(kind==='toggle'){tone(360,.12,'triangle',.025,540)}else{tone(260,.07,'sine',.012,310)}}
-function startAmbient(){if(!soundEnabled||!ensureAudio()||ambientNodes.length)return;[48,72,96].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=i===1?'triangle':'sine';o.frequency.value=f;g.gain.value=[.012,.004,.002][i];o.connect(g);g.connect(masterGain);o.start();ambientNodes.push({o,g})})}
-function stopAmbient(){ambientNodes.forEach(n=>{try{n.o.stop()}catch(e){}});ambientNodes=[]}
-$('soundToggle').addEventListener('click',()=>{soundEnabled=!soundEnabled;if(soundEnabled){ensureAudio();startAmbient();$('soundToggle').textContent='♫  SOUND ON';$('soundToggle').classList.add('sound-on');$('soundToggle').setAttribute('aria-pressed','true');soundEffect('toggle')}else{stopAmbient();$('soundToggle').textContent='♫  SOUND OFF';$('soundToggle').classList.remove('sound-on');$('soundToggle').setAttribute('aria-pressed','false')}});
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.id==='soundToggle')return;if(b.classList.contains('body-btn'))soundEffect('focus');else if(b.id==='historyNext'||b.id==='historyPrev'||b.id==='historyPlay'||b.dataset.epoch!==undefined)soundEffect('history');else if(b.id==='skyNow'||b.id==='skyReset')soundEffect('chart');else soundEffect('ui')});
+/* ORBIT 3.0 — layered cinematic sound design. Starts only after an explicit visitor gesture. */
+let soundEnabled=false,audioCtx=null,masterGain=null,spaceReverb=null,reverbReturn=null,noiseBuffer=null;
+let ambientNodes=[],ambienceEnabled=true,effectsEnabled=true;
+function makeImpulse(ctx,seconds=4.2,decay=2.8){
+ const length=Math.floor(ctx.sampleRate*seconds),buffer=ctx.createBuffer(2,length,ctx.sampleRate);
+ for(let ch=0;ch<2;ch++){const data=buffer.getChannelData(ch);for(let i=0;i<length;i++){const t=i/length;data[i]=(Math.random()*2-1)*Math.pow(1-t,decay)*(1-.12*Math.sin(t*90));}}
+ return buffer;
+}
+function ensureAudio(){
+ if(!audioCtx){
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;
+  audioCtx=new AC({latencyHint:'interactive'});masterGain=audioCtx.createGain();masterGain.gain.value=.62;
+  const compressor=audioCtx.createDynamicsCompressor();compressor.threshold.value=-22;compressor.knee.value=24;compressor.ratio.value=3.4;compressor.attack.value=.012;compressor.release.value=.28;
+  masterGain.connect(compressor);compressor.connect(audioCtx.destination);
+  spaceReverb=audioCtx.createConvolver();spaceReverb.buffer=makeImpulse(audioCtx);
+  reverbReturn=audioCtx.createGain();reverbReturn.gain.value=.24;spaceReverb.connect(reverbReturn);reverbReturn.connect(masterGain);
+  noiseBuffer=audioCtx.createBuffer(1,audioCtx.sampleRate*3,audioCtx.sampleRate);
+  const noise=noiseBuffer.getChannelData(0);for(let i=0;i<noise.length;i++)noise[i]=Math.random()*2-1;
+ }
+ if(audioCtx.state==='suspended')audioCtx.resume();return true;
+}
+function setParam(param,value,time=.18){if(!audioCtx||!param)return;param.cancelScheduledValues(audioCtx.currentTime);param.setTargetAtTime(value,audioCtx.currentTime,time)}
+function synthVoice(freq,duration=1,wave='sine',volume=.025,endFreq=null,pan=0,filterFreq=1800,send=.35,attack=.06){
+ if(!soundEnabled||!effectsEnabled||!ensureAudio())return;
+ const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),amp=audioCtx.createGain(),panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null,sendGain=audioCtx.createGain();
+ osc.type=wave;osc.frequency.setValueAtTime(Math.max(20,freq),now);if(endFreq)osc.frequency.exponentialRampToValueAtTime(Math.max(20,endFreq),now+duration);
+ filter.type='lowpass';filter.frequency.setValueAtTime(filterFreq,now);filter.Q.value=.45;
+ amp.gain.setValueAtTime(.0001,now);amp.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),now+Math.max(.025,attack));amp.gain.exponentialRampToValueAtTime(.0001,now+duration);
+ sendGain.gain.value=send;osc.connect(filter);filter.connect(amp);
+ if(panner){panner.pan.value=Math.max(-1,Math.min(1,pan));amp.connect(panner);panner.connect(masterGain);amp.connect(sendGain)}else{amp.connect(masterGain);amp.connect(sendGain)}
+ sendGain.connect(spaceReverb);osc.start(now);osc.stop(now+duration+.06);
+}
+function noiseSweep(duration=1.05,pan=0,low=90,high=2600,level=.045){
+ if(!soundEnabled||!effectsEnabled||!ensureAudio()||!noiseBuffer)return;
+ const now=audioCtx.currentTime,source=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),amp=audioCtx.createGain(),panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null,send=audioCtx.createGain();
+ source.buffer=noiseBuffer;source.loop=true;filter.type='bandpass';filter.Q.value=.62;filter.frequency.setValueAtTime(low,now);filter.frequency.exponentialRampToValueAtTime(high,now+duration*.54);filter.frequency.exponentialRampToValueAtTime(low*.9,now+duration);
+ amp.gain.setValueAtTime(.0001,now);amp.gain.linearRampToValueAtTime(level,now+duration*.28);amp.gain.exponentialRampToValueAtTime(.0001,now+duration);
+ send.gain.value=.3;source.connect(filter);filter.connect(amp);
+ if(panner){panner.pan.value=pan;amp.connect(panner);panner.connect(masterGain);amp.connect(send)}else{amp.connect(masterGain);amp.connect(send)}
+ send.connect(spaceReverb);source.start(now);source.stop(now+duration+.04);
+}
+function soundEffect(kind='ui'){
+ if(!soundEnabled||!effectsEnabled)return;
+ if(kind==='focus'){
+  noiseSweep(.68,.22,120,1700,.025);synthVoice(146.83,.9,'sine',.035,220,.1,900,.52);synthVoice(220,.82,'triangle',.016,293.66,-.18,1500,.62,.12);synthVoice(440,.6,'sine',.009,587.33,.28,2600,.7,.18);
+ }else if(kind==='travel'){
+  noiseSweep(1.45,0,48,3100,.055);synthVoice(48.99,1.5,'sine',.055,32.7,0,280,.48,.14);synthVoice(73.42,1.15,'triangle',.025,110,-.18,520,.64,.1);synthVoice(196,.8,'sine',.013,392,.22,1800,.78,.16);synthVoice(392,.95,'sine',.009,523.25,-.25,3200,.8,.28);
+ }else if(kind==='history'){
+  noiseSweep(.9,-.25,70,1900,.034);synthVoice(65.41,1.45,'sine',.044,49,-.1,360,.7,.13);synthVoice(130.81,1.05,'triangle',.018,196,.12,950,.8,.2);synthVoice(261.63,.95,'sine',.014,392,.28,2400,.86,.24);
+ }else if(kind==='chart'){
+  synthVoice(392,.42,'sine',.016,440,-.22,2200,.72,.025);synthVoice(587.33,.58,'triangle',.011,783.99,.2,3000,.84,.1);synthVoice(880,.74,'sine',.005,1174.66,.35,4200,.9,.15);
+ }else if(kind==='toggle'){
+  synthVoice(164.81,.32,'triangle',.018,196,0,950,.4,.02);synthVoice(329.63,.42,'sine',.012,392,.16,2000,.62,.07);
+ }else synthVoice(493.88,.105,'sine',.008,440,0,1400,.2,.008);
+}
+function startAmbient(){
+ if(!soundEnabled||!ambienceEnabled||!ensureAudio()||ambientNodes.length)return;
+ const now=audioCtx.currentTime;
+ const addDrone=(freq,detune,level,wave='sine',pan=0)=>{
+  const osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain(),panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null,lfo=audioCtx.createOscillator(),lfoGain=audioCtx.createGain();
+  osc.type=wave;osc.frequency.value=freq;osc.detune.value=detune;filter.type='lowpass';filter.frequency.value=wave==='triangle'?420:260;filter.Q.value=.5;
+  gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(level,now+3.2);
+  lfo.type='sine';lfo.frequency.value=.035+Math.random()*.035;lfoGain.gain.value=wave==='triangle'?45:18;lfo.connect(lfoGain);lfoGain.connect(filter.frequency);
+  osc.connect(filter);filter.connect(gain);if(panner){panner.pan.value=pan;gain.connect(panner);panner.connect(masterGain)}else gain.connect(masterGain);
+  osc.start();lfo.start();ambientNodes.push({source:osc,gain,lfo,filter});
+ };
+ addDrone(43.65,-5,.012,'sine',-.22);addDrone(65.41,4,.009,'sine',.2);addDrone(87.31,-3,.006,'triangle',-.08);addDrone(130.81,2,.003,'sine',.25);
+ const makeNoiseLayer=(type,frequency,q,level,pan,rate)=>{
+  const source=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain(),panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null,lfo=audioCtx.createOscillator(),depth=audioCtx.createGain();
+  source.buffer=noiseBuffer;source.loop=true;filter.type=type;filter.frequency.value=frequency;filter.Q.value=q;gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(level,now+4.5);
+  lfo.frequency.value=rate;lfo.type='sine';depth.gain.value=type==='lowpass'?85:frequency*.12;lfo.connect(depth);depth.connect(filter.frequency);
+  source.connect(filter);filter.connect(gain);if(panner){panner.pan.value=pan;gain.connect(panner);panner.connect(masterGain)}else gain.connect(masterGain);
+  source.start();lfo.start();ambientNodes.push({source,gain,lfo,filter});
+ };
+ makeNoiseLayer('lowpass',210,.55,.009,-.35,.018);makeNoiseLayer('bandpass',640,.7,.0028,.28,.025);makeNoiseLayer('bandpass',2250,.45,.0012,.42,.011);
+}
+function stopAmbient(){
+ if(!audioCtx){ambientNodes=[];return}
+ const now=audioCtx.currentTime;ambientNodes.forEach(n=>{try{n.gain.gain.cancelScheduledValues(now);n.gain.gain.setTargetAtTime(.0001,now,.16);n.source.stop(now+.75);n.lfo.stop(now+.75)}catch(e){}});
+ ambientNodes=[];
+}
+function updateSoundUI(){
+ $('soundToggle').textContent=soundEnabled?'♫  SOUND ON':'♫  SOUND OFF';$('soundToggle').classList.toggle('sound-on',soundEnabled);$('soundToggle').setAttribute('aria-pressed',String(soundEnabled));
+ $('mixerState').textContent=soundEnabled?'ACTIVE':'STANDBY';$('soundMixer').classList.toggle('active',soundEnabled);
+}
+$('soundToggle').addEventListener('click',()=>{
+ soundEnabled=!soundEnabled;if(soundEnabled){ensureAudio();if(ambienceEnabled)startAmbient();updateSoundUI();soundEffect('toggle')}else{stopAmbient();updateSoundUI()}
+});
+$('soundMixerToggle').addEventListener('click',()=>{
+ const open=!$('soundMixer').classList.contains('open');$('soundMixer').classList.toggle('open',open);$('soundMixer').setAttribute('aria-hidden',String(!open));
+ $('soundMixerToggle').setAttribute('aria-expanded',String(open));$('soundMixerToggle').textContent=open?'MIXER  −':'MIXER  +';
+});
+$('soundMasterVolume').addEventListener('input',e=>{
+ const value=Number(e.target.value);$('soundMasterValue').textContent=value+'%';if(ensureAudio())setParam(masterGain.gain,value/100,.08);
+});
+$('ambienceCheck').addEventListener('change',e=>{ambienceEnabled=e.target.checked;if(soundEnabled){if(ambienceEnabled)startAmbient();else stopAmbient()}});
+$('effectsCheck').addEventListener('change',e=>{effectsEnabled=e.target.checked});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b||b.id==='soundToggle'||b.id==='soundMixerToggle')return;
+ if(b.classList.contains('body-btn'))soundEffect('focus');
+ else if(b.id==='historyNext'||b.id==='historyPrev'||b.id==='historyPlay'||b.dataset.epoch!==undefined)soundEffect('history');
+ else if(b.id==='skyNow'||b.id==='skyReset')soundEffect('chart');else soundEffect('ui');
+});
 let lastChartSound=0;$('skyCanvas').addEventListener('click',()=>soundEffect('chart'));
-$('historyRange').addEventListener('input',()=>{const now=performance.now();if(now-lastChartSound>140){soundEffect('history');lastChartSound=now}});
+$('historyRange').addEventListener('input',()=>{const now=performance.now();if(now-lastChartSound>260){soundEffect('history');lastChartSound=now}});
 
 // Start only after moon objects, clouds, and all page instruments are initialized.
 try { animate(); setTimeout(()=>$('loading').classList.add('hide'),1300);setTimeout(()=>$('loading').classList.add('hide'),12000); }
