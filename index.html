@@ -17,12 +17,23 @@
 <button class="top-btn sound-mixer-toggle" id="soundMixerToggle" aria-expanded="false" aria-controls="soundMixer">MIXER&nbsp; +</button>
 <div class="sound-mixer" id="soundMixer" aria-hidden="true">
 <div class="sound-mixer-head"><span>OBSERVATORY SOUND MIX</span><span id="mixerState">STANDBY</span></div>
+<div class="sound-studio-title"><span>ORIGINAL SOUNDTRACKS</span><small>GENERATIVE AUDIO · THREE SCORES</small></div>
+<div class="soundtrack-list" role="group" aria-label="Choose an original observatory soundtrack">
+<button class="sound-track active" type="button" data-track="horizon" aria-pressed="true"><span class="track-art track-art-horizon"><i></i><i></i><i></i></span><span class="track-copy"><strong>Event Horizon</strong><small>Slow orbital ambient · 56 BPM</small></span><span class="track-check">01</span></button>
+<button class="sound-track" type="button" data-track="solar" aria-pressed="false"><span class="track-art track-art-solar"><i></i><i></i><i></i></span><span class="track-copy"><strong>Solar Wind</strong><small>Radiant pulse · 82 BPM</small></span><span class="track-check">02</span></button>
+<button class="sound-track" type="button" data-track="deep" aria-pressed="false"><span class="track-art track-art-deep"><i></i><i></i><i></i></span><span class="track-copy"><strong>Deep Field</strong><small>Shimmering starfield · 64 BPM</small></span><span class="track-check">03</span></button>
+</div>
+<div class="soundtrack-now"><div><small>NOW SELECTED</small><strong id="musicTrackName">EVENT HORIZON</strong></div><span id="musicTrackState">READY TO PLAY</span></div>
+<div class="soundtrack-controls"><button id="musicPlayBtn" class="tool-btn advanced" type="button">▶ &nbsp; PLAY SOUNDTRACK</button><button id="musicStopBtn" class="tool-btn" type="button">STOP</button></div>
+<label for="musicVolume">SOUNDTRACK LEVEL <output id="musicVolumeValue">42%</output></label>
+<input id="musicVolume" type="range" min="0" max="100" value="42">
+<div class="sound-studio-divider"></div>
 <label for="soundMasterVolume">MASTER LEVEL <output id="soundMasterValue">62%</output></label>
 <input id="soundMasterVolume" type="range" min="0" max="100" value="62">
-<label class="mix-check"><input id="ambienceCheck" type="checkbox" checked> DEEP-SPACE AMBIENCE</label>
-<label class="mix-check"><input id="effectsCheck" type="checkbox" checked> INSTRUMENT FEEDBACK</label>
+<label class="mix-check"><input id="ambienceCheck" type="checkbox" checked> SPATIAL AMBIENCE</label>
+<label class="mix-check"><input id="effectsCheck" type="checkbox" checked> INTERACTION EFFECTS</label>
 <div class="mixer-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-<p class="sound-mixer-note">Synthetic cinematic sound design. Enable audio with the main switch; browser audio permissions are respected.</p>
+<p class="sound-mixer-note">Original synthesized soundtrack. Audio begins only after you press play. Sound effects can be disabled independently.</p>
 </div></div><button class="top-btn command-launch" id="commandOpen">⌘&nbsp; COMMAND DECK</button><button class="top-btn" id="helpBtn">HOW TO EXPLORE&nbsp; ↗</button></div></header>
 <section class="hero"><div class="eyebrow">01 / OUR NEIGHBOURHOOD</div><h1>A universe<br>in motion.</h1><p>Travel through our Solar System. Observe worlds shaped by gravity, sunlight and deep time — rendered in interactive three-dimensional space.</p><div class="hero-meta"><div class="meta-item"><b>4.6B</b><small>YEARS OLD</small></div><div class="meta-item"><b>8</b><small>PLANETS</small></div><div class="meta-item"><b>1</b><small>STAR</small></div></div></section>
 <aside class="panel"><div class="panel-head"><span>CELESTIAL PROFILE</span><div class="index" id="index">03 / 08</div></div><div class="planet-art"><div class="planet-preview" id="planetPreview"></div></div><div class="panel-body"><div class="planet-kicker" id="planetType">TERRESTRIAL PLANET</div><h2 class="planet-title" id="planetName">Earth</h2><p class="planet-desc" id="planetDesc">Our pale blue home, the only world currently known to support life.</p><div class="stats"><div class="stat"><small>DIAMETER</small><b id="diameter">12,742 km</b></div><div class="stat"><small>ORBITAL PERIOD</small><b id="year">365.25 days</b></div><div class="stat"><small>ROTATION</small><b id="day">23h 56m</b></div><div class="stat"><small>KNOWN MOONS</small><b id="moons">1</b></div><div class="stat"><small>DISTANCE FROM SUN</small><b id="distanceFromSun">0.989 AU</b></div><div class="stat"><small>ORBITAL SPEED</small><b id="orbitalSpeed">30.1 km/s</b></div></div><div class="fact"><strong>FIELD NOTE</strong><span id="fact">Earth's atmosphere scatters blue light, giving the planet its familiar colour.</span></div></div></aside>
@@ -61,6 +72,7 @@
 <div class="sky-howto" aria-label="How to use the night sky map"><div class="sky-howto-step"><b>01</b><span><strong>Choose a place</strong><small>Set your location and time.</small></span></div><div class="sky-howto-step"><b>02</b><span><strong>Find a pattern</strong><small>Choose a constellation or search a star.</small></span></div><div class="sky-howto-step"><b>03</b><span><strong>Tap a star</strong><small>Read its name and position.</small></span></div></div>
 <div class="sky-layout"><div class="sky-frame">
 <div class="sky-overlay-label">YOUR SKY DOME · OUTER EDGE = HORIZON</div>
+<div class="sky-map-toolbar"><span>SKY DOME VIEW</span><div class="sky-zoom-controls"><button id="skyZoomOut" type="button" aria-label="Zoom out">−</button><button id="skyZoomReset" type="button" aria-label="Reset zoom">100%</button><button id="skyZoomIn" type="button" aria-label="Zoom in">+</button></div></div>
 <div class="sky-canvas-wrap"><canvas id="skyCanvas" role="img" aria-label="Stereographic night sky chart showing stars above the local horizon, constellation figures and official constellation boundaries"></canvas></div>
 <div class="sky-legend"><span>STARS</span><span>CONSTELLATION LINES</span><span>SKY-AREA BORDERS</span><span>SELECTED STAR</span></div>
 <div class="sky-chart-foot" id="skyCatalogStats">Loading stellar catalogue…</div>
@@ -75,6 +87,7 @@
 <div class="sky-search-panel">
 <label class="sky-select-label" for="skyStarSearch">SEARCH FOR A STAR</label>
 <input id="skyStarSearch" class="sky-star-search" type="search" placeholder="e.g. Sirius, Vega, HIP 32349" autocomplete="off">
+<div class="sky-star-shortcuts" aria-label="Popular bright stars"><button type="button" data-sky-star="Sirius">Sirius</button><button type="button" data-sky-star="Vega">Vega</button><button type="button" data-sky-star="Polaris">Polaris</button><button type="button" data-sky-star="Betelgeuse">Betelgeuse</button></div>
 <div class="sky-search-results" id="skyStarResults"></div>
 <div class="sky-selected-star" id="skySelectedStar" aria-live="polite">Select a catalogue star on the chart or search by name, Bayer designation or HIP number.</div>
 </div>
@@ -87,7 +100,9 @@
 <input id="skyMagnitude" type="range" min="1" max="6.5" step=".5" value="6.5">
 </div>
 <div class="sky-observer-title"><strong>YOUR OBSERVING LOCATION</strong><span>Stars move as Earth rotates.</span></div>
+<div class="sky-time-tools" aria-label="Adjust observing time"><button id="skyBackHour" type="button">− 1 HOUR</button><button id="skyNextHour" type="button">+ 1 HOUR</button><button id="skyNextDay" type="button">+ 1 DAY</button><button id="skyTonight" type="button">TONIGHT</button></div>
 <div class="sky-controls"><div class="sky-field" style="grid-column:1/-1"><label>DATE & LOCAL TIME</label><input id="skyDateTime" type="datetime-local"></div><div class="sky-field"><label>LATITUDE (°)</label><input id="skyLat" type="number" min="-90" max="90" step=".01" value="28.61"></div><div class="sky-field"><label>LONGITUDE (°)</label><input id="skyLon" type="number" min="-180" max="180" step=".01" value="77.21"></div></div>
+<div class="sky-locate-row"><button id="skyLocate" class="tool-btn advanced" type="button">◎ &nbsp; USE MY LOCATION</button><span id="skyLocationStatus" role="status">Using the default observer coordinates.</span></div>
 <div class="sky-map-key"><div><b>CENTRE</b><span>Sky directly above you</span></div><div><b>OUTER CIRCLE</b><span>Your horizon · 0° altitude</span></div><div><b>N · E · S · W</b><span>Compass directions around you</span></div><div><b>BRIGHTER DOT</b><span>A brighter star in the sky</span></div></div>
 <div class="sky-readout" id="skyReadout">LOCAL TIME: --<br>SIDEREAL ROTATION: --<br>CHART MODE: STEREOGRAPHIC</div>
 <div class="sky-planet-list" aria-live="polite"><div class="sky-planet-head"><span>PLANETARY OBSERVATIONS</span><span>GEOMETRIC HORIZON</span></div><div id="skyPlanetReadout"><div class="sky-planet-empty">CALCULATING OBSERVER EPHEMERIS…</div></div><div class="sky-planet-foot">JPL APPROXIMATE POSITIONS · ATMOSPHERIC REFRACTION OMITTED</div></div>
