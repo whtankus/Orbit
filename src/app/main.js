@@ -91,7 +91,27 @@ function setSimulationDate(value,updateSky=true){
  if(updateSky&&$('skyDateTime')){$('skyDateTime').value=localDateValue(simulationDate);if(document.getElementById('skyPage')?.classList.contains('open'))drawSkyChart();}
  return true;
 }
-const sphereGeo=new THREE.SphereGeometry(1,64,64);
+const sphereSegments=window.matchMedia('(max-width:700px)').matches?80:128;
+const sphereGeo=new THREE.SphereGeometry(1,sphereSegments,Math.round(sphereSegments*.75));
+function makeSaturnRingTexture(){
+ const size=768,canvas=document.createElement('canvas');canvas.width=canvas.height=size;
+ const ctx=canvas.getContext('2d'),image=ctx.createImageData(size,size),pixels=image.data,centre=(size-1)/2;
+ for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+  const radius=Math.hypot(x-centre,y-centre)/(size*.5),i=(y*size+x)*4;
+  if(radius<.475||radius>1){pixels[i+3]=0;continue;}
+  const band=Math.sin(radius*410)+.42*Math.sin(radius*1130)+.2*Math.sin(radius*2370);
+  const gap=(radius>.755&&radius<.785)||(radius>.91&&radius<.922);
+  const density=gap?.06:THREE.MathUtils.clamp(.55+band*.17,0,1);
+  const warm=radius>.82?1:radius>.66?.88:.72;
+  pixels[i]=Math.round((174+34*density)*warm);
+  pixels[i+1]=Math.round((151+31*density)*warm);
+  pixels[i+2]=Math.round((116+27*density)*warm);
+  pixels[i+3]=Math.round(255*density*(.76+.2*Math.sin(radius*81)));
+ }
+ ctx.putImageData(image,0,0);
+ const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
+ texture.anisotropy=renderer.capabilities.getMaxAnisotropy();texture.needsUpdate=true;return texture;
+}
 function makePlanet(name,d){const group=new THREE.Group();scene.add(group);
 const surfaceFinish={Mercury:[.96,0],Venus:[.98,.04],Earth:[.68,.28],Mars:[.92,.02],Jupiter:[.9,.03],Saturn:[.86,.08],Uranus:[.72,.16],Neptune:[.68,.18]}[name]||[.82,0];
 const material=new THREE.MeshPhysicalMaterial({color:d.color,roughness:surfaceFinish[0],metalness:0,clearcoat:surfaceFinish[1],clearcoatRoughness:.48});
@@ -107,9 +127,11 @@ if(name==='Venus'){
  haze.scale.setScalar(d.radius*1.025);group.add(haze);
 }
 if(name==='Saturn'){
- const tilt=new THREE.Euler(Math.PI/2.35,.12,0);
- const addRing=(innerRadius,outerRadius,color,opacity)=>{const ring=new THREE.Mesh(new THREE.RingGeometry(d.radius*innerRadius,d.radius*outerRadius,256),new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,transparent:true,opacity,depthWrite:false}));ring.rotation.copy(tilt);group.add(ring)};
- addRing(1.12,1.18,0x62594f,.25);addRing(1.18,1.36,0x89765d,.38);addRing(1.38,1.66,0xd8c7a3,.82);addRing(1.66,1.92,0xc5b28f,.62);addRing(1.92,2.01,0x302b29,.12);addRing(2.02,2.18,0xb9a57f,.52);addRing(2.18,2.35,0xd8c9a8,.68);
+ const ring=new THREE.Mesh(
+  new THREE.RingGeometry(d.radius*1.12,d.radius*2.35,384),
+  new THREE.MeshStandardMaterial({map:makeSaturnRingTexture(),side:THREE.DoubleSide,transparent:true,roughness:.94,metalness:0,depthWrite:false})
+ );
+ ring.rotation.copy(new THREE.Euler(Math.PI/2.35,.12,0));ring.renderOrder=2;group.add(ring);
 }
 if(name==='Uranus'){const ring=new THREE.Mesh(new THREE.RingGeometry(d.radius*1.45,d.radius*1.95,128),new THREE.MeshBasicMaterial({color:0x8abfc3,side:THREE.DoubleSide,transparent:true,opacity:.24,depthWrite:false}));ring.rotation.x=Math.PI/2.1;group.add(ring)}
 const orbit=makeOrbit(name,d.dist||0);orbitLines[name]=orbit;const angle=Math.random()*Math.PI*2;planetObjects[name]={group,mesh,material,angle,orbit,d};
@@ -159,7 +181,7 @@ $('playBtn').addEventListener('click',()=>{paused=!paused;$('playBtn').innerHTML
 buildNav();selectBody('Earth');
 setSimulationDate(simulationDate,false);
 const clock=new THREE.Clock();function updateLabels(){for(const [name,el] of Object.entries(labels)){const p=planetObjects[name].group.position.clone();p.y+=planetObjects[name].d.radius*1.6;p.project(camera);const x=(p.x*.5+.5)*innerWidth,y=(-p.y*.5+.5)*innerHeight;el.style.left=x+'px';el.style.top=y+'px';el.style.opacity=(p.z<1&&x>0&&x<innerWidth&&y>0&&y<innerHeight&&showLabels)?'.85':'0';}}
-function animate(){requestAnimationFrame(animate);if(document.hidden)return;const dt=Math.min(clock.getDelta(),.05);if(!paused){elapsed+=dt*timeScale;simulationDate=new Date(simulationDate.getTime()+dt*timeScale*86400000);updatePlanetPositions(simulationDate);for(const [name,o] of Object.entries(planetObjects)){const rotationDays={Mercury:58.646,Venus:-243.025,Earth:.99727,Mars:1.02596,Jupiter:.41354,Saturn:.444,Uranus:-.718,Neptune:.671};o.mesh.rotation.y+=dt*timeScale*2*Math.PI/rotationDays[name];}for(const m of moonObjects){const period=m.spec.periodDays||27.3217;m.angle+=dt*timeScale*2*Math.PI/period;m.mesh.position.set(Math.cos(m.angle)*m.spec.distance,Math.sin(m.angle*.7)*.025,Math.sin(m.angle)*m.spec.distance);}earthClouds.rotation.y+=dt*timeScale*.018;sun.rotation.y+=dt*timeScale*.025;sunCorona.rotation.y+=dt*.012;sunOuterCorona.rotation.y-=dt*.008;stars.rotation.y+=dt*.000025;dust.rotation.y-=dt*.00005;belt.rotation.y+=dt*.0003;if(performance.now()-lastDateDisplayUpdate>500){lastDateDisplayUpdate=performance.now();updateSelectedEphemerisStats();$('simulationDateLabel').textContent=simulationDate.toLocaleString([], {dateStyle:'medium',timeStyle:'short'}).toUpperCase();$('telemetryDate').textContent=simulationDate.getFullYear()+'-'+String(simulationDate.getMonth()+1).padStart(2,'0')+'-'+String(simulationDate.getDate()).padStart(2,'0');if(document.activeElement!==$('simulationDate'))$('simulationDate').value=localDateValue(simulationDate);}}
+function animate(){requestAnimationFrame(animate);if(document.hidden)return;const dt=Math.min(clock.getDelta(),.05);if(!paused){elapsed+=dt*timeScale;simulationDate=new Date(simulationDate.getTime()+dt*timeScale*86400000);updatePlanetPositions(simulationDate);for(const [name,o] of Object.entries(planetObjects)){const rotationDays={Mercury:58.646,Venus:-243.025,Earth:.99727,Mars:1.02596,Jupiter:.41354,Saturn:.444,Uranus:-.718,Neptune:.671};o.mesh.rotation.y+=dt*timeScale*2*Math.PI/rotationDays[name];}for(const m of moonObjects){const period=m.spec.periodDays||27.3217;m.angle+=dt*timeScale*2*Math.PI/period;m.mesh.position.set(Math.cos(m.angle)*m.spec.distance,Math.sin(m.angle*.7)*.025,Math.sin(m.angle)*m.spec.distance);}earthClouds.rotation.y+=dt*timeScale*.022;earthNightLights.rotation.y=planetObjects.Earth.mesh.rotation.y;sunHalo.material.rotation+=dt*.006;sunHalo.scale.setScalar(22+Math.sin(elapsed*.42)*.42);sun.rotation.y+=dt*timeScale*.025;sunCorona.rotation.y+=dt*.012;sunOuterCorona.rotation.y-=dt*.008;stars.rotation.y+=dt*.000025;dust.rotation.y-=dt*.00005;belt.rotation.y+=dt*.0003;if(performance.now()-lastDateDisplayUpdate>500){lastDateDisplayUpdate=performance.now();updateSelectedEphemerisStats();$('simulationDateLabel').textContent=simulationDate.toLocaleString([], {dateStyle:'medium',timeStyle:'short'}).toUpperCase();$('telemetryDate').textContent=simulationDate.getFullYear()+'-'+String(simulationDate.getMonth()+1).padStart(2,'0')+'-'+String(simulationDate.getDate()).padStart(2,'0');if(document.activeElement!==$('simulationDate'))$('simulationDate').value=localDateValue(simulationDate);}}
 if(cameraTween){const t=Math.min(1,(performance.now()-cameraTween.start)/cameraTween.duration),e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;camera.position.lerpVectors(cameraTween.from,cameraTween.to,e);controls.target.lerpVectors(cameraTween.fromTarget,cameraTween.toTarget,e);if(t>=1)cameraTween=null;}controls.update();updateLabels();composer.render();}
 function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,window.matchMedia('(max-width: 700px)').matches?1.2:1.55));composer.setSize(innerWidth,innerHeight);bloomPass.strength=window.matchMedia('(max-width: 700px)').matches ? 0.42 : 0.62;}window.addEventListener('resize',resize);document.addEventListener('visibilitychange',()=>{if(document.hidden){clock.stop();}else{clock.start();resize();}});
 
@@ -176,6 +198,26 @@ const hudReticle=document.createElement('div');hudReticle.id='hudReticle';hudRet
 function makeCloudMap(){const c=document.createElement('canvas');c.width=1024;c.height=512;const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);for(let i=0;i<1750;i++){const px=Math.random()*c.width,py=Math.random()*c.height,rx=3+Math.random()*25,ry=1+Math.random()*8,g=x.createRadialGradient(px,py,0,px,py,rx);g.addColorStop(0,'rgba(255,255,255,'+(0.025+Math.random()*.11)+')');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.ellipse(px,py,rx,ry,Math.random()*.6,0,Math.PI*2);x.fill()}const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
 const earthClouds=new THREE.Mesh(new THREE.SphereGeometry(data.Earth.radius*1.012,64,64),new THREE.MeshStandardMaterial({map:makeCloudMap(),transparent:true,opacity:.48,roughness:1,depthWrite:false}));planetObjects.Earth.group.add(earthClouds);
 const cloudLight=new THREE.PointLight(0x9dcfff,.5,4);cloudLight.position.set(1,1,1);earthClouds.add(cloudLight);
+const earthCloudMaterial=earthClouds.material;
+loader.load(textureBase+'2k_earth_clouds.jpg',texture=>{
+ texture.colorSpace=THREE.NoColorSpace;
+ earthCloudMaterial.alphaMap=texture;earthCloudMaterial.opacity=.62;earthCloudMaterial.needsUpdate=true;
+},undefined,()=>console.warn('Earth cloud texture unavailable; using procedural cloud deck'));
+const earthNightMaterial=new THREE.ShaderMaterial({
+ uniforms:{uNightMap:{value:null}},
+ vertexShader:`varying vec2 vUv;varying vec3 vNormalView;varying vec3 vWorldPosition;
+ void main(){vUv=uv;vec4 worldPosition=modelMatrix*vec4(position,1.0);vWorldPosition=worldPosition.xyz;vNormalView=normalize(normalMatrix*normal);gl_Position=projectionMatrix*viewMatrix*worldPosition;}`,
+ fragmentShader:`uniform sampler2D uNightMap;varying vec2 vUv;varying vec3 vNormalView;varying vec3 vWorldPosition;
+ void main(){vec3 sunDirection=normalize((viewMatrix*vec4(-vWorldPosition,0.0)).xyz);float sunFacing=dot(normalize(vNormalView),sunDirection);float nightSide=1.0-smoothstep(-0.12,0.08,sunFacing);vec3 lights=texture2D(uNightMap,vUv).rgb;float signal=max(max(lights.r,lights.g),lights.b);float alpha=nightSide*smoothstep(0.025,0.22,signal)*0.92;gl_FragColor=vec4(lights*vec3(1.0,0.72,0.38)*1.65,alpha);}`,
+ transparent:true,depthWrite:false,blending:THREE.AdditiveBlending
+});
+const earthNightLights=new THREE.Mesh(new THREE.SphereGeometry(data.Earth.radius*1.004,96,72),earthNightMaterial);
+earthNightLights.renderOrder=3;planetObjects.Earth.group.add(earthNightLights);
+loader.load(textureBase+'2k_earth_nightmap.jpg',texture=>{
+ texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=renderer.capabilities.getMaxAnisotropy();
+ earthNightMaterial.uniforms.uNightMap.value=texture;earthNightMaterial.needsUpdate=true;
+},undefined,()=>console.warn('Earth night map unavailable'));
+
 // Add scaled natural satellites with individual orbital paths.
 const moonSpecs=[
 {name:'Moon',host:'Earth',radius:.105,distance:1.18,speed:.62,periodDays:27.3217,color:0xb8b9bb},
