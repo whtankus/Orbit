@@ -162,3 +162,63 @@ test("desktop and mobile layouts have dedicated Sound Studio and observatory com
   assert.match(styles, /button:hover/);
   assert.match(html, /STUDIO&nbsp; \+/);
 });
+
+
+
+test("responsive navigation preserves readable controls instead of shrinking the header", () => {
+  assert.ok(styles.includes("Responsive foundation — predictable layouts across viewport sizes"));
+  assert.ok(styles.includes("grid-template-rows:1fr 1fr"));
+  assert.ok(styles.includes("overflow-x:auto"));
+  assert.ok(styles.includes("env(safe-area-inset-bottom)"));
+  assert.ok(styles.includes("100dvh"));
+});
+
+test("the 3D renderer uses a lower pixel ratio on compact screens and pauses hidden tabs", () => {
+  assert.ok(app.includes("matches?1.2:1.55"));
+  assert.ok(app.includes("if(document.hidden)return"));
+  assert.ok(app.includes("document.addEventListener('visibilitychange'"));
+});
+
+
+test("section navigation and hidden panels expose accurate accessibility state", () => {
+  for (const id of ["historyPage","skyPage","researchPage"]) {
+    assert.match(html, new RegExp('id="' + id + '" aria-hidden="true"'));
+  }
+  assert.ok(html.includes('aria-controls="historyPage"'));
+  assert.ok(html.includes('aria-controls="skyPage"'));
+  assert.ok(html.includes('aria-controls="researchPage"'));
+  assert.ok(html.includes('id="soundMixer" aria-hidden="true" inert'));
+  assert.ok(app.includes("p.setAttribute('aria-hidden',String(!visible))"));
+  assert.ok(app.includes("b.setAttribute('aria-pressed',String(selected))"));
+  assert.ok(app.includes("setAttribute('inert','')"));
+});
+
+
+test("research cards group their reference links into aligned action areas", () => {
+  assert.equal((html.match(/class="research-links"/g) || []).length, 5);
+  assert.match(styles, /\.research-links\{display:grid/);
+  assert.match(styles, /\.research-card \.research-links a\{display:flex/);
+});
+
+
+test("planet hover reveals a compact accessible readout and double-click starts a closer approach", () => {
+  assert.match(app, /id='celestialHover'/);
+  assert.match(app, /aria-live','polite'/);
+  assert.match(app, /function hideCelestialHover\(\)/);
+  assert.match(app, /renderer\.domElement\.addEventListener\('pointerleave',hideCelestialHover\)/);
+  assert.match(app, /renderer\.domElement\.addEventListener\('dblclick'/);
+  assert.match(app, /CLOSE APPROACH/);
+  assert.match(styles, /\.celestial-hover\.visible/);
+  assert.match(styles, /@media\(max-width:600px\)\{\.celestial-hover\{display:none\}\}/);
+});
+
+
+test("cosmic timeline announces progress and exposes playback and selected-era state", () => {
+  assert.match(html, /id="timelineProgress" role="status" aria-live="polite"/);
+  assert.match(html, /id="historyPlay"[^>]*aria-pressed="false"/);
+  assert.match(app, /aria-label="Go to era /);
+  assert.match(app, /b\.setAttribute\('aria-pressed',String\(selected\)\)/);
+  assert.match(app, /b\.setAttribute\('aria-current','step'\)/);
+  assert.match(app, /\$\('historyPlay'\)\.setAttribute\('aria-pressed','true'\)/);
+  assert.match(app, /\$\('historyPlay'\)\.setAttribute\('aria-pressed','false'\)/);
+});
