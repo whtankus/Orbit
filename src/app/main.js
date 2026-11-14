@@ -306,66 +306,100 @@ function noiseSweep(duration=1.05,pan=0,low=90,high=2600,level=.045){
 function soundEffect(kind='ui'){
  if(!soundEnabled||!effectsEnabled||!ensureAudio())return;
  const now=audioCtx.currentTime;
- const voice=(frequency,duration,volume,pan=0,shape='sine',endFrequency=null)=>{
-  const osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),amp=audioCtx.createGain();
-  const panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null;
-  osc.type=shape;osc.frequency.setValueAtTime(frequency,now);
-  if(endFrequency)osc.frequency.exponentialRampToValueAtTime(Math.max(25,endFrequency),now+duration);
-  filter.type='lowpass';filter.frequency.setValueAtTime(shape==='triangle'?1800:3200,now);filter.Q.value=.55;
-  amp.gain.setValueAtTime(.0001,now);
-  amp.gain.exponentialRampToValueAtTime(volume,now+.035);
-  amp.gain.exponentialRampToValueAtTime(.0001,now+duration);
-  osc.connect(filter);filter.connect(amp);
-  if(panner){panner.pan.value=pan;amp.connect(panner);panner.connect(masterGain);amp.connect(sendBus)}
-  else{amp.connect(masterGain);amp.connect(sendBus)}
-  osc.start(now);osc.stop(now+duration+.04);
+ const reverbBus=audioCtx.createGain();reverbBus.gain.value=.2;reverbBus.connect(spaceReverb);
+ const tone=(frequency,duration,level,pan=0,wave='sine',endFrequency=null,cutoff=2400,delay=0)=>{
+  const start=now+delay,osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),amp=audioCtx.createGain();
+  const panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null,send=audioCtx.createGain();
+  osc.type=wave;osc.frequency.setValueAtTime(Math.max(22,frequency),start);
+  if(endFrequency)osc.frequency.exponentialRampToValueAtTime(Math.max(22,endFrequency),start+duration);
+  filter.type='lowpass';filter.frequency.setValueAtTime(cutoff,start);filter.frequency.exponentialRampToValueAtTime(Math.max(180,cutoff*.54),start+duration);filter.Q.value=.65;
+  amp.gain.setValueAtTime(.0001,start);amp.gain.linearRampToValueAtTime(level,start+.045);
+  amp.gain.setTargetAtTime(.0001,start+duration*.48,Math.max(.06,duration*.24));
+  send.gain.value=.24;osc.connect(filter);filter.connect(amp);
+  if(panner){panner.pan.value=Math.max(-1,Math.min(1,pan));amp.connect(panner);panner.connect(masterGain);amp.connect(send)}
+  else{amp.connect(masterGain);amp.connect(send)}
+  send.connect(reverbBus);osc.start(start);osc.stop(start+duration+.12);
  };
- const sendBus=audioCtx.createGain();sendBus.gain.value=.22;sendBus.connect(spaceReverb);
- const softNoise=(duration,pan=0)=>{
+ const filteredSweep=(duration,pan=0,from=260,to=1800,level=.012)=>{
   if(!noiseBuffer)return;
-  const src=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();
-  const p=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null;
-  src.buffer=noiseBuffer;filter.type='bandpass';filter.frequency.value=kind==='travel'?620:1150;filter.Q.value=.72;
-  gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(.009,now+.08);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
-  src.connect(filter);filter.connect(gain);
-  if(p){p.pan.value=pan;gain.connect(p);p.connect(masterGain)}else gain.connect(masterGain);
-  src.start(now);src.stop(now+duration+.03);
+  const source=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();
+  const panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null;
+  source.buffer=noiseBuffer;source.loop=true;filter.type='bandpass';filter.Q.value=.72;
+  filter.frequency.setValueAtTime(from,now);filter.frequency.exponentialRampToValueAtTime(to,now+duration*.48);
+  filter.frequency.exponentialRampToValueAtTime(Math.max(80,from*.82),now+duration);
+  gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(level,now+duration*.24);
+  gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
+  source.connect(filter);filter.connect(gain);
+  if(panner){panner.pan.value=pan;gain.connect(panner);panner.connect(masterGain)}else gain.connect(masterGain);
+  source.start(now);source.stop(now+duration+.05);
  };
  if(kind==='focus'){
-  voice(392,.42,.012,-.22,'sine',440);voice(587.33,.62,.009,.2,'triangle',659.25);
+  tone(174.61,.76,.014,-.24,'sine',196,900);
+  tone(261.63,.72,.011,.12,'triangle',293.66,1500,.04);
+  tone(523.25,.62,.004,.34,'sine',587.33,2700,.09);
+  filteredSweep(.45,-.2,320,1450,.006);
  }else if(kind==='travel'){
-  softNoise(1.05,-.12);voice(55,1.2,.018,0,'sine',41.2);voice(110,.85,.009,.22,'triangle',164.8);voice(440,.72,.006,-.2,'sine',587.33);
+  tone(43.65,1.5,.026,-.12,'sine',32.7,240);
+  tone(87.31,1.05,.011,.18,'triangle',130.81,520,.05);
+  tone(220,.9,.005,.35,'sine',329.63,1250,.12);
+  filteredSweep(1.25,-.22,100,1250,.019);
  }else if(kind==='history'){
-  voice(130.81,.9,.012,-.18,'sine',98);voice(261.63,.75,.008,.18,'triangle',329.63);
+  tone(98,.95,.012,-.2,'sine',73.42,420);
+  tone(146.83,1.1,.009,.06,'triangle',196,950,.08);
+  tone(293.66,.9,.005,.3,'sine',349.23,1800,.16);
+  filteredSweep(.85,.2,180,900,.008);
  }else if(kind==='chart'){
-  voice(523.25,.32,.008,-.12,'sine',587.33);voice(783.99,.48,.005,.16,'sine',880);
+  tone(659.25,.34,.008,-.16,'sine',783.99,3000);
+  tone(987.77,.52,.005,.18,'sine',1174.66,3600,.07);
+ }else if(kind==='page'){
+  tone(196,.54,.009,-.18,'sine',220,1100);
+  tone(293.66,.62,.007,.12,'triangle',349.23,1900,.055);
+  tone(440,.68,.003,.3,'sine',523.25,2800,.11);
  }else if(kind==='toggle'){
-  voice(329.63,.24,.009,-.08,'sine',392);voice(493.88,.34,.006,.1,'triangle',587.33);
+  tone(349.23,.2,.007,-.08,'sine',392,1500);
+  tone(523.25,.28,.004,.12,'triangle',587.33,2300,.035);
  }else{
-  voice(440,.11,.003,0,'sine',466.16);
+  tone(440,.13,.003,0,'sine',466.16,1700);
  }
- setTimeout(()=>{try{sendBus.disconnect()}catch(e){}},1800);
+ setTimeout(()=>{try{reverbBus.disconnect()}catch(e){}},2600);
 }
 function startAmbient(){
  if(!soundEnabled||!ambienceEnabled||!ensureAudio()||ambientNodes.length)return;
  const now=audioCtx.currentTime;
- const addDrone=(freq,detune,level,wave='sine',pan=0)=>{
-  const osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain(),panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null,lfo=audioCtx.createOscillator(),lfoGain=audioCtx.createGain();
-  osc.type=wave;osc.frequency.value=freq;osc.detune.value=detune;filter.type='lowpass';filter.frequency.value=wave==='triangle'?420:260;filter.Q.value=.5;
-  gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(level,now+3.2);
-  lfo.type='sine';lfo.frequency.value=.035+Math.random()*.035;lfoGain.gain.value=wave==='triangle'?45:18;lfo.connect(lfoGain);lfoGain.connect(filter.frequency);
-  osc.connect(filter);filter.connect(gain);if(panner){panner.pan.value=pan;gain.connect(panner);panner.connect(masterGain)}else gain.connect(masterGain);
+ const addPad=(freq,detune,level,wave='sine',pan=0,cutoff=430)=>{
+  const osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();
+  const panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null;
+  const lfo=audioCtx.createOscillator(),depth=audioCtx.createGain();
+  osc.type=wave;osc.frequency.value=freq;osc.detune.value=detune;
+  filter.type='lowpass';filter.frequency.value=cutoff;filter.Q.value=.55;
+  gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(level,now+4.8);
+  lfo.type='sine';lfo.frequency.value=.025+Math.random()*.025;
+  depth.gain.value=cutoff*.16;lfo.connect(depth);depth.connect(filter.frequency);
+  osc.connect(filter);filter.connect(gain);
+  if(panner){panner.pan.value=pan;gain.connect(panner);panner.connect(masterGain);gain.connect(spaceReverb)}
+  else{gain.connect(masterGain);gain.connect(spaceReverb)}
   osc.start();lfo.start();ambientNodes.push({source:osc,gain,lfo,filter});
  };
- addDrone(43.65,-5,.012,'sine',-.22);addDrone(65.41,4,.009,'sine',.2);addDrone(87.31,-3,.006,'triangle',-.08);addDrone(130.81,2,.003,'sine',.25);
- const makeNoiseLayer=(type,frequency,q,level,pan,rate)=>{
-  const source=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain(),panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null,lfo=audioCtx.createOscillator(),depth=audioCtx.createGain();
-  source.buffer=noiseBuffer;source.loop=true;filter.type=type;filter.frequency.value=frequency;filter.Q.value=q;gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(level,now+4.5);
-  lfo.frequency.value=rate;lfo.type='sine';depth.gain.value=type==='lowpass'?85:frequency*.12;lfo.connect(depth);depth.connect(filter.frequency);
-  source.connect(filter);filter.connect(gain);if(panner){panner.pan.value=pan;gain.connect(panner);panner.connect(masterGain)}else gain.connect(masterGain);
+ // Soft, widely spaced harmonic layers create a slow, non-melodic celestial bed.
+ addPad(55, -4,.0065,'sine',-.38,190);
+ addPad(82.41, 3,.0048,'sine',.28,260);
+ addPad(110, -2,.0034,'triangle',-.12,390);
+ addPad(164.81, 2,.0022,'sine',.36,620);
+ addPad(220, -3,.0011,'triangle',-.3,900);
+ const addTexture=(type,frequency,q,level,pan,rate)=>{
+  const source=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();
+  const panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null,lfo=audioCtx.createOscillator(),depth=audioCtx.createGain();
+  source.buffer=noiseBuffer;source.loop=true;filter.type=type;filter.frequency.value=frequency;filter.Q.value=q;
+  gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(level,now+5.5);
+  lfo.type='sine';lfo.frequency.value=rate;depth.gain.value=frequency*.14;lfo.connect(depth);depth.connect(filter.frequency);
+  source.connect(filter);filter.connect(gain);
+  if(panner){panner.pan.value=pan;gain.connect(panner);panner.connect(masterGain);gain.connect(spaceReverb)}
+  else{gain.connect(masterGain);gain.connect(spaceReverb)}
   source.start();lfo.start();ambientNodes.push({source,gain,lfo,filter});
  };
- makeNoiseLayer('lowpass',210,.55,.009,-.35,.018);makeNoiseLayer('bandpass',640,.7,.0028,.28,.025);makeNoiseLayer('bandpass',2250,.45,.0012,.42,.011);
+ addTexture('lowpass',155,.5,.0032,-.32,.014);
+ addTexture('bandpass',480,.65,.0011,.28,.019);
+ addTexture('bandpass',1450,.5,.00035,.42,.009);
 }
 function stopAmbient(){
  if(!audioCtx){ambientNodes=[];return}
@@ -395,6 +429,8 @@ document.addEventListener('click',e=>{
  if(!b||b.id==='soundToggle'||b.id==='soundMixerToggle')return;
  let kind=null;
  if(b.classList.contains('body-btn'))kind='focus';
+ else if(b.classList.contains('nav-tab')||b.hasAttribute('data-close-page')||b.id==='commandOpen')kind='page';
+ else if(b.classList.contains('sky-search-result'))kind='chart';
  else if(['historyNext','historyPrev','historyPlay'].includes(b.id)||b.dataset.epoch!==undefined)kind='history';
  else if(['skyNow','skyReset'].includes(b.id))kind='chart';
  else if(['playBtn','orbitsBtn','labelsBtn','cloudsBtn','moonsBtn','cinemaBtn','resetBtn'].includes(b.id))kind='toggle';
