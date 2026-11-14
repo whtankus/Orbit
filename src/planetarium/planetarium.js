@@ -190,6 +190,7 @@ export async function createPlanetarium({
   let cachedStarEquatorial = [];
   let cachedBoundaries = [];
   let lastVisibleCount = 0;
+  let zoomFactor = 1;
 
   if (constellationSelect) {
     constellationSelect.replaceChildren();
@@ -230,7 +231,7 @@ export async function createPlanetarium({
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     return {
       w, h, cx: w / 2, cy: h / 2,
-      radius: Math.min(w, h) * 0.405,
+      radius: Math.min(w, h) * 0.405 * zoomFactor,
       dpr, date,
       latitude: Number(latitudeInput?.value ?? 0),
       longitude: Number(longitudeInput?.value ?? 0)
@@ -651,6 +652,17 @@ export async function createPlanetarium({
 
   return {
     render,
+    zoom(delta) {
+      zoomFactor = clamp(zoomFactor + Number(delta || 0), 0.78, 1.34);
+      render();
+      return zoomFactor;
+    },
+    resetZoom() {
+      zoomFactor = 1;
+      render();
+      return zoomFactor;
+    },
+    get zoomFactor() { return zoomFactor; },
     selectConstellation(iau) {
       if (constellationByCode.has(iau)) {
         selectedCode = iau;
