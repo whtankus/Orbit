@@ -10,6 +10,7 @@ import {
   observerEphemeris,
   greenwichMeanSiderealTime,
   precessJ2000EquatorialToDate,
+  precessEquatorialBetweenEpochs,
   equatorialToHorizontal
 } from "../src/astronomy/index.js";
 
@@ -76,4 +77,14 @@ test("observer ephemeris returns altitude and azimuth for the major planets", ()
   assert.ok(result.distanceAU > 0);
   assert.ok(result.altitudeDeg >= -90 && result.altitudeDeg <= 90);
   assert.ok(result.azimuthDeg >= 0 && result.azimuthDeg < 360);
+});
+
+test("arbitrary-epoch precession round-trips B1875 and J2000 coordinates", () => {
+  const jdB1875 = 2415020.31352 + (1875 - 1900) * 365.242198781;
+  const source = { ra: 343.0, dec: 34.5 };
+  const j2000 = precessEquatorialBetweenEpochs(source.ra, source.dec, jdB1875, 2451545.0);
+  const back = precessEquatorialBetweenEpochs(j2000.rightAscensionDeg, j2000.declinationDeg, 2451545.0, jdB1875);
+  const deltaRa = Math.abs(((back.rightAscensionDeg - source.ra + 540) % 360) - 180);
+  assert.ok(deltaRa < 1e-7);
+  assert.ok(Math.abs(back.declinationDeg - source.dec) < 1e-7);
 });
