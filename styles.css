@@ -1272,3 +1272,62 @@ button:focus-visible{outline:2px solid #c4f0ff;outline-offset:4px;box-shadow:0 0
  .track-copy strong{font-size:12px}
  .sky-time-tools button{font-size:9px}
 }
+
+
+/* ORBIT 6.0 — consistent card, action and title alignment */
+.page-shell{width:min(100%,1580px);margin-inline:auto}
+.page-topline{display:flex;justify-content:space-between;align-items:flex-end;gap:32px}
+.page-topline>div{min-width:0;flex:1}
+.page-title{max-width:18ch;text-wrap:balance}
+.page-intro{max-width:72ch}
+.page-close{align-self:flex-end;white-space:nowrap;margin-bottom:2px}
+.research-grid{align-items:stretch;grid-auto-rows:1fr}
+.research-card{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.research-card .research-index{min-height:1.5em}
+.research-card h3{width:100%;min-height:2.24em;max-width:78%;margin:15px 0 12px;text-wrap:balance}
+.research-card p{width:100%;flex:1;margin:0 0 4px}
+.research-tags{margin:17px 0 14px;min-height:32px;align-content:flex-start}
+.research-card a{display:inline-flex;align-items:center;min-height:38px;margin:3px 9px 3px 0;padding:7px 10px;border:1px solid #a8d8f232;border-radius:8px;background:#9edcff0a;line-height:1.45}
+.research-card a:hover{background:#9edcff1b;border-color:#a8e4ff88;text-decoration:none}
+.history-layout{align-items:stretch}
+.history-info{display:flex;flex-direction:column;align-items:flex-start}
+.history-info h3{max-width:14ch;text-wrap:balance}
+.history-info p{max-width:62ch}
+.history-stat{width:100%;margin-top:auto;padding-top:22px}
+.sky-layout{align-items:start}
+.sky-info{align-self:start}
+.sky-info h3{max-width:18ch;text-wrap:balance}
+.sky-quick-picks button,.sky-star-shortcuts button{display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.timeline-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.timeline-actions .stage-caption{flex:1;min-width:180px;text-align:center}
+.timeline-actions .tool-btn{white-space:nowrap}
+.command-grid{align-items:stretch}
+.command-item{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;text-align:left}
+.command-item b,.command-item small{display:block;width:100%;overflow-wrap:anywhere}
+.body-strip,.controls{align-items:center}
+.controls .tool-btn{white-space:nowrap}
+@media(max-width:900px){
+ .page-topline{align-items:flex-start}
+ .page-close{align-self:flex-start}
+ .research-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .research-card{min-height:340px}
+}
+@media(max-width:600px){
+ .page-topline{gap:13px}
+ .page-title{max-width:100%;text-wrap:pretty}
+ .page-close{margin:0}
+ .research-grid{grid-template-columns:minmax(0,1fr)}
+ .research-card{min-height:0;padding:22px}
+ .research-card h3{min-height:0;max-width:82%;margin:13px 0 10px}
+ .research-card p{flex:initial}
+ .research-tags{min-height:0;margin:14px 0 11px}
+ .research-card a{min-height:40px;margin:4px 6px 2px 0;padding:8px 10px;font-size:9px}
+ .history-stat{margin-top:18px;padding-top:0}
+ .timeline-actions{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+ .timeline-actions .stage-caption{grid-column:1/-1;grid-row:1;text-align:left;min-width:0}
+ .timeline-actions .tool-btn{width:100%;white-space:normal}
+ .sky-quick-picks button{flex:1 1 auto;min-width:calc(33.333% - 8px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .research-card a{transition:none}
+}
