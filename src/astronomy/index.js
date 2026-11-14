@@ -12,5 +12,6 @@ export {
 export {
   greenwichMeanSiderealTime,
   eclipticJ2000ToEquatorial,
+  precessJ2000EquatorialToDate,
   equatorialToHorizontal
 } from "./coordinates.js";
