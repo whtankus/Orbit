@@ -247,43 +247,116 @@ export async function createPlanetarium({
   function drawBackground(view) {
     const { w, h, cx, cy, radius } = view;
     ctx.clearRect(0, 0, w, h);
-    const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 1.6);
-    bg.addColorStop(0, "#112b4b");
-    bg.addColorStop(.55, "#09182b");
-    bg.addColorStop(1, "#030915");
+
+    // Layered twilight-blue field with a subtle luminous centre.
+    const bg = ctx.createRadialGradient(cx, cy * .82, 0, cx, cy, radius * 1.65);
+    bg.addColorStop(0, "#1b456b");
+    bg.addColorStop(.42, "#102b49");
+    bg.addColorStop(.78, "#07182d");
+    bg.addColorStop(1, "#020812");
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, w, h);
 
-    // Zenith-centred stereographic projection with altitude circles.
+    // A restrained background star field makes the chart read as a sky dome.
     ctx.save();
-    ctx.strokeStyle = "rgba(151,194,232,.17)";
-    ctx.lineWidth = 1;
-    [0, 30, 60].forEach(alt => {
-      const rho = Math.tan((90 - alt) * DEG / 2) / Math.tan(45 * DEG / 2);
+    for (let i = 0; i < 130; i++) {
+      const x = ((i * 197.3) % 997) / 997 * w;
+      const y = ((i * 317.7 + 41) % 991) / 991 * h;
+      const dx = x - cx, dy = y - cy;
+      if (dx * dx + dy * dy > radius * radius * .96) continue;
+      const size = i % 17 === 0 ? 1.35 : i % 5 === 0 ? .8 : .45;
       ctx.beginPath();
-      ctx.arc(cx, cy, radius * rho, 0, Math.PI * 2);
-      ctx.stroke();
-    });
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = "rgba(170,211,245,.55)";
-    ctx.lineWidth = 1.35;
-    ctx.stroke();
-
-    ctx.fillStyle = "rgba(186,211,238,.72)";
-    ctx.font = "11px IBM Plex Mono, monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("ZENITH", cx, cy - 7);
-    const cardinals = [
-      ["N", 0], ["E", 90], ["S", 180], ["W", 270]
-    ];
-    for (const [label, az] of cardinals) {
-      const p = stereographicProject(0, az, cx, cy, radius * 1.075);
-      ctx.fillText(label, p.x, p.y + 3);
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fillStyle = i % 7 === 0 ? "rgba(255,222,174,.8)" : "rgba(206,231,255,.68)";
+      ctx.fill();
     }
     ctx.restore();
-  }
 
+    ctx.save();
+    // Altitude rings: 60° close to zenith, then 30°, then the 0° horizon rim.
+    const rings = [
+      { altitude: 60, label: "60°", alpha: .28 },
+      { altitude: 30, label: "30°", alpha: .34 }
+    ];
+    for (const ring of rings) {
+      const rho = Math.tan((90 - ring.altitude) * DEG / 2) / Math.tan(45 * DEG);
+      const r = radius * rho;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(177,218,248," + ring.alpha + ")";
+      ctx.lineWidth = 1.1;
+      ctx.setLineDash([5, 7]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font = "600 12px Space Grotesk, sans-serif";
+      ctx.textAlign = "right";
+      ctx.fillStyle = "rgba(213,235,255,.9)";
+      ctx.fillText(ring.label, cx - r + 20, cy - 8);
+    }
+
+    // The outer circle is the local horizon, not the edge of the universe.
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(164,220,255,.78)";
+    ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+    ctx.shadowColor = "#69caff";
+    ctx.shadowBlur = 12;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Compass ticks and four cardinal directions.
+    for (let degree = 0; degree < 360; degree += 5) {
+      const angle = degree * DEG;
+      const major = degree % 30 === 0;
+      const inner = radius * (major ? .965 : .982);
+      const outer = radius * .998;
+      const x1 = cx + Math.sin(angle) * inner;
+      const y1 = cy - Math.cos(angle) * inner;
+      const x2 = cx + Math.sin(angle) * outer;
+      const y2 = cy - Math.cos(angle) * outer;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = major ? "rgba(211,235,255,.72)" : "rgba(174,207,236,.28)";
+      ctx.lineWidth = major ? 1.4 : .7;
+      ctx.stroke();
+    }
+
+    ctx.font = "700 15px Space Grotesk, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const cardinals = [
+      ["N", 0, "#c6edff"], ["E", 90, "#d5e8ff"],
+      ["S", 180, "#d5e8ff"], ["W", 270, "#d5e8ff"]
+    ];
+    for (const [label, az, colour] of cardinals) {
+      const p = stereographicProject(0, az, cx, cy, radius * 1.065);
+      ctx.fillStyle = colour;
+      ctx.shadowColor = "#72cfff";
+      ctx.shadowBlur = label === "N" ? 9 : 0;
+      ctx.fillText(label, p.x, p.y);
+    }
+    ctx.shadowBlur = 0;
+    ctx.textBaseline = "alphabetic";
+
+    // The centre is the point directly above the observer.
+    ctx.beginPath();
+    ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+    ctx.fillStyle = "#f5fbff";
+    ctx.shadowColor = "#9edfff";
+    ctx.shadowBlur = 12;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.font = "600 11px IBM Plex Mono, monospace";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(222,241,255,.96)";
+    ctx.fillText("STRAIGHT UP", cx, cy - 13);
+    ctx.font = "600 10px IBM Plex Mono, monospace";
+    ctx.fillStyle = "rgba(216,234,250,.82)";
+    ctx.fillText("HORIZON · 0°", cx, cy + radius - 12);
+    ctx.restore();
+  }
   function positionFor(ra, dec, lst, view) {
     const h = horizontalCoordinates(ra, dec, lst, view.latitude);
     if (!h.aboveHorizon) return { ...h, point: null };
@@ -358,13 +431,13 @@ export async function createPlanetarium({
       const projected = projectedById.get(star.id);
       if (!projected?.point) continue;
       const point = projected.point;
-      const size = clamp(2.8 - (star.magnitude + 1.4) * .29, .65, 3.5);
+      const size = clamp(5.2 - (star.magnitude + 1.4) * .53, 1.1, 5.7);
       ctx.beginPath();
       ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
       ctx.fillStyle = starColour(star.bv);
       if (star.magnitude < 1.5) {
         ctx.shadowColor = starColour(star.bv);
-        ctx.shadowBlur = 7;
+        ctx.shadowBlur = star.magnitude < .5 ? 13 : 9;
       } else {
         ctx.shadowBlur = 0;
       }
@@ -375,10 +448,13 @@ export async function createPlanetarium({
       if (labelsOn && (star.name && star.magnitude <= 3.2 || star.magnitude <= 1.15)) {
         const label = star.name || bayerLabel(star.bayer) + " " + star.constellation;
         if (label.trim()) {
-          ctx.font = "10px IBM Plex Mono, monospace";
+          ctx.font = "600 12px Space Grotesk, sans-serif";
           ctx.textAlign = "left";
-          ctx.fillStyle = star.name ? "rgba(220,237,255,.88)" : "rgba(182,205,230,.72)";
-          ctx.fillText(label, point.x + 5, point.y - 4);
+          ctx.lineWidth = 3.2;
+          ctx.strokeStyle = "rgba(2,8,18,.94)";
+          ctx.strokeText(label, point.x + 8, point.y - 6);
+          ctx.fillStyle = star.name ? "rgba(236,247,255,.98)" : "rgba(204,224,244,.9)";
+          ctx.fillText(label, point.x + 8, point.y - 6);
         }
       }
     }
@@ -386,7 +462,7 @@ export async function createPlanetarium({
       const selected = projectedById.get(selectedStarId);
       if (selected?.point) {
         ctx.beginPath();
-        ctx.arc(selected.point.x, selected.point.y, 8, 0, Math.PI * 2);
+        ctx.arc(selected.point.x, selected.point.y, 11, 0, Math.PI * 2);
         ctx.strokeStyle = "#ffe2a7";
         ctx.lineWidth = 1.3;
         ctx.shadowColor = "#ffc86e";
