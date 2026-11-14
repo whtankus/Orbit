@@ -286,5 +286,5 @@ test("cosmic history uses one continuous stage and no horizontal era-button stri
 
 test("section overlays align below the actual desktop and mobile headers", () => {
   assert.match(styles, /@media\(max-width:900px\)[\s\S]*?\.page-overlay\{inset:76px 0 0\}/);
-  assert.match(styles, /@media\(max-width:600px\)[\s\S]*?\.page-overlay\{inset:62px 0 0/);
+  assert.match(styles, /@media\(max-width:560px\)\{\.page-overlay\{inset:62px 0 0/);
 });
