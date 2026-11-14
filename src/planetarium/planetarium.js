@@ -230,7 +230,7 @@ export async function createPlanetarium({
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     return {
       w, h, cx: w / 2, cy: h / 2,
-      radius: Math.min(w, h) * 0.435,
+      radius: Math.min(w, h) * 0.405,
       dpr, date,
       latitude: Number(latitudeInput?.value ?? 0),
       longitude: Number(longitudeInput?.value ?? 0)
@@ -508,9 +508,10 @@ export async function createPlanetarium({
     const az = position ? position.azimuthDeg.toFixed(1) + "°" : "—";
     const horizon = position?.aboveHorizon ? "ABOVE HORIZON" : "BELOW HORIZON";
     selectedStarOutput.textContent =
-      label + " · HIP " + star.id + " · V " + star.magnitude.toFixed(2) +
-      " · RA " + star.ra.toFixed(3) + "° · Dec " + star.dec.toFixed(3) +
-      "° · Alt " + alt + " · Az " + az + " · " + horizon;
+      label + "\n" + horizon + "\nAltitude: " + alt + " · Direction: " + az +
+      "\nBrightness: magnitude " + star.magnitude.toFixed(2) +
+      "\nCatalogue: HIP " + star.id + " · RA " + star.ra.toFixed(3) +
+      "° · Dec " + star.dec.toFixed(3) + "°";
   }
 
   function searchStars(query) {
@@ -581,7 +582,7 @@ export async function createPlanetarium({
     }
     if (magnitudeValue && magnitudeInput) magnitudeValue.textContent = Number(magnitudeInput.value).toFixed(1) + " mag";
     if (chartStatus && !chartStatus.textContent.includes("below the local horizon")) {
-      chartStatus.textContent = "Stereographic zenith view · N " + lst.toFixed(1) + "° local sidereal angle";
+      chartStatus.textContent = "Showing stars above your horizon · North is at the top · Local sky rotation " + lst.toFixed(1) + "°";
     }
 
     if (selectedStarId !== null) {
