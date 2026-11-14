@@ -611,6 +611,9 @@ export async function createPlanetarium({
     const selected = constellationByCode.get(selectedCode);
     if (selected && constellationSelect) constellationSelect.value = selectedCode;
     if (selected && constellationTitle) constellationTitle.textContent = selected.name + " · " + selected.iau;
+    document.querySelectorAll("[data-sky-constellation]").forEach(button => {
+      button.setAttribute("aria-pressed", String(button.dataset.skyConstellation === selectedCode));
+    });
     if (selected && constellationText) {
       constellationText.textContent =
         (selected.common ? selected.common + ". " : "") +
