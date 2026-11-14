@@ -1,5 +1,5 @@
 import { EPHEMERIS_VALIDITY, JPL_PLANET_ELEMENTS } from "./jpl-elements.js";
-import { julianDayUTC, normalizeDegrees, eclipticJ2000ToEquatorial, equatorialToHorizontal } from "./coordinates.js";
+import { julianDayUTC, normalizeDegrees, eclipticJ2000ToEquatorial, precessJ2000EquatorialToDate, equatorialToHorizontal } from "./coordinates.js";
 
 const DEG = Math.PI / 180;
 const AU_KM = 149597870.7;
@@ -125,7 +125,10 @@ export function observerEphemeris(body, date, latitudeDeg, longitudeDeg) {
       z: target.positionAU.z - earth.positionAU.z
     };
   }
-  const equatorial = eclipticJ2000ToEquatorial(geocentric);
+  const equatorialJ2000 = eclipticJ2000ToEquatorial(geocentric);
+  const equatorial = precessJ2000EquatorialToDate(
+    equatorialJ2000.rightAscensionDeg, equatorialJ2000.declinationDeg, date
+  );
   const horizontal = equatorialToHorizontal(
     equatorial.rightAscensionDeg, equatorial.declinationDeg,
     date, latitudeDeg, longitudeDeg
