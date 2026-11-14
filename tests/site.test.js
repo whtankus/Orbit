@@ -3,11 +3,18 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+const app = readFileSync(new URL("../src/app/main.js", import.meta.url), "utf8");
+const styles = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
 
-test("the main page imports the JPL astronomy module", () => {
-  assert.match(html, /from '\.\/src\/astronomy\/index\.js'/);
-  assert.match(html, /function updatePlanetPositions/);
-  assert.match(html, /orbitalPath\(name,simulationDate,240\)/);
+test("the page loads the standalone stylesheet and application module", () => {
+  assert.match(html, /href="\.\/styles\.css"/);
+  assert.match(html, /src="\.\/src\/app\/main\.js"/);
+});
+
+test("the application imports the JPL astronomy engine", () => {
+  assert.match(app, /from '\.\.\/astronomy\/index\.js'/);
+  assert.match(app, /function updatePlanetPositions/);
+  assert.match(app, /orbitalPath\(name,simulationDate,240\)/);
 });
 
 test("the Solar System has a date control bounded to the JPL model interval", () => {
@@ -17,13 +24,17 @@ test("the Solar System has a date control bounded to the JPL model interval", ()
 
 test("Night Sky reports calculated planet altitude and azimuth separately from its schematic stars", () => {
   assert.match(html, /id="skyPlanetReadout"/);
-  assert.match(html, /observerEphemeris\(body,date,latitude,longitude\)/);
+  assert.match(app, /observerEphemeris\(body,date,latitude,longitude\)/);
   assert.match(html, /star-field illustration remains schematic/);
 });
 
-test("main browser module parses after external imports are removed", () => {
-  const match = html.match(/<script type="module">([\s\S]*?)<\/script>/i);
-  assert.ok(match, "module script exists");
-  const source = match[1].replace(/^import\s+[\s\S]*?;\s*$/gm, "");
+test("the external browser application module parses", () => {
+  const source = app.replace(/^import\s+[\s\S]*?;\s*$/gm, "");
   assert.doesNotThrow(() => new Function(source));
+});
+
+test("the stylesheet has the observatory and responsive layouts", () => {
+  assert.match(styles, /\.astro-timebar/);
+  assert.match(styles, /@media\(max-width:600px\)/);
+  assert.match(styles, /\.research-card/);
 });
