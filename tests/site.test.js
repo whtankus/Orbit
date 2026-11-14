@@ -126,3 +126,39 @@ test("touch controls are larger and readable at narrow widths", () => {
   assert.match(styles, /\.tool-btn\{font-size:10px;min-height:44px/);
   assert.match(styles, /\.nav-tab\{font-size:9\.5px/);
 });
+
+
+test("Sound Studio offers three selectable original soundtrack modes", () => {
+  assert.match(html, /data-track="horizon"/);
+  assert.match(html, /data-track="solar"/);
+  assert.match(html, /data-track="deep"/);
+  assert.match(html, /id="musicPlayBtn"/);
+  assert.match(html, /id="musicStopBtn"/);
+  assert.match(html, /id="musicVolume"/);
+  assert.match(app, /function startMusicTrack\(\)/);
+  assert.match(app, /function stopMusicTrack\(\)/);
+  assert.match(app, /function soundtrackPulse\(\)/);
+  assert.match(app, /musicBus/);
+});
+
+test("Night Sky supports zoom, time stepping, star shortcuts and browser geolocation", () => {
+  for (const id of ["skyZoomIn","skyZoomOut","skyZoomReset","skyLocate","skyBackHour","skyNextHour","skyNextDay","skyTonight"]) {
+    assert.match(html, new RegExp('id="' + id + '"'));
+    assert.match(app, new RegExp("\\\\$\\\\('" + id + "'\\\\)\\\\.addEventListener"));
+  }
+  assert.match(html, /data-sky-star="Sirius"/);
+  assert.match(html, /data-sky-star="Vega"/);
+  assert.match(app, /navigator\\.geolocation\\.getCurrentPosition/);
+  assert.match(planetarium, /zoom\\(delta\\)/);
+  assert.match(planetarium, /resetZoom\\(\\)/);
+});
+
+test("desktop and mobile layouts have dedicated Sound Studio and observatory compositions", () => {
+  assert.match(styles, /Sound Studio: three distinct original generative compositions/);
+  assert.match(styles, /@media\\(min-width:1250px\\)/);
+  assert.match(styles, /@media\\(max-width:600px\\)/);
+  assert.match(styles, /@media\\(max-width:380px\\)/);
+  assert.match(styles, /@keyframes trackBars/);
+  assert.match(styles, /button:hover/);
+  assert.match(html, /STUDIO&nbsp; \\+/);
+});
