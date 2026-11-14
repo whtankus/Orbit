@@ -1,0 +1,63 @@
+name: Bug report
+description: Report a reproducible problem in the ORBIT observatory
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Please check existing issues first. Include enough detail for someone else to reproduce the problem."
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: A clear description of the problem.
+      placeholder: Describe the unexpected behaviour.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the exact actions that trigger the issue.
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      validations:
+        required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - 3D Solar System
+        - Night Sky planetarium
+        - Deep-sky atlas
+        - Cosmic history
+        - Research library
+        - Navigation or responsive layout
+        - Audio
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: e.g. Chrome 130
+  - type: input
+    id: device
+    attributes:
+      label: Device and screen size
+      placeholder: e.g. Windows laptop, 1920x1080
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots, console errors, or additional context
+      description: Remove private information before sharing.
