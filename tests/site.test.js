@@ -118,11 +118,11 @@ test("Night Sky includes a plain-language guide, compass shortcuts and map key",
 test("cosmic history changes its art direction for all ten timeline eras", () => {
   assert.match(app, /\$\('historyStage'\)\.dataset\.epoch=String\(epochIndex\)/);
   for (let i = 0; i < 10; i++) {
-    assert.match(styles, new RegExp('\\.history-stage\\\\[data-epoch="' + i + '"\\\\]'));
+    assert.match(styles, new RegExp('\\.history-stage\\[data-epoch="' + i + '"\\]'));
   }
 });
 
 test("touch controls are larger and readable at narrow widths", () => {
-  assert.match(styles, /\\.tool-btn\\{font-size:10px;min-height:44px/);
-  assert.match(styles, /\\.nav-tab\\{font-size:9\\.5px/);
+  assert.match(styles, /\.tool-btn\{font-size:10px;min-height:44px/);
+  assert.match(styles, /\.nav-tab\{font-size:9\.5px/);
 });
