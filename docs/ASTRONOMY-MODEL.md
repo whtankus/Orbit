@@ -38,3 +38,7 @@ The repository includes Node.js tests for:
 - Observer ephemeris output
 
 These tests validate the calculation code, not browser rendering or the full precision of the JPL model.
+
+## Project layout
+
+The application shell now loads a standalone stylesheet and an ES-module entry point. Astronomical calculations are isolated under `src/astronomy/`, with automated tests under `tests/`. The deployment workflow runs syntax checks and the test suite before publishing GitHub Pages.
