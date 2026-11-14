@@ -211,3 +211,14 @@ test("planet hover reveals a compact accessible readout and double-click starts 
   assert.match(styles, /\.celestial-hover\.visible/);
   assert.match(styles, /@media\(max-width:600px\)\{\.celestial-hover\{display:none\}\}/);
 });
+
+
+test("cosmic timeline announces progress and exposes playback and selected-era state", () => {
+  assert.match(html, /id="timelineProgress" role="status" aria-live="polite"/);
+  assert.match(html, /id="historyPlay"[^>]*aria-pressed="false"/);
+  assert.match(app, /aria-label="Go to era /);
+  assert.match(app, /b\.setAttribute\('aria-pressed',String\(selected\)\)/);
+  assert.match(app, /b\.setAttribute\('aria-current','step'\)/);
+  assert.match(app, /\$\('historyPlay'\)\.setAttribute\('aria-pressed','true'\)/);
+  assert.match(app, /\$\('historyPlay'\)\.setAttribute\('aria-pressed','false'\)/);
+});
