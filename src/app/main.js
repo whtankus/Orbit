@@ -238,10 +238,43 @@ $('skyNow').addEventListener('click',()=>{
  $('skyDateTime').value=localDateValue(new Date());drawSkyChart();soundEffect('chart');
 });
 $('skyReset').addEventListener('click',()=>{
- $('skyLat').value='28.61';$('skyLon').value='77.21';drawSkyChart();
+ $('skyLat').value='28.61';$('skyLon').value='77.21';$('skyLocationStatus').textContent='Default observer coordinates restored.';drawSkyChart();
 });
+function shiftSkyTime(hours=0,days=0){
+ const date=new Date($('skyDateTime').value);
+ if(!Number.isFinite(date.getTime()))return;
+ date.setHours(date.getHours()+hours);date.setDate(date.getDate()+days);
+ $('skyDateTime').value=localDateValue(date);drawSkyChart();soundEffect('chart');
+}
+$('skyBackHour').addEventListener('click',()=>shiftSkyTime(-1));
+$('skyNextHour').addEventListener('click',()=>shiftSkyTime(1));
+$('skyNextDay').addEventListener('click',()=>shiftSkyTime(0,1));
+$('skyTonight').addEventListener('click',()=>{
+ const date=new Date();date.setHours(21,0,0,0);if(new Date().getHours()>=21)date.setDate(date.getDate()+1);
+ $('skyDateTime').value=localDateValue(date);drawSkyChart();soundEffect('chart');
+});
+$('skyLocate').addEventListener('click',()=>{
+ const status=$('skyLocationStatus');
+ if(!navigator.geolocation){status.textContent='Location is not supported by this browser.';return;}
+ status.textContent='Requesting location permission…';
+ navigator.geolocation.getCurrentPosition(position=>{
+  $('skyLat').value=position.coords.latitude.toFixed(4);
+  $('skyLon').value=position.coords.longitude.toFixed(4);
+  status.textContent='Observer location updated · '+position.coords.latitude.toFixed(2)+'°, '+position.coords.longitude.toFixed(2)+'°';
+  drawSkyChart();soundEffect('chart');
+ },error=>{
+  status.textContent=error.code===1?'Location permission denied. Enter coordinates manually.':'Could not determine location. Check browser permissions.';
+ },{enableHighAccuracy:false,timeout:10000,maximumAge:600000});
+});
+function updateSkyZoomLabel(value){$('skyZoomReset').textContent=Math.round(value*100)+'%'}
+$('skyZoomIn').addEventListener('click',()=>ensurePlanetarium().then(view=>updateSkyZoomLabel(view.zoom(.1))).catch(()=>{}));
+$('skyZoomOut').addEventListener('click',()=>ensurePlanetarium().then(view=>updateSkyZoomLabel(view.zoom(-.1))).catch(()=>{}));
+$('skyZoomReset').addEventListener('click',()=>ensurePlanetarium().then(view=>updateSkyZoomLabel(view.resetZoom())).catch(()=>{}));
 document.querySelectorAll('[data-sky-constellation]').forEach(button=>button.addEventListener('click',()=>{
  ensurePlanetarium().then(view=>{view.selectConstellation(button.dataset.skyConstellation);soundEffect('chart')}).catch(()=>{});
+}));
+document.querySelectorAll('[data-sky-star]').forEach(button=>button.addEventListener('click',()=>{
+ const input=$('skyStarSearch');input.value=button.dataset.skyStar;input.dispatchEvent(new Event('input',{bubbles:true}));soundEffect('chart');
 }));
 
 /* Mission Control: searchable destinations, camera presets and live telemetry. */
