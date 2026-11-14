@@ -6,6 +6,7 @@ import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {calculatePlanetStates, heliocentricPosition, orbitalElementsAt, orbitalPath, observerEphemeris, EPHEMERIS_VALIDITY} from '../astronomy/index.js';
+import {createPlanetarium} from '../planetarium/planetarium.js';
 const $=id=>document.getElementById(id);
 let simulationDate=new Date();
 let lastDateDisplayUpdate=0;
@@ -180,28 +181,11 @@ $('historyNext').addEventListener('click',()=>{stopHistory();renderEpoch(epochIn
 function stopHistory(){if(historyTimer){clearInterval(historyTimer);historyTimer=null}$('historyPlay').innerHTML='▶ &nbsp; PLAY TIMELINE'}
 function playHistory(){if(historyTimer){stopHistory();return}$('historyPlay').innerHTML='Ⅱ &nbsp; PAUSE TIMELINE';if(epochIndex>=epochs.length-1)renderEpoch(0);historyTimer=setInterval(()=>{if(epochIndex>=epochs.length-1){stopHistory();return}renderEpoch(epochIndex+1)},2600)}
 $('historyPlay').addEventListener('click',playHistory);renderEpoch(0);
-// Night sky chart — recognizable constellation patterns and user-selected observing time.
-const constellationData=[
-{name:'Orion',desc:'The Hunter is one of the most recognizable constellations. Its three-star belt lies near the celestial equator and is visible from much of Earth during the appropriate season.',stars:[[.36,.29,1],[.44,.34,1],[.52,.3,1],[.4,.47,1],[.49,.49,1],[.34,.65,1],[.53,.68,1],[.28,.25,.7],[.58,.23,.7]],lines:[[0,1],[1,2],[0,3],[3,4],[4,2],[3,5],[4,6],[0,7],[2,8]]},
-{name:'Ursa Major',desc:'The Great Bear contains the Big Dipper asterism. The two stars at the end of its bowl point approximately toward Polaris, the North Star.',stars:[[.15,.28,1],[.25,.22,.9],[.36,.25,1],[.46,.37,.9],[.58,.43,1],[.7,.39,.8],[.78,.48,.9]],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,3]]},
-{name:'Cassiopeia',desc:'Cassiopeia forms a distinctive W-shaped pattern in the northern sky. Its circumpolar visibility depends on latitude.',stars:[[.2,.38,1],[.34,.24,.9],[.48,.4,1],[.64,.23,.9],[.8,.39,1]],lines:[[0,1],[1,2],[2,3],[3,4]]},
-{name:'Cygnus',desc:'The Swan stretches along the Milky Way. Its brightest star, Deneb, is one of the vertices of the Summer Triangle.',stars:[[.48,.13,1],[.49,.32,.8],[.49,.53,1],[.49,.76,.8],[.28,.5,.8],[.7,.51,.8]],lines:[[0,1],[1,2],[2,3],[2,4],[2,5]]},
-{name:'Lyra',desc:'Lyra is a small northern constellation containing Vega, a bright star that forms part of the Summer Triangle.',stars:[[.48,.2,1],[.35,.45,.8],[.58,.44,.8],[.42,.68,.7],[.56,.68,.7]],lines:[[0,1],[0,2],[1,3],[2,4],[3,4]]},
-{name:'Scorpius',desc:'Scorpius curves across the southern Milky Way. Antares, its reddish heart, is a red supergiant.',stars:[[.2,.3,.8],[.33,.38,.9],[.45,.43,1],[.56,.52,.8],[.68,.61,.9],[.77,.73,.8],[.84,.82,.8],[.57,.31,.7],[.69,.27,.7]],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[2,7],[7,8]]},
-{name:'Leo',desc:'Leo resembles a reclining lion. Regulus marks the base of the Sickle, a backward question-mark pattern.',stars:[[.2,.48,1],[.31,.31,.9],[.43,.24,.8],[.53,.34,.8],[.62,.5,.9],[.76,.53,.8],[.83,.4,.7]],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6]]},
-{name:'Taurus',desc:'Taurus contains the V-shaped Hyades cluster and the Pleiades star cluster nearby. Aldebaran appears as the Bull’s bright orange eye.',stars:[[.25,.25,.9],[.38,.38,1],[.5,.5,.8],[.63,.39,.8],[.76,.28,.9],[.68,.66,.8],[.8,.7,.7]],lines:[[0,1],[1,2],[2,3],[3,4],[2,5],[5,6]]},
-{name:'Gemini',desc:'Gemini represents the twins Castor and Pollux. The two bright stars mark the heads of the twin figures.',stars:[[.3,.2,1],[.38,.4,.8],[.44,.61,.7],[.5,.82,.7],[.7,.2,1],[.65,.42,.8],[.59,.63,.7],[.55,.82,.7]],lines:[[0,1],[1,2],[2,3],[4,5],[5,6],[6,7],[1,5]]},
-{name:'Crux',desc:'The Southern Cross is a compact constellation in the southern celestial hemisphere. It is a useful sky marker for finding the south celestial pole.',stars:[[.5,.17,1],[.5,.43,.9],[.5,.78,1],[.23,.48,.8],[.78,.48,.8]],lines:[[0,1],[1,2],[3,1],[1,4]]},
-{name:'Andromeda',desc:'Andromeda is home to the Andromeda Galaxy, a nearby large spiral galaxy visible to the naked eye under dark skies.',stars:[[.18,.3,.8],[.37,.38,.9],[.57,.46,.8],[.76,.55,.8],[.85,.72,.7]],lines:[[0,1],[1,2],[2,3],[3,4]]},
-{name:'Pegasus',desc:'The Great Square of Pegasus is a prominent asterism that helps locate nearby constellations and the Andromeda Galaxy.',stars:[[.24,.28,.9],[.7,.25,.9],[.69,.72,.9],[.25,.73,.9],[.24,.28,.9],[.48,.15,.8],[.7,.25,.9]],lines:[[0,1],[1,2],[2,3],[3,0],[1,5],[5,6]]}
-];
-let selectedConstellation=0,skyRotation=0;
-$('constellationSelect').innerHTML=constellationData.map((c,i)=>'<option value="'+i+'">'+c.name+'</option>').join('');
-$('constellationSelect').addEventListener('change',e=>{selectedConstellation=Number(e.target.value);drawSkyChart();soundEffect('chart')});
-
+// Night sky: measured catalogue, official constellation figures and observer projection.
 function localDateValue(d){const z=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+'T'+z(d.getHours())+':'+z(d.getMinutes())}
 $('skyDateTime').value=localDateValue(new Date());
-function drawSkyChart(){const canvas=$('skyCanvas');if(!canvas)return;const rect=canvas.getBoundingClientRect(),w=Math.max(320,rect.width),h=Math.max(260,rect.height),ratio=Math.min(devicePixelRatio||1,2);canvas.width=w*ratio;canvas.height=h*ratio;const ctx=canvas.getContext('2d');ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,w,h);const cx=w/2,cy=h/2,r=Math.min(w,h)*.42;const dt=new Date($('skyDateTime').value||new Date());const lon=Number($('skyLon').value)||0;const day=dt.getTime()/86400000;skyRotation=((day*360.985647+lon)%360)*Math.PI/180;ctx.save();ctx.translate(cx,cy);ctx.rotate(skyRotation*.22);for(let k=1;k<=4;k++){ctx.beginPath();ctx.arc(0,0,r*k/4,0,Math.PI*2);ctx.strokeStyle='rgba(141,190,232,'+(k===4?.25:.09)+')';ctx.lineWidth=1;ctx.stroke()}ctx.beginPath();ctx.moveTo(-r,0);ctx.lineTo(r,0);ctx.moveTo(0,-r);ctx.lineTo(0,r);ctx.strokeStyle='rgba(141,190,232,.13)';ctx.stroke();for(let i=0;i<240;i++){const a=(i*137.508)*Math.PI/180,rr=r*(.12+((i*47)%83)/100),x=Math.cos(a)*rr,y=Math.sin(a)*rr;ctx.beginPath();ctx.arc(x,y,(i%13===0?1.3:.55),0,Math.PI*2);ctx.fillStyle=i%13===0?'#d8eaff':'rgba(181,211,241,.42)';ctx.fill()}const pattern=constellationData[selectedConstellation];const coords=pattern.stars.map(s=>[(s[0]-.5)*r*1.7,(s[1]-.5)*r*1.7]);ctx.lineWidth=1.3;ctx.strokeStyle='#9edcff';ctx.shadowColor='#7bcfff';ctx.shadowBlur=9;for(const [a,b] of pattern.lines){ctx.beginPath();ctx.moveTo(...coords[a]);ctx.lineTo(...coords[b]);ctx.stroke()}ctx.shadowBlur=0;coords.forEach((p,i)=>{ctx.beginPath();ctx.arc(p[0],p[1],pattern.stars[i][2]*2.2,0,Math.PI*2);ctx.fillStyle='#fff4d3';ctx.shadowColor='#c5e9ff';ctx.shadowBlur=12;ctx.fill()});ctx.shadowBlur=0;ctx.restore();ctx.fillStyle='rgba(206,227,249,.65)';ctx.font='9px monospace';ctx.fillText('N',cx-4,18);ctx.fillText('S',cx-4,h-10);ctx.fillText('E',w-18,cy+3);ctx.fillText('W',8,cy+3);$('constellationTitle').textContent=pattern.name;$('constellationText').textContent=pattern.desc;if($('constellationSelect'))$('constellationSelect').value=String(selectedConstellation);const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'local';$('skyReadout').innerHTML='LOCAL TIME: '+dt.toLocaleString()+'<br>TIME ZONE: '+tz+'<br>LONGITUDE: '+lon.toFixed(2)+'° · LATITUDE: '+(Number($('skyLat').value)||0).toFixed(2)+'°<br>SIDEREAL ROTATION: '+((skyRotation*180/Math.PI+360)%360).toFixed(1)+'°<br>CHART MODE: SCHEMATIC';drawPlanetObserverReadout(dt,Number($('skyLat').value)||0,lon);}
+$('skyDateTime').min='1800-01-01T00:00';$('skyDateTime').max='2050-12-31T23:59';
+let planetarium=null,planetariumPromise=null;
 function drawPlanetObserverReadout(date,latitude,longitude){
  const host=$('skyPlanetReadout');if(!host)return;
  const year=date.getFullYear();
@@ -213,17 +197,49 @@ function drawPlanetObserverReadout(date,latitude,longitude){
   const p=observerEphemeris(body,date,latitude,longitude);
   const altitude=(p.altitudeDeg>=0?'+':'')+p.altitudeDeg.toFixed(1)+'°';
   const azimuth=p.azimuthDeg.toFixed(0).padStart(3,'0')+'°';
-  const state=p.aboveHorizon?'ABOVE':'BELOW';
   return '<div class="sky-planet-row"><strong>'+body+'</strong><span>'+altitude+'</span><span class="'+(p.aboveHorizon?'planet-state-up':'planet-state-down')+'">'+azimuth+'</span></div>';
  }).join('');
  host.innerHTML='<div class="sky-planet-head"><span>BODY</span><span>ALTITUDE</span><span>AZIMUTH</span></div>'+rows;
 }
-$('skyDateTime').min='1800-01-01T00:00';$('skyDateTime').max='2050-12-31T23:59';
-$('simulationDate').value=localDateValue(simulationDate);setSimulationDate(simulationDate,false);
-$('simulationDate').addEventListener('change',e=>{if(!setSimulationDate(e.target.value))e.target.value=localDateValue(simulationDate);});
-$('simulationNow').addEventListener('click',()=>{setSimulationDate(new Date());toast('SIMULATION SET TO TODAY');});
-$('skyDateTime').addEventListener('change',drawSkyChart);$('skyLat').addEventListener('input',drawSkyChart);$('skyLon').addEventListener('input',drawSkyChart);$('skyNow').addEventListener('click',()=>{$('skyDateTime').value=localDateValue(new Date());drawSkyChart()});$('skyReset').addEventListener('click',()=>{$('skyLat').value='28.61';$('skyLon').value='77.21';drawSkyChart()});
-$('skyCanvas').addEventListener('click',e=>{const rect=e.currentTarget.getBoundingClientRect();const x=(e.clientX-rect.left)/rect.width;selectedConstellation=Math.min(constellationData.length-1,Math.floor(x*constellationData.length));$('constellationSelect').value=String(selectedConstellation);drawSkyChart();soundEffect('chart')});
+async function ensurePlanetarium(){
+ if(planetarium)return planetarium;
+ if(planetariumPromise)return planetariumPromise;
+ planetariumPromise=createPlanetarium({
+  canvas:$('skyCanvas'),
+  constellationSelect:$('constellationSelect'),
+  constellationTitle:$('constellationTitle'),
+  constellationText:$('constellationText'),
+  dateInput:$('skyDateTime'),
+  latitudeInput:$('skyLat'),
+  longitudeInput:$('skyLon'),
+  showBoundariesInput:$('skyShowBoundaries'),
+  showLinesInput:$('skyShowLines'),
+  showLabelsInput:$('skyShowLabels'),
+  magnitudeInput:$('skyMagnitude'),
+  magnitudeValue:$('skyMagnitudeValue'),
+  starSearchInput:$('skyStarSearch'),
+  starSearchResults:$('skyStarResults'),
+  selectedStarOutput:$('skySelectedStar'),
+  chartStats:$('skyCatalogStats'),
+  chartStatus:$('skyChartStatus'),
+  onObserverChange:({date,latitude,longitude})=>drawPlanetObserverReadout(date,latitude,longitude)
+ }).then(value=>{planetarium=value;return value;}).catch(error=>{
+  planetariumPromise=null;
+  $('skyChartStatus').textContent='PLANETARIUM LOAD FAILED · '+error.message;
+  console.error('ORBIT planetarium failed to load:',error);
+  throw error;
+ });
+ return planetariumPromise;
+}
+function drawSkyChart(){
+ ensurePlanetarium().then(p=>p.render()).catch(()=>{});
+}
+$('skyNow').addEventListener('click',()=>{
+ $('skyDateTime').value=localDateValue(new Date());drawSkyChart();soundEffect('chart');
+});
+$('skyReset').addEventListener('click',()=>{
+ $('skyLat').value='28.61';$('skyLon').value='77.21';drawSkyChart();
+});
 
 /* Mission Control: searchable destinations, camera presets and live telemetry. */
 const commandDeck=$('commandDeck'),commandSearch=$('commandSearch'),commandResults=$('commandResults');
