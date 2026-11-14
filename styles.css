@@ -1008,3 +1008,21 @@ input[type=range]{cursor:pointer}
   .history-stage:after,.epoch-core,.epoch-orbit,.cosmic-scene,.epoch-particles{transition:none}
   .sky-quick-picks button{transition:none}
 }
+
+
+/* Final touch-target correction: do not trade readable controls for a tight header. */
+@media(max-width:600px){
+ .nav-tab{font-size:9.5px;padding:8px 6px;min-height:42px;font-weight:700}
+ .top-btn{font-size:9.5px;min-height:42px}
+ .body-btn{font-size:10px;min-height:44px;padding:10px 12px}
+ .tool-btn{font-size:10px;min-height:44px;padding:10px 12px}
+ .controls .tool-btn{font-size:10px}
+ .sky-controls .tool-btn{font-size:11px;min-height:46px}
+ .sky-quick-picks button{font-size:11px;min-height:42px;padding:9px 13px}
+ .page-close{font-size:10px;min-height:44px}
+}
+@media(max-width:380px){
+ .nav-tab{font-size:8.8px;padding-inline:4px}
+ .top-btn{font-size:9px}
+ .body-btn,.tool-btn{font-size:9.5px;padding-inline:9px}
+}
