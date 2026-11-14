@@ -135,9 +135,9 @@ function makeFallbackPlanetTexture(name){
   }
   ctx.globalAlpha=1;
  }
- const image=ctx.createImageData(1024,512);
- for(let i=0;i<image.data.length;i+=4){const n=(Math.random()-.5)*12;image.data[i]=Math.max(0,Math.min(255,image.data[i]+n));image.data[i+1]=Math.max(0,Math.min(255,image.data[i+1]+n));image.data[i+2]=Math.max(0,Math.min(255,image.data[i+2]+n));image.data[i+3]=255}
- ctx.putImageData(image,0,0);
+ ctx.globalAlpha=.08;
+ for(let i=0;i<18000;i++){const x=Math.random()*canvas.width,y=Math.random()*canvas.height;ctx.fillStyle=Math.random()>.5?'#fff':'#050505';ctx.fillRect(x,y,1,1)}
+ ctx.globalAlpha=1;
  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=renderer.capabilities.getMaxAnisotropy();return texture;
 }
 const sphereSegments=window.matchMedia('(max-width:700px)').matches?80:128;
