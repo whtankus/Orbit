@@ -271,7 +271,7 @@ export async function createPlanetarium({
     ctx.stroke();
 
     ctx.fillStyle = "rgba(186,211,238,.72)";
-    ctx.font = "9px DM Mono, monospace";
+    ctx.font = "11px IBM Plex Mono, monospace";
     ctx.textAlign = "center";
     ctx.fillText("ZENITH", cx, cy - 7);
     const cardinals = [
@@ -375,7 +375,7 @@ export async function createPlanetarium({
       if (labelsOn && (star.name && star.magnitude <= 3.2 || star.magnitude <= 1.15)) {
         const label = star.name || bayerLabel(star.bayer) + " " + star.constellation;
         if (label.trim()) {
-          ctx.font = "8px DM Mono, monospace";
+          ctx.font = "10px IBM Plex Mono, monospace";
           ctx.textAlign = "left";
           ctx.fillStyle = star.name ? "rgba(220,237,255,.88)" : "rgba(182,205,230,.72)";
           ctx.fillText(label, point.x + 5, point.y - 4);
@@ -411,7 +411,7 @@ export async function createPlanetarium({
     const x = points.reduce((sum, p) => sum + p.x, 0) / points.length;
     const y = points.reduce((sum, p) => sum + p.y, 0) / points.length;
     ctx.save();
-    ctx.font = "600 10px Manrope, sans-serif";
+    ctx.font = "600 12px Space Grotesk, sans-serif";
     ctx.textAlign = "center";
     ctx.fillStyle = "#e4f5ff";
     ctx.shadowColor = "#4d9bce";
