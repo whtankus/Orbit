@@ -28,7 +28,7 @@ test("the Solar System has a date control bounded to the JPL model interval", ()
 test("Night Sky reports calculated planet altitude and azimuth separately from its schematic stars", () => {
   assert.match(html, /id="skyPlanetReadout"/);
   assert.match(app, /observerEphemeris\(body,date,latitude,longitude\)/);
-  assert.match(html, /MEASURED STARS/);
+  assert.match(html, /SKY-AREA BORDERS/);
   assert.match(html, /proper motion is not propagated/);
   assert.match(html, /IAU\/Delporte/);
 });
@@ -95,4 +95,34 @@ test("planetarium canvas labels use the refreshed readable type scale", () => {
   assert.match(planetarium, /11px IBM Plex Mono/);
   assert.match(planetarium, /10px IBM Plex Mono/);
   assert.match(planetarium, /600 12px Space Grotesk/);
+});
+
+
+test("the 3D view no longer shows the Celestial Profile card or SYSTEM NOMINAL telemetry", () => {
+  assert.match(html, /class="panel"/);
+  assert.match(styles, /\.panel\{display:none!important\}/);
+  assert.match(styles, /\.telemetry\{display:none!important\}/);
+});
+
+test("Night Sky includes a plain-language guide, compass shortcuts and map key", () => {
+  assert.match(html, /sky-howto/);
+  assert.match(html, /sky-map-key/);
+  assert.match(html, /data-sky-constellation="Ori"/);
+  assert.match(html, /data-sky-constellation="UMa"/);
+  assert.match(app, /data-sky-constellation/);
+  assert.match(planetarium, /HORIZON · 0°/);
+  assert.match(planetarium, /STRAIGHT UP/);
+  assert.match(planetarium, /Showing stars above your horizon/);
+});
+
+test("cosmic history changes its art direction for all ten timeline eras", () => {
+  assert.match(app, /\$\('historyStage'\)\.dataset\.epoch=String\(epochIndex\)/);
+  for (let i = 0; i < 10; i++) {
+    assert.match(styles, new RegExp('\\.history-stage\\\\[data-epoch="' + i + '"\\\\]'));
+  }
+});
+
+test("touch controls are larger and readable at narrow widths", () => {
+  assert.match(styles, /\\.tool-btn\\{font-size:10px;min-height:44px/);
+  assert.match(styles, /\\.nav-tab\\{font-size:9\\.5px/);
 });
