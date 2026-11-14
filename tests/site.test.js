@@ -262,11 +262,11 @@ test("cosmic history uses distinct physical scene treatments for the Big Bang af
 
 
 test("the main Solar System gives atmospheric planets limb scattering and Saturn a detailed textured ring", () => {
-  assert.match(app, /rimColour=name==='Earth'/);
-  assert.match(app, /name==='Jupiter'?'0\\.92,0\\.66,0\\.42'/);
-  assert.match(app, /makeSaturnRingTexture/);
-  assert.match(app, /new THREE\\.RingGeometry\\(d\\.radius\\*1\\.12,d\\.radius\\*2\\.35,384\\)/);
-  assert.match(app, /new THREE\\.MeshStandardMaterial\\(\\{map:makeSaturnRingTexture\\(\\)/);
+  assert.ok(app.includes("rimColour=name==='Earth'"));
+  assert.ok(app.includes("name==='Jupiter'?'0.92,0.66,0.42'"));
+  assert.ok(app.includes("makeSaturnRingTexture"));
+  assert.ok(app.includes("new THREE.RingGeometry(d.radius*1.12,d.radius*2.35,384)"));
+  assert.ok(app.includes("new THREE.MeshStandardMaterial({map:makeSaturnRingTexture()"));
 });
 
 
