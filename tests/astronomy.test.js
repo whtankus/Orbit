@@ -53,6 +53,15 @@ test("JPL validity interval is explicitly bounded", () => {
   assert.equal(orbitalElementsAt("Earth", new Date("1750-01-01T00:00:00Z")).validForDate, false);
 });
 
+test("J2000 coordinates precess to the selected date without losing validity", async () => {
+  const { precessJ2000EquatorialToDate } = await import("../src/astronomy/coordinates.js");
+  const p = precessJ2000EquatorialToDate(101.287, -16.716, new Date("2026-11-14T00:00:00Z"));
+  assert.ok(Number.isFinite(p.rightAscensionDeg));
+  assert.ok(Number.isFinite(p.declinationDeg));
+  assert.ok(p.rightAscensionDeg >= 0 && p.rightAscensionDeg < 360);
+  assert.ok(p.declinationDeg >= -90 && p.declinationDeg <= 90);
+});
+
 test("sidereal time and horizontal coordinates remain finite", () => {
   const date = new Date("2026-11-14T00:00:00.000Z");
   const gmst = greenwichMeanSiderealTime(date);
