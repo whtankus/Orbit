@@ -1,0 +1,70 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {
+  EPHEMERIS_VALIDITY,
+  JPL_PLANET_ELEMENTS,
+  orbitalElementsAt,
+  heliocentricPosition,
+  orbitalPath,
+  calculatePlanetStates,
+  observerEphemeris,
+  greenwichMeanSiderealTime,
+  equatorialToHorizontal
+} from "../src/astronomy/index.js";
+
+test("JPL element set includes all eight planets", () => {
+  assert.deepEqual(Object.keys(JPL_PLANET_ELEMENTS), [
+    "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"
+  ]);
+});
+
+test("J2000 orbital elements reproduce their tabulated semi-major axes", () => {
+  const date = new Date("2000-01-01T12:00:00.000Z");
+  assert.ok(Math.abs(orbitalElementsAt("Earth", date).a - 1.00000261) < 1e-8);
+  assert.ok(Math.abs(orbitalElementsAt("Jupiter", date).a - 5.202887) < 1e-8);
+});
+
+test("all planets return finite heliocentric positions in the JPL validity interval", () => {
+  const date = new Date("2026-11-14T08:30:00.000Z");
+  for (const body of Object.keys(JPL_PLANET_ELEMENTS)) {
+    const state = heliocentricPosition(body, date);
+    assert.equal(state.validForDate, true, body);
+    assert.ok(state.distanceAU > 0, body);
+    assert.ok([state.positionAU.x, state.positionAU.y, state.positionAU.z].every(Number.isFinite), body);
+  }
+});
+
+test("orbital paths are closed sampled ellipses with expected point count", () => {
+  const path = orbitalPath("Mars", new Date("2026-01-01T00:00:00Z"), 180);
+  assert.equal(path.length, 180);
+  assert.ok(Math.hypot(path[0].x - path[179].x, path[0].y - path[179].y, path[0].z - path[179].z) < 0.08);
+});
+
+test("planet-state collection computes plausible orbital speeds", () => {
+  const states = calculatePlanetStates(new Date("2026-11-14T00:00:00Z"));
+  assert.ok(states.Mercury.speedKmSec > 35 && states.Mercury.speedKmSec < 70);
+  assert.ok(states.Earth.speedKmSec > 25 && states.Earth.speedKmSec < 35);
+  assert.ok(states.Neptune.speedKmSec > 4 && states.Neptune.speedKmSec < 9);
+});
+
+test("JPL validity interval is explicitly bounded", () => {
+  assert.equal(EPHEMERIS_VALIDITY.startYear, 1800);
+  assert.equal(EPHEMERIS_VALIDITY.endYear, 2050);
+  assert.equal(orbitalElementsAt("Earth", new Date("1750-01-01T00:00:00Z")).validForDate, false);
+});
+
+test("sidereal time and horizontal coordinates remain finite", () => {
+  const date = new Date("2026-11-14T00:00:00.000Z");
+  const gmst = greenwichMeanSiderealTime(date);
+  assert.ok(gmst >= 0 && gmst < 360);
+  const horizontal = equatorialToHorizontal(101.287, -16.716, date, 28.61, 77.21);
+  assert.ok(Number.isFinite(horizontal.altitudeDeg));
+  assert.ok(horizontal.azimuthDeg >= 0 && horizontal.azimuthDeg < 360);
+});
+
+test("observer ephemeris returns altitude and azimuth for the major planets", () => {
+  const result = observerEphemeris("Jupiter", new Date("2026-11-14T00:00:00Z"), 28.61, 77.21);
+  assert.ok(result.distanceAU > 0);
+  assert.ok(result.altitudeDeg >= -90 && result.altitudeDeg <= 90);
+  assert.ok(result.azimuthDeg >= 0 && result.azimuthDeg < 360);
+});
