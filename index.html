@@ -57,34 +57,38 @@
 <div class="research-note"><strong>HOW TO USE THIS LIBRARY</strong><p>Start with the NASA and IAU references for definitions and primary mission context. Distinguish measured values from models, artistic visualizations and educational approximations. ORBIT is an interactive learning experience, not a live ephemeris or scientific data archive. Audio effects are synthesized interface sonifications for atmosphere and feedback; they are not recordings of planets. Sound cannot propagate through the vacuum of space.</p></div>
 </div></section>
 <section class="page-overlay" id="skyPage" aria-label="Real night sky planetarium"><div class="page-shell">
-<div class="page-topline"><div><div class="page-kicker">NAVIGATION 03 / THE NIGHT SKY</div><h2 class="page-title">Read the real sky.</h2><p class="page-intro">A measured stellar catalogue, recognised constellation figures and official sky boundaries, projected for your observing location and selected time.</p></div><button class="page-close" data-close-page>✕ &nbsp; RETURN TO ORBIT</button></div>
+<div class="page-topline"><div><div class="page-kicker">03 / LIVE PLANETARIUM</div><h2 class="page-title">Look up. Find your sky.</h2><p class="page-intro">See the stars that are above your horizon right now. Choose a constellation, search for a star, or change your observing place and time.</p></div><button class="page-close" data-close-page>✕ &nbsp; RETURN TO ORBIT</button></div>
+<div class="sky-howto" aria-label="How to use the night sky map"><div class="sky-howto-step"><b>01</b><span><strong>Choose a place</strong><small>Set your location and time.</small></span></div><div class="sky-howto-step"><b>02</b><span><strong>Find a pattern</strong><small>Choose a constellation or search a star.</small></span></div><div class="sky-howto-step"><b>03</b><span><strong>Tap a star</strong><small>Read its name and position.</small></span></div></div>
 <div class="sky-layout"><div class="sky-frame">
-<div class="sky-overlay-label">STEREOGRAPHIC PLANETARIUM · ZENITH-CENTRED</div>
+<div class="sky-overlay-label">YOUR SKY DOME · OUTER EDGE = HORIZON</div>
 <div class="sky-canvas-wrap"><canvas id="skyCanvas" role="img" aria-label="Stereographic night sky chart showing stars above the local horizon, constellation figures and official constellation boundaries"></canvas></div>
-<div class="sky-legend"><span>MEASURED STARS</span><span>CONSTELLATION FIGURES</span><span>IAU BOUNDARIES</span><span>SELECTED STAR</span></div>
+<div class="sky-legend"><span>STARS</span><span>CONSTELLATION LINES</span><span>SKY-AREA BORDERS</span><span>SELECTED STAR</span></div>
 <div class="sky-chart-foot" id="skyCatalogStats">Loading stellar catalogue…</div>
 <div class="sky-chart-status" id="skyChartStatus" role="status">Preparing observer projection…</div>
 </div>
-<aside class="sky-info"><div class="page-kicker">OBSERVING CONSOLE · 88 CONSTELLATIONS</div>
+<aside class="sky-info"><div class="page-kicker">FIND SOMETHING IN THE SKY</div>
 <h3 id="constellationTitle">Orion · Ori</h3>
-<label class="sky-select-label" for="constellationSelect">SELECT CONSTELLATION</label>
+<label class="sky-select-label" for="constellationSelect">CHOOSE A CONSTELLATION</label>
 <select id="constellationSelect" class="sky-select"></select>
+<div class="sky-quick-picks" aria-label="Popular constellations"><button type="button" data-sky-constellation="Ori">Orion</button><button type="button" data-sky-constellation="UMa">Ursa Major</button><button type="button" data-sky-constellation="Cas">Cassiopeia</button><button type="button" data-sky-constellation="Sco">Scorpius</button><button type="button" data-sky-constellation="Cru">Crux</button></div>
 <p id="constellationText">The selected IAU region and its traditional star figure will appear in the observer projection.</p>
 <div class="sky-search-panel">
-<label class="sky-select-label" for="skyStarSearch">SEARCH STARS · NAME, BAYER OR HIP</label>
+<label class="sky-select-label" for="skyStarSearch">SEARCH FOR A STAR</label>
 <input id="skyStarSearch" class="sky-star-search" type="search" placeholder="e.g. Sirius, Vega, HIP 32349" autocomplete="off">
 <div class="sky-search-results" id="skyStarResults"></div>
 <div class="sky-selected-star" id="skySelectedStar" aria-live="polite">Select a catalogue star on the chart or search by name, Bayer designation or HIP number.</div>
 </div>
 <div class="sky-layer-panel">
-<div class="sky-layer-title">CHART LAYERS</div>
+<div class="sky-layer-title">WHAT TO SHOW ON THE MAP</div>
 <label><input id="skyShowBoundaries" type="checkbox" checked> IAU CONSTELLATION BOUNDARIES</label>
 <label><input id="skyShowLines" type="checkbox" checked> CONSTELLATION STAR FIGURES</label>
 <label><input id="skyShowLabels" type="checkbox" checked> BRIGHT-STAR LABELS</label>
 <div class="sky-magnitude-row"><label for="skyMagnitude">STAR MAGNITUDE LIMIT</label><output id="skyMagnitudeValue">6.5 mag</output></div>
 <input id="skyMagnitude" type="range" min="1" max="6.5" step=".5" value="6.5">
 </div>
-<div class="sky-controls"><div class="sky-field" style="grid-column:1/-1"><label>LOCAL DATE & TIME</label><input id="skyDateTime" type="datetime-local"></div><div class="sky-field"><label>LATITUDE (°)</label><input id="skyLat" type="number" min="-90" max="90" step=".01" value="28.61"></div><div class="sky-field"><label>LONGITUDE (°)</label><input id="skyLon" type="number" min="-180" max="180" step=".01" value="77.21"></div></div>
+<div class="sky-observer-title"><strong>YOUR OBSERVING LOCATION</strong><span>Stars move as Earth rotates.</span></div>
+<div class="sky-controls"><div class="sky-field" style="grid-column:1/-1"><label>DATE & LOCAL TIME</label><input id="skyDateTime" type="datetime-local"></div><div class="sky-field"><label>LATITUDE (°)</label><input id="skyLat" type="number" min="-90" max="90" step=".01" value="28.61"></div><div class="sky-field"><label>LONGITUDE (°)</label><input id="skyLon" type="number" min="-180" max="180" step=".01" value="77.21"></div></div>
+<div class="sky-map-key"><div><b>CENTRE</b><span>Sky directly above you</span></div><div><b>OUTER CIRCLE</b><span>Your horizon · 0° altitude</span></div><div><b>N · E · S · W</b><span>Compass directions around you</span></div><div><b>BRIGHTER DOT</b><span>A brighter star in the sky</span></div></div>
 <div class="sky-readout" id="skyReadout">LOCAL TIME: --<br>SIDEREAL ROTATION: --<br>CHART MODE: STEREOGRAPHIC</div>
 <div class="sky-planet-list" aria-live="polite"><div class="sky-planet-head"><span>PLANETARY OBSERVATIONS</span><span>GEOMETRIC HORIZON</span></div><div id="skyPlanetReadout"><div class="sky-planet-empty">CALCULATING OBSERVER EPHEMERIS…</div></div><div class="sky-planet-foot">JPL APPROXIMATE POSITIONS · ATMOSPHERIC REFRACTION OMITTED</div></div>
 <div class="sky-controls"><button class="tool-btn advanced" id="skyNow">◷ &nbsp; USE CURRENT TIME</button><button class="tool-btn" id="skyReset">RESET LOCATION</button></div>
