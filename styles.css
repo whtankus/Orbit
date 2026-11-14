@@ -1335,3 +1335,19 @@ button:focus-visible{outline:2px solid #c4f0ff;outline-offset:4px;box-shadow:0 0
 .astro-timebar{bottom:125px}.sky-map-key{grid-template-columns:minmax(0,1fr)}
 }
 @media(prefers-reduced-motion:reduce){.page-overlay.open{animation:none}.research-card,.research-card a,.nav-tab,.top-btn,.tool-btn{transition:none!important}}
+
+
+/* Celestial hover readout — informative without covering the selected world. */
+.celestial-hover{
+ position:fixed;z-index:12;display:flex;flex-direction:column;gap:5px;min-width:172px;
+ padding:11px 13px;border:1px solid #8fdcff70;border-radius:10px;
+ background:linear-gradient(145deg,rgba(12,31,51,.96),rgba(3,10,21,.96));
+ box-shadow:0 12px 36px #0009,0 0 22px #64caff18,inset 0 1px #fff2;
+ color:#eaf7ff;pointer-events:none;opacity:0;transform:translateY(5px) scale(.98);
+ transition:opacity .13s ease,transform .13s ease;backdrop-filter:blur(14px);
+}
+.celestial-hover.visible{opacity:1;transform:translateY(0) scale(1)}
+.celestial-hover strong{font:700 11px var(--mono);letter-spacing:.12em;color:#eaf8ff}
+.celestial-hover span{font:9px/1.45 var(--mono);letter-spacing:.035em;color:#9ebbd2}
+@media(max-width:600px){.celestial-hover{display:none}}
+@media(prefers-reduced-motion:reduce){.celestial-hover{transition:none}}
