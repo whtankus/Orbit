@@ -178,3 +178,17 @@ test("the 3D renderer uses a lower pixel ratio on compact screens and pauses hid
   assert.ok(app.includes("if(document.hidden)return"));
   assert.ok(app.includes("document.addEventListener('visibilitychange'"));
 });
+
+
+test("section navigation and hidden panels expose accurate accessibility state", () => {
+  for (const id of ["historyPage","skyPage","researchPage"]) {
+    assert.match(html, new RegExp('id="' + id + '" aria-hidden="true"'));
+  }
+  assert.ok(html.includes('aria-controls="historyPage"'));
+  assert.ok(html.includes('aria-controls="skyPage"'));
+  assert.ok(html.includes('aria-controls="researchPage"'));
+  assert.ok(html.includes('id="soundMixer" aria-hidden="true" inert'));
+  assert.ok(app.includes("p.setAttribute('aria-hidden',String(!visible))"));
+  assert.ok(app.includes("b.setAttribute('aria-pressed',String(selected))"));
+  assert.ok(app.includes("setAttribute('inert','')"));
+});
