@@ -28,7 +28,9 @@ test("the Solar System has a date control bounded to the JPL model interval", ()
 test("Night Sky reports calculated planet altitude and azimuth separately from its schematic stars", () => {
   assert.match(html, /id="skyPlanetReadout"/);
   assert.match(app, /observerEphemeris\(body,date,latitude,longitude\)/);
-  assert.match(html, /star-field illustration remains schematic/);
+  assert.match(html, /MEASURED STARS/);
+  assert.match(html, /proper motion is not propagated/);
+  assert.match(html, /IAU\/Delporte/);
 });
 
 test("the external browser application module parses", () => {
