@@ -372,7 +372,12 @@ export async function createPlanetarium({
     for (const record of cachedBoundaries) {
       const edge = record.edge;
       const selected = edge[6] === selectedCode || edge[7] === selectedCode;
-      ctx.strokeStyle = selected ? "rgba(246,204,139,.70)" : "rgba(126,165,204,.16)";
+      // Show only the active IAU region. Rendering all 88 borders at once
+      // turns the local sky into a dense web that obscures the star figures.
+      if (!selected) continue;
+      ctx.strokeStyle = "rgba(246,204,139,.48)";
+      ctx.lineWidth = 1.05;
+      ctx.setLineDash([5, 5]);
       ctx.beginPath();
       let penDown = false;
       for (const eq of record.points) {
@@ -392,32 +397,33 @@ export async function createPlanetarium({
 
   function drawConstellationFigures(view, lst, projectedById) {
     if (!showLinesInput?.checked) return;
+    const selected = constellationByCode.get(selectedCode);
+    if (!selected) return;
     ctx.save();
-    for (const constellation of constellations) {
-      const active = constellation.iau === selectedCode;
-      for (const segment of constellation.lines) {
-        ctx.beginPath();
-        let penDown = false;
-        let points = 0;
-        for (const hip of segment.ids) {
-          const p = projectedById.get(hip);
-          if (!p?.point) {
-            penDown = false;
-            continue;
-          }
-          if (!penDown) ctx.moveTo(p.point.x, p.point.y);
-          else ctx.lineTo(p.point.x, p.point.y);
-          penDown = true;
-          points++;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    for (const segment of selected.lines) {
+      ctx.beginPath();
+      let penDown = false;
+      let points = 0;
+      for (const hip of segment.ids) {
+        const p = projectedById.get(hip);
+        if (!p?.point) {
+          penDown = false;
+          continue;
         }
-        if (points > 1) {
-          ctx.strokeStyle = active
-            ? (segment.thin ? "rgba(255,213,151,.72)" : "rgba(159,224,255,.94)")
-            : (segment.thin ? "rgba(124,162,196,.13)" : "rgba(137,183,219,.24)");
-          ctx.lineWidth = active ? (segment.thin ? .75 : 1.55) : (segment.thin ? .45 : .75);
-          ctx.setLineDash(segment.thin ? [2, 4] : []);
-          ctx.stroke();
-        }
+        if (!penDown) ctx.moveTo(p.point.x, p.point.y);
+        else ctx.lineTo(p.point.x, p.point.y);
+        penDown = true;
+        points++;
+      }
+      if (points > 1) {
+        ctx.strokeStyle = segment.thin ? "rgba(255,205,139,.82)" : "rgba(151,220,255,.96)";
+        ctx.lineWidth = segment.thin ? 1.05 : 2.15;
+        ctx.shadowColor = segment.thin ? "#f4bd78" : "#6bcfff";
+        ctx.shadowBlur = segment.thin ? 5 : 9;
+        ctx.setLineDash(segment.thin ? [3, 4] : []);
+        ctx.stroke();
       }
     }
     ctx.restore();
@@ -426,7 +432,10 @@ export async function createPlanetarium({
   function drawStars(view, projectedById) {
     const limit = Number(magnitudeInput?.value ?? 6.5);
     const labelsOn = !!showLabelsInput?.checked;
+    const selected = constellationByCode.get(selectedCode);
+    const selectedIds = new Set(selected?.lines.flatMap(segment => segment.ids) || []);
     const visible = [];
+    const labelAnchors = [];
     for (const star of starDrawOrder) {
       if (star.magnitude > limit) continue;
       const projected = projectedById.get(star.id);
@@ -439,23 +448,31 @@ export async function createPlanetarium({
       if (star.magnitude < 1.5) {
         ctx.shadowColor = starColour(star.bv);
         ctx.shadowBlur = star.magnitude < .5 ? 13 : 9;
-      } else {
-        ctx.shadowBlur = 0;
-      }
+      } else ctx.shadowBlur = 0;
       ctx.fill();
       ctx.shadowBlur = 0;
       visible.push({ star, point, ...projected });
 
-      if (labelsOn && (star.name && star.magnitude <= 3.2 || star.magnitude <= 1.15)) {
-        const label = star.name || bayerLabel(star.bayer) + " " + star.constellation;
-        if (label.trim()) {
-          ctx.font = "600 12px Space Grotesk, sans-serif";
+      // Labels are deliberately sparse: named bright stars, plus a few
+      // brighter members of the selected figure. Avoid overlapping names.
+      const eligible = labelsOn && (
+        (star.name && star.magnitude <= 2.2) ||
+        (selectedIds.has(star.id) && star.magnitude <= 2.8)
+      );
+      if (eligible) {
+        const label = star.name || (bayerLabel(star.bayer) + " " + star.constellation).trim();
+        const x = point.x + 9, y = point.y - 7;
+        const width = Math.min(130, label.length * 6.8);
+        const collides = labelAnchors.some(a => Math.abs(a.x - x) < (a.w + width) * .42 && Math.abs(a.y - y) < 17);
+        if (label && !collides) {
+          labelAnchors.push({ x, y, w: width });
+          ctx.font = "600 11px Space Grotesk, sans-serif";
           ctx.textAlign = "left";
-          ctx.lineWidth = 3.2;
-          ctx.strokeStyle = "rgba(2,8,18,.94)";
-          ctx.strokeText(label, point.x + 8, point.y - 6);
-          ctx.fillStyle = star.name ? "rgba(236,247,255,.98)" : "rgba(204,224,244,.9)";
-          ctx.fillText(label, point.x + 8, point.y - 6);
+          ctx.lineWidth = 3.5;
+          ctx.strokeStyle = "rgba(2,8,18,.96)";
+          ctx.strokeText(label, x, y);
+          ctx.fillStyle = star.name ? "rgba(240,248,255,.98)" : "rgba(211,229,246,.9)";
+          ctx.fillText(label, x, y);
         }
       }
     }
