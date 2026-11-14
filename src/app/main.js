@@ -540,7 +540,7 @@ $('soundToggle').addEventListener('click',()=>{
 });
 $('soundMixerToggle').addEventListener('click',()=>{
  const open=!$('soundMixer').classList.contains('open');$('soundMixer').classList.toggle('open',open);$('soundMixer').setAttribute('aria-hidden',String(!open));
- $('soundMixerToggle').setAttribute('aria-expanded',String(open));$('soundMixerToggle').textContent=open?'MIXER  −':'MIXER  +';
+ $('soundMixerToggle').setAttribute('aria-expanded',String(open));$('soundMixerToggle').textContent=open?'STUDIO  −':'STUDIO  +';
 });
 $('soundMasterVolume').addEventListener('input',e=>{
  const value=Number(e.target.value);$('soundMasterValue').textContent=value+'%';if(ensureAudio())setParam(masterGain.gain,value/100,.08);
