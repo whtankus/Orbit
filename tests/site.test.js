@@ -5,6 +5,9 @@ import { readFileSync } from "node:fs";
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const app = readFileSync(new URL("../src/app/main.js", import.meta.url), "utf8");
 const styles = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+const planetarium = readFileSync(new URL("../src/planetarium/planetarium.js", import.meta.url), "utf8");
+const stars = JSON.parse(readFileSync(new URL("../src/planetarium/data/stars.json", import.meta.url), "utf8"));
+const skyCulture = JSON.parse(readFileSync(new URL("../src/planetarium/data/constellations.json", import.meta.url), "utf8"));
 
 test("the page loads the standalone stylesheet and application module", () => {
   assert.match(html, /href="\.\/styles\.css"/);
@@ -37,4 +40,32 @@ test("the stylesheet has the observatory and responsive layouts", () => {
   assert.match(styles, /\.astro-timebar/);
   assert.match(styles, /@media\(max-width:600px\)/);
   assert.match(styles, /\.research-card/);
+});
+
+test("planetarium data contains a measured star catalogue and all IAU constellations", () => {
+  assert.ok(stars.stars.length > 9000);
+  assert.equal(skyCulture.constellations.length, 88);
+  assert.equal(skyCulture.edges.length, 781);
+});
+
+test("every star used by the 88 Stellarium figures resolves to a Hipparcos catalogue row", () => {
+  const ids = new Set(stars.stars.filter(row => row[0] > 0).map(row => row[0]));
+  const referenced = new Set(skyCulture.constellations.flatMap(c => c.lines.flatMap(line => line.ids)));
+  assert.ok(referenced.size > 600);
+  for (const id of referenced) assert.ok(ids.has(id), "Missing HIP " + id);
+});
+
+test("planetarium uses date and observer horizon calculations", () => {
+  assert.match(planetarium, /precessJ2000EquatorialToDate/);
+  assert.match(planetarium, /B1875_JD/);
+  assert.match(planetarium, /stereographicProject/);
+  assert.match(planetarium, /horizontalCoordinates/);
+});
+
+test("Night Sky page exposes star search, magnitude and layer controls", () => {
+  assert.match(html, /id="skyStarSearch"/);
+  assert.match(html, /id="skyMagnitude"/);
+  assert.match(html, /id="skyShowBoundaries"/);
+  assert.match(html, /id="skyShowLines"/);
+  assert.match(html, /id="skyShowLabels"/);
 });
