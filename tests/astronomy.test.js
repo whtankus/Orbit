@@ -9,6 +9,7 @@ import {
   calculatePlanetStates,
   observerEphemeris,
   greenwichMeanSiderealTime,
+  precessJ2000EquatorialToDate,
   equatorialToHorizontal
 } from "../src/astronomy/index.js";
 
@@ -53,8 +54,7 @@ test("JPL validity interval is explicitly bounded", () => {
   assert.equal(orbitalElementsAt("Earth", new Date("1750-01-01T00:00:00Z")).validForDate, false);
 });
 
-test("J2000 coordinates precess to the selected date without losing validity", async () => {
-  const { precessJ2000EquatorialToDate } = await import("../src/astronomy/coordinates.js");
+test("J2000 coordinates precess to the selected date without losing validity", () => {
   const p = precessJ2000EquatorialToDate(101.287, -16.716, new Date("2026-11-14T00:00:00Z"));
   assert.ok(Number.isFinite(p.rightAscensionDeg));
   assert.ok(Number.isFinite(p.declinationDeg));
