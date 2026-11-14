@@ -304,18 +304,47 @@ function noiseSweep(duration=1.05,pan=0,low=90,high=2600,level=.045){
  send.connect(spaceReverb);source.start(now);source.stop(now+duration+.04);
 }
 function soundEffect(kind='ui'){
- if(!soundEnabled||!effectsEnabled)return;
+ if(!soundEnabled||!effectsEnabled||!ensureAudio())return;
+ const now=audioCtx.currentTime;
+ const voice=(frequency,duration,volume,pan=0,shape='sine',endFrequency=null)=>{
+  const osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),amp=audioCtx.createGain();
+  const panner=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null;
+  osc.type=shape;osc.frequency.setValueAtTime(frequency,now);
+  if(endFrequency)osc.frequency.exponentialRampToValueAtTime(Math.max(25,endFrequency),now+duration);
+  filter.type='lowpass';filter.frequency.setValueAtTime(shape==='triangle'?1800:3200,now);filter.Q.value=.55;
+  amp.gain.setValueAtTime(.0001,now);
+  amp.gain.exponentialRampToValueAtTime(volume,now+.035);
+  amp.gain.exponentialRampToValueAtTime(.0001,now+duration);
+  osc.connect(filter);filter.connect(amp);
+  if(panner){panner.pan.value=pan;amp.connect(panner);panner.connect(masterGain);amp.connect(sendBus)}
+  else{amp.connect(masterGain);amp.connect(sendBus)}
+  osc.start(now);osc.stop(now+duration+.04);
+ };
+ const sendBus=audioCtx.createGain();sendBus.gain.value=.22;sendBus.connect(spaceReverb);
+ const softNoise=(duration,pan=0)=>{
+  if(!noiseBuffer)return;
+  const src=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();
+  const p=audioCtx.createStereoPanner?audioCtx.createStereoPanner():null;
+  src.buffer=noiseBuffer;filter.type='bandpass';filter.frequency.value=kind==='travel'?620:1150;filter.Q.value=.72;
+  gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(.009,now+.08);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
+  src.connect(filter);filter.connect(gain);
+  if(p){p.pan.value=pan;gain.connect(p);p.connect(masterGain)}else gain.connect(masterGain);
+  src.start(now);src.stop(now+duration+.03);
+ };
  if(kind==='focus'){
-  noiseSweep(.68,.22,120,1700,.025);synthVoice(146.83,.9,'sine',.035,220,.1,900,.52);synthVoice(220,.82,'triangle',.016,293.66,-.18,1500,.62,.12);synthVoice(440,.6,'sine',.009,587.33,.28,2600,.7,.18);
+  voice(392,.42,.012,-.22,'sine',440);voice(587.33,.62,.009,.2,'triangle',659.25);
  }else if(kind==='travel'){
-  noiseSweep(1.45,0,48,3100,.055);synthVoice(48.99,1.5,'sine',.055,32.7,0,280,.48,.14);synthVoice(73.42,1.15,'triangle',.025,110,-.18,520,.64,.1);synthVoice(196,.8,'sine',.013,392,.22,1800,.78,.16);synthVoice(392,.95,'sine',.009,523.25,-.25,3200,.8,.28);
+  softNoise(1.05,-.12);voice(55,1.2,.018,0,'sine',41.2);voice(110,.85,.009,.22,'triangle',164.8);voice(440,.72,.006,-.2,'sine',587.33);
  }else if(kind==='history'){
-  noiseSweep(.9,-.25,70,1900,.034);synthVoice(65.41,1.45,'sine',.044,49,-.1,360,.7,.13);synthVoice(130.81,1.05,'triangle',.018,196,.12,950,.8,.2);synthVoice(261.63,.95,'sine',.014,392,.28,2400,.86,.24);
+  voice(130.81,.9,.012,-.18,'sine',98);voice(261.63,.75,.008,.18,'triangle',329.63);
  }else if(kind==='chart'){
-  synthVoice(392,.42,'sine',.016,440,-.22,2200,.72,.025);synthVoice(587.33,.58,'triangle',.011,783.99,.2,3000,.84,.1);synthVoice(880,.74,'sine',.005,1174.66,.35,4200,.9,.15);
+  voice(523.25,.32,.008,-.12,'sine',587.33);voice(783.99,.48,.005,.16,'sine',880);
  }else if(kind==='toggle'){
-  synthVoice(164.81,.32,'triangle',.018,196,0,950,.4,.02);synthVoice(329.63,.42,'sine',.012,392,.16,2000,.62,.07);
- }else synthVoice(493.88,.105,'sine',.008,440,0,1400,.2,.008);
+  voice(329.63,.24,.009,-.08,'sine',392);voice(493.88,.34,.006,.1,'triangle',587.33);
+ }else{
+  voice(440,.11,.003,0,'sine',466.16);
+ }
+ setTimeout(()=>{try{sendBus.disconnect()}catch(e){}},1800);
 }
 function startAmbient(){
  if(!soundEnabled||!ambienceEnabled||!ensureAudio()||ambientNodes.length)return;
@@ -359,11 +388,20 @@ $('soundMasterVolume').addEventListener('input',e=>{
 });
 $('ambienceCheck').addEventListener('change',e=>{ambienceEnabled=e.target.checked;if(soundEnabled){if(ambienceEnabled)startAmbient();else stopAmbient()}});
 $('effectsCheck').addEventListener('change',e=>{effectsEnabled=e.target.checked});
+// Deliberate, low-frequency interaction feedback: avoid sounding on every button.
+let lastUiSoundAt=0;
 document.addEventListener('click',e=>{
- const b=e.target.closest('button');if(!b||b.id==='soundToggle'||b.id==='soundMixerToggle')return;
- if(b.classList.contains('body-btn'))soundEffect('focus');
- else if(b.id==='historyNext'||b.id==='historyPrev'||b.id==='historyPlay'||b.dataset.epoch!==undefined)soundEffect('history');
- else if(b.id==='skyNow'||b.id==='skyReset')soundEffect('chart');else soundEffect('ui');
+ const b=e.target.closest('button');
+ if(!b||b.id==='soundToggle'||b.id==='soundMixerToggle')return;
+ let kind=null;
+ if(b.classList.contains('body-btn'))kind='focus';
+ else if(['historyNext','historyPrev','historyPlay'].includes(b.id)||b.dataset.epoch!==undefined)kind='history';
+ else if(['skyNow','skyReset'].includes(b.id))kind='chart';
+ else if(['playBtn','orbitsBtn','labelsBtn','cloudsBtn','moonsBtn','cinemaBtn','resetBtn'].includes(b.id))kind='toggle';
+ if(!kind)return;
+ const now=performance.now();
+ if(now-lastUiSoundAt<110)return;
+ lastUiSoundAt=now;soundEffect(kind);
 });
 let lastChartSound=0;$('skyCanvas').addEventListener('click',()=>soundEffect('chart'));
 $('historyRange').addEventListener('input',()=>{const now=performance.now();if(now-lastChartSound>260){soundEffect('history');lastChartSound=now}});
