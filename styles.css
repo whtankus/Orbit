@@ -1155,7 +1155,7 @@ button:focus-visible{outline:2px solid #c4f0ff;outline-offset:4px;box-shadow:0 0
 .track-art i{display:block;width:4px;height:12px;border-radius:5px;background:#b8eaff;box-shadow:0 0 9px #72d3ff;transform:scaleY(.65);transition:transform .3s}
 .track-art i:nth-child(2){height:24px;background:#f3d6a2;box-shadow:0 0 10px #eabf7b}
 .track-art i:nth-child(3){height:17px}
-.sound-track.active .track-art i{animation:trackBars .9s ease-in-out infinite alternate}
+.sound-mixer.music-playing .sound-track.active .track-art i{animation:trackBars .9s ease-in-out infinite alternate}
 .sound-track.active .track-art i:nth-child(2){animation-delay:.2s}.sound-track.active .track-art i:nth-child(3){animation-delay:.4s}
 .track-art-solar{background:radial-gradient(circle,#e8c78b44,transparent 66%),#241c24}
 .track-art-solar i{background:#f1c17c;box-shadow:0 0 10px #f1b35c}
