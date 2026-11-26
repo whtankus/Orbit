@@ -384,3 +384,30 @@ test("Cosmic Discovery includes logarithmic scale steps and a persistent local f
   assert.ok(styles.includes(".scale-explorer"));
   assert.ok(styles.includes(".favorite-item"));
 });
+
+
+test("Space Mission Explorer exposes four selectable mission profiles", () => {
+  assert.match(html, /data-page="missions"/);
+  assert.match(html, /id="missionsPage"/);
+  for (const id of ["voyager1", "cassini", "perseverance", "artemis"]) {
+    assert.match(html, new RegExp('data-mission="' + id + '"'));
+    assert.ok(app.includes(id + ":{"), "Missing mission profile " + id);
+  }
+  assert.match(app, /function renderMission\(/);
+  assert.match(app, /missionSourceLink/);
+});
+
+test("mission profiles distinguish current status and completed Artemis II milestones", () => {
+  assert.match(app, /INTERSTELLAR · DATA INTERRUPTION/);
+  assert.match(app, /18 NOV 2026/);
+  assert.match(app, /COMPLETED · APRIL 2026/);
+  assert.match(app, /10 APR 2026/);
+  assert.match(html, /Planned mission phases can change/);
+});
+
+test("mission explorer provides responsive and reduced-motion styling", () => {
+  assert.match(styles, /\.mission-layout/);
+  assert.match(styles, /\.mission-timeline/);
+  assert.match(styles, /@media\(max-width:800px\)/);
+  assert.match(styles, /@media\(prefers-reduced-motion:reduce\).*\.mission-select/s);
+});
