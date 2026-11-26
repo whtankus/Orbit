@@ -1,53 +1,56 @@
-# ORBIT — Interactive Universe Explorer
+# ORBIT — Interactive Space Observatory
 
 [![Deploy to GitHub Pages](https://github.com/whtankus/Orbit/actions/workflows/deploy.yml/badge.svg)](https://github.com/whtankus/Orbit/actions/workflows/deploy.yml)
 [![Quality checks](https://github.com/whtankus/Orbit/actions/workflows/quality.yml/badge.svg)](https://github.com/whtankus/Orbit/actions/workflows/quality.yml)
 
-**Explore the Solar System, inspect the night sky, and travel through cosmic history.**
+**Explore nearby worlds. Read the night sky. Travel through cosmic time.**
 
-ORBIT is a browser-based astronomy observatory built with Three.js and browser-native JavaScript modules. It combines an interactive 3D Solar System with a star-chart experience, a deep-sky atlas, and an illustrated timeline of cosmic evolution.
+ORBIT is a browser-based astronomy observatory built with Three.js and native JavaScript modules. It combines an interactive 3D Solar System, a date-aware planetarium, a six-object deep-sky atlas, a twelve-stage cosmic-history experience, comparative planetology and an original generative sound studio.
 
-- **Live observatory:** [whtankus.github.io/Orbit](https://whtankus.github.io/Orbit/)
-- **Source code:** [github.com/whtankus/Orbit](https://github.com/whtankus/Orbit)
+- **Live observatory:** https://whtankus.github.io/Orbit/
+- **Source repository:** https://github.com/whtankus/Orbit
 
-## Explore ORBIT
+## Observatory experiences
 
-### Interactive Solar System
-- Navigate a 3D model of the Sun and eight planets.
-- Select worlds, inspect their appearance, and adjust the simulation date and speed.
-- Explore planet textures, atmospheric effects, Saturn's rings, and orbital guides.
+### 3D Solar System
+- Explore the Sun and all eight planets in a rotatable, zoomable 3D scene.
+- Inspect mapped planetary surfaces, atmospheric limb effects, Earth's cloud and night-light layers, Saturn's textured rings and selected natural satellites.
+- Follow orbital paths, labels and a date-driven simulation.
+- Adjust simulation time, playback speed, camera focus and cinematic mode.
+- The scene compresses orbital distances and enlarges planet radii for legibility; it is not a scale model.
 
 ### Night Sky planetarium
-- Explore a stereographic sky chart with stars above the selected horizon.
-- Select constellation figures and IAU constellation boundaries.
-- Search the stellar catalogue by name, designation, or HIP identifier.
-- Adjust observing location and time, and inspect approximate planetary altitude and azimuth.
+- Explore a stereographic sky chart with star search and constellation figures.
+- Inspect the selected observer's horizon and approximate Solar System body altitude/azimuth.
+- Adjust date and time, zoom and observer location.
+- Browse the planet gallery and deep-sky atlas from the same section.
 
 ### Deep-sky atlas
-- Browse selected galaxies, including Andromeda, the Whirlpool Galaxy, and the Sombrero Galaxy.
-- Connect an atlas object to its constellation in the sky chart.
+The atlas contains six objects: Andromeda Galaxy (M31), Whirlpool Galaxy (M51), Sombrero Galaxy (M104), Pinwheel Galaxy (M101), barred spiral NGC 1300 and Cigar Galaxy (M82). NASA telescope imagery is credited on the relevant objects. The Pinwheel, NGC 1300 and M82 cards use original procedural ORBIT illustrations, not telescope photographs or observational data. Selecting an object links to its constellation in the sky chart.
 
 ### Planet comparison
-- Compare any two planets side by side.
-- Review diameter, rotation period and orbital period.
-- Compare current heliocentric distance and orbital speed for the selected simulation date.
-- See paired visual bars normalized to the larger of the two selected values.
-
-### Appearance
-- The observatory opens with a clean white interface.
-- Switch to the original dark observatory theme at any time; the preference is saved in the browser.
+Compare any two planets side by side. Review diameter, rotation period, orbital period, moon count, current heliocentric distance and approximate orbital speed. Date-dependent orbital values update with the selected simulation date.
 
 ### Cosmic history
-- Scrub or play an illustrated journey through major stages of cosmic and planetary evolution.
-- Explore the early universe, stars, galaxies, the Solar System, and the emergence of life on Earth.
+Move through twelve illustrated milestones, from the cosmic microwave background and first structures to galaxy formation, the Solar System, early life, oxygenation, complex life and modern astronomy. The timeline is an educational narrative with rounded dates, not a numerical cosmology simulation.
+
+### Sound Studio
+Six original, browser-generated soundtracks:
+1. **Event Horizon** — slow orbital ambient
+2. **Solar Wind** — bright planetary pulse
+3. **Deep Field** — shimmering deep-space tones
+4. **Galactic Tides** — slowly evolving harmonics
+5. **Deep Time** — long-form history score
+6. **Stellar Night** — quiet planetarium ambience
+
+When a soundtrack is already playing, moving between Explore, Compare, History, Night Sky and Research selects the corresponding score. Audio never starts automatically; the visitor must enable sound and press Play. Master volume, soundtrack level, spatial ambience and interaction effects are independent controls.
 
 ### Research library
-- Follow curated NASA, JPL, and IAU references.
-- Read about the models and assumptions behind the visualizations.
+Curated NASA, JPL and IAU references introduce planetary science, cosmology, observing and robotic exploration. Model assumptions and known limitations are documented in the repository.
 
 ## Run locally
 
-ORBIT uses ES modules and an import map, so serve the project over HTTP. Do not open `index.html` directly from the filesystem.
+ORBIT uses ES modules and an import map. Serve the project over HTTP; do not open `index.html` directly from the filesystem.
 
 **Requirements:** Node.js 22 or later.
 
@@ -66,7 +69,7 @@ npm run check
 npm test
 ```
 
-The project uses Node's built-in test runner. GitHub Actions runs syntax checks and the test suite for pull requests and before GitHub Pages deployment.
+The project uses Node's built-in test runner. GitHub Actions runs syntax checks and the test suite before GitHub Pages deployment.
 
 ## Project structure
 
@@ -75,7 +78,7 @@ The project uses Node's built-in test runner. GitHub Actions runs syntax checks 
 ├── index.html                  # Application structure and import map
 ├── styles.css                  # Observatory interface and responsive layouts
 ├── src/
-│   ├── app/main.js             # Three.js scene, interface, controls and audio
+│   ├── app/main.js             # Three.js scene, interface, atlas, history and audio
 │   ├── astronomy/              # Planetary elements and coordinate transforms
 │   └── planetarium/            # Night Sky chart, catalogue and observer tools
 ├── docs/
@@ -86,31 +89,25 @@ The project uses Node's built-in test runner. GitHub Actions runs syntax checks 
 
 ## Scientific scope and accuracy
 
-ORBIT is an educational visualization, not a precision observing, navigation, or scientific data service.
+ORBIT is an educational visualization, not a precision observing, navigation or scientific data service.
 
 - Planet positions use NASA/JPL approximate Keplerian elements fitted for **1800–2050 CE**.
-- The displayed Solar System compresses orbital distances and enlarges planet radii; it is not a scale model.
-- The Night Sky catalogue and coordinate projection have documented limitations, including no stellar proper-motion propagation in the current catalogue view.
-- Some cosmic-history scenes are explanatory illustrations, not physical simulations.
+- Earth coefficients represent the Earth–Moon barycentre and are used as an educational proxy for Earth's heliocentric position.
+- Orbital distances are compressed and planet radii exaggerated in the 3D scene.
+- Moon orbits and some atmospheric effects are illustrative.
+- The Night Sky catalogue has documented limitations, including no stellar proper-motion propagation in the current catalogue view.
+- Cosmic-history scenes and three additional galaxy artworks are illustrations, not physical simulations or telescope observations.
 
-Read [Astronomical model and accuracy notes](docs/ASTRONOMY-MODEL.md) before using ORBIT's outputs for scientific interpretation. Use [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/) for precision ephemerides.
+Read [Astronomical model and accuracy notes](docs/ASTRONOMY-MODEL.md) before interpreting visualization outputs. Use [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/) for precision ephemerides.
 
 ## Contributing
 
-Bug reports, carefully scoped feature proposals, documentation improvements, and tested code contributions are welcome.
+Bug reports, focused feature proposals, documentation improvements and tested code contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md), search existing issues, document reproduction steps, preserve scientific limitations and attributions, then run `npm run check` and `npm test`.
 
-1. Read [CONTRIBUTING.md](CONTRIBUTING.md).
-2. Search existing issues before opening a new one.
-3. Explain the problem or proposed improvement, including steps to reproduce where relevant.
-4. Keep pull requests focused and preserve the documented scientific limitations.
-5. Run `npm run check` and `npm test` before submitting.
+## Data, imagery and attribution
 
-Please do not present illustrative graphics or approximate calculations as measured or precision scientific data.
-
-## Data and attribution
-
-ORBIT incorporates third-party astronomical data and imagery. Their sources and applicable terms are documented in the application and in [ASTRONOMY-MODEL.md](docs/ASTRONOMY-MODEL.md). Please retain those attributions when changing or redistributing the relevant assets.
+Planetary texture maps are attributed in the application to Solar System Scope (CC BY 4.0). Deep-sky telescope imagery retains its NASA/ESA/CSA/STScI credits in the atlas. Original procedural illustrations are labelled as ORBIT artwork. Catalogue and constellation data sources and licences are described in [ASTRONOMY-MODEL.md](docs/ASTRONOMY-MODEL.md).
 
 ## License
 
-No project-wide open-source license is currently included. Unless a license is added by the repository owner, do not assume that the source code is licensed for reuse, redistribution, or modification outside the permissions granted by applicable law.
+No project-wide open-source license is currently included. Unless a license is added by the repository owner, do not assume that the source code is licensed for reuse or redistribution beyond permissions granted by applicable law.
