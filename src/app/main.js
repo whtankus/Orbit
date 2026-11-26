@@ -8,6 +8,20 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {calculatePlanetStates, heliocentricPosition, orbitalElementsAt, orbitalPath, observerEphemeris, EPHEMERIS_VALIDITY} from '../astronomy/index.js';
 import {createPlanetarium} from '../planetarium/planetarium.js';
 const $=id=>document.getElementById(id);
+function applyOrbitTheme(theme,persist=false){
+ const light=theme!=='dark';
+ document.body.classList.toggle('orbit-light',light);
+ const button=$('themeToggle');
+ if(button){
+  const action=light?'dark':'light';
+  $('themeToggleLabel').textContent=action.toUpperCase()+' THEME';
+  button.setAttribute('aria-label','Switch to '+action+' theme');
+  button.setAttribute('aria-pressed',String(!light));
+  button.title='Switch to '+action+' theme';
+ }
+ if(persist){try{localStorage.setItem('orbit-theme',light?'light':'dark')}catch(error){console.warn('Theme preference could not be saved.',error)}}
+}
+try{applyOrbitTheme(localStorage.getItem('orbit-theme')||'light')}catch(error){applyOrbitTheme('light')}
 let simulationDate=new Date();
 let lastDateDisplayUpdate=0;
 const data={
@@ -89,6 +103,7 @@ function setSimulationDate(value,updateSky=true){
  if($('simulationDateLabel'))$('simulationDateLabel').textContent=simulationDate.toLocaleString([], {dateStyle:'medium',timeStyle:'short'}).toUpperCase();
  if($('telemetryDate'))$('telemetryDate').textContent=simulationDate.getFullYear()+'-'+String(simulationDate.getMonth()+1).padStart(2,'0')+'-'+String(simulationDate.getDate()).padStart(2,'0');
  if(updateSky&&$('skyDateTime')){$('skyDateTime').value=localDateValue(simulationDate);if(document.getElementById('skyPage')?.classList.contains('open'))drawSkyChart();}
+ if($('comparePage')?.classList.contains('open'))renderPlanetComparison();
  return true;
 }
 // Immediate procedural albedo maps keep every world visibly textured while high-resolution maps load,
@@ -235,8 +250,57 @@ if(cameraTween){const t=Math.min(1,(performance.now()-cameraTween.start)/cameraT
 function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,window.matchMedia('(max-width: 700px)').matches?1.2:1.55));composer.setSize(innerWidth,innerHeight);bloomPass.strength=window.matchMedia('(max-width: 700px)').matches ? 0.42 : 0.62;}window.addEventListener('resize',resize);document.addEventListener('visibilitychange',()=>{if(document.hidden){clock.stop();}else{clock.start();resize();}});
 
 // ORBIT 2.0 — expanded instruments, moons, history archive and sky chart.
+const compareA=$('comparePlanetA'),compareB=$('comparePlanetB');
+function periodInDays(value){
+ const match=String(value).match(/[~]?([\\d.]+)\\s*(?:Earth\\s*)?(years?|days?)/i);
+ if(!match)return 0;const amount=Number(match[1]);return /year/i.test(match[2])?amount*365.25:amount;
+}
+function rotationInHours(value){
+ const s=String(value);
+ const days=s.match(/[~]?([\\d.]+)\\s*(?:Earth\\s*)?days?/i);if(days)return Number(days[1])*24;
+ const clock=s.match(/([\\d.]+)\\s*h(?:ours?)?\\s*(?:(\\d+)\\s*m)?/i);if(clock)return Number(clock[1])+Number(clock[2]||0)/60;
+ const hours=s.match(/[~]?([\\d.]+)\\s*(?:Earth\\s*)?hours?/i);return hours?Number(hours[1]):0;
+}
+function diameterInKm(value){const match=String(value).match(/[\\d,]+(?:\\.\\d+)?/);return match?Number(match[0].replace(/,/g,'')):0}
+function renderPlanetComparison(){
+ if(!compareA||!compareB)return;
+ const nameA=compareA.value,nameB=compareB.value;
+ if(!data[nameA]||!data[nameB]||nameA===nameB)return;
+ const a=data[nameA],b=data[nameB],states=calculatePlanetStates(simulationDate);
+ const stateA=states[nameA],stateB=states[nameB];
+ const diameterA=diameterInKm(a.diameter),diameterB=diameterInKm(b.diameter),maxDiameter=Math.max(diameterA,diameterB);
+ const orbSize=value=>Math.round(62+38*Math.sqrt(value/maxDiameter));
+ const colour=value=>'#'+value.toString(16).padStart(6,'0');
+ const card=(name,spec,side,size)=>'<article class="compare-world-card"><div class="compare-world-top"><span>'+side+'</span><span>'+spec.type+'</span></div><div class="compare-world-identity"><div class="compare-planet-orb" style="--planet-tone:'+colour(spec.color)+';--planet-size:'+size+'px"></div><div><h3>'+name+'</h3><p>'+spec.desc+'</p></div></div><div class="compare-world-meta"><span>MOONS LISTED IN PROFILE</span><strong>'+spec.moons+'</strong></div></article>';
+ $('compareWorlds').innerHTML=card(nameA,a,'WORLD A',orbSize(diameterA))+card(nameB,b,'WORLD B',orbSize(diameterB));
+ const metrics=[
+  {label:'Diameter',valueA:a.diameter,valueB:b.diameter,nA:diameterA,nB:diameterB},
+  {label:'Orbital period',valueA:a.year,valueB:b.year,nA:periodInDays(a.year),nB:periodInDays(b.year)},
+  {label:'Rotation period',valueA:a.day,valueB:b.day,nA:rotationInHours(a.day),nB:rotationInHours(b.day)},
+  {label:'Current distance from Sun',valueA:stateA.distanceAU.toFixed(3)+' AU',valueB:stateB.distanceAU.toFixed(3)+' AU',nA:stateA.distanceAU,nB:stateB.distanceAU},
+  {label:'Current orbital speed',valueA:stateA.speedKmSec.toFixed(2)+' km/s',valueB:stateB.speedKmSec.toFixed(2)+' km/s',nA:stateA.speedKmSec,nB:stateB.speedKmSec}
+ ];
+ $('compareMetrics').innerHTML=metrics.map(metric=>{
+  const max=Math.max(metric.nA,metric.nB,0.000001);
+  const widthA=Math.max(2,metric.nA/max*100),widthB=Math.max(2,metric.nB/max*100);
+  return '<div class="compare-metric-row"><div class="compare-metric-label">'+metric.label+'</div><div class="compare-metric-value"><strong>'+metric.valueA+'</strong><div class="compare-track"><i style="width:'+widthA.toFixed(1)+'%"></i></div></div><div class="compare-metric-value"><strong>'+metric.valueB+'</strong><div class="compare-track compare-track-b"><i style="width:'+widthB.toFixed(1)+'%"></i></div></div></div>';
+ }).join('');
+ $('compareDate').textContent=simulationDate.toLocaleDateString([], {year:'numeric',month:'short',day:'numeric'});
+ const wider=diameterA>=diameterB?nameA:nameB,smaller=diameterA>=diameterB?nameB:nameA;
+ const ratio=Math.max(diameterA,diameterB)/Math.max(1,Math.min(diameterA,diameterB));
+ const longer=periodInDays(a.year)>=periodInDays(b.year)?nameA:nameB;
+ $('compareInsight').innerHTML='<span class="compare-insight-label">QUICK DISCOVERY</span><p><strong>'+wider+'</strong> is about <strong>'+ratio.toFixed(1)+'× wider</strong> than '+smaller+'. '+longer+' takes longer to complete one orbit around the Sun. Distance and orbital speed above use the current simulation date.</p>';
+}
+function handleCompareChange(changed){
+ const other=changed===compareA?compareB:compareA;
+ if(changed.value===other.value){const replacement=[...other.options].find(option=>option.value!==changed.value);if(replacement)other.value=replacement.value;}
+ renderPlanetComparison();
+}
+compareA?.addEventListener('change',()=>handleCompareChange(compareA));
+compareB?.addEventListener('change',()=>handleCompareChange(compareB));
+$('themeToggle')?.addEventListener('click',()=>applyOrbitTheme(document.body.classList.contains('orbit-light')?'dark':'light',true));
 const navButtons=[...document.querySelectorAll('[data-page]')];
-function openPage(which){const active=!!which&&which!=='explore';document.querySelectorAll('.page-overlay').forEach(p=>{const visible=active&&p.id===which+'Page';p.classList.toggle('open',visible);p.setAttribute('aria-hidden',String(!visible));});document.querySelector('.ui').classList.toggle('page-mode',active);navButtons.forEach(b=>{const selected=b.dataset.page===(which||'explore');b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});if(which==='sky')drawSkyChart();if(which==='history'||which==='research')soundEffect('history');}
+function openPage(which){const active=!!which&&which!=='explore';document.querySelectorAll('.page-overlay').forEach(p=>{const visible=active&&p.id===which+'Page';p.classList.toggle('open',visible);p.setAttribute('aria-hidden',String(!visible));});document.querySelector('.ui').classList.toggle('page-mode',active);navButtons.forEach(b=>{const selected=b.dataset.page===(which||'explore');b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});if(which==='sky')drawSkyChart();if(which==='compare')renderPlanetComparison();if(which==='history'||which==='research'||which==='compare')soundEffect('history');}
 function closePages(){openPage(null)}
 navButtons.forEach(b=>b.addEventListener('click',()=>openPage(b.dataset.page)));
 document.querySelectorAll('[data-close-page]').forEach(b=>b.addEventListener('click',closePages));
