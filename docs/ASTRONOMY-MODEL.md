@@ -27,6 +27,10 @@ The displayed Solar System compresses orbital distances and enlarges planet radi
 
 The plotted star field and the 12 constellation line figures are still illustrative. They are not a measured stellar catalogue, do not define the official IAU constellation boundaries, and do not provide an all-sky observing chart. The observer console now calculates approximate Solar System body altitudes and azimuths separately from that schematic star illustration.
 
+## Deep-sky atlas and generated artwork
+
+The atlas combines NASA telescope imagery with three original procedural illustrations: the Pinwheel Galaxy (M101), barred spiral NGC 1300 and starburst galaxy M82. These procedural images are generated in the browser for visual explanation; they are not telescope photographs, calibrated observations or data products. Each card identifies its image type and credit.
+
 ## Verification
 
 The repository includes Node.js tests for:
