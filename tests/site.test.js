@@ -402,7 +402,7 @@ test("mission profiles distinguish current status and completed Artemis II miles
   assert.match(app, /18 NOV 2026/);
   assert.match(app, /COMPLETED · APRIL 2026/);
   assert.match(app, /10 APR 2026/);
-  assert.match(app, /Planned mission phases can change/);
+  assert.match(html, /Planned mission phases can change/);
 });
 
 test("mission explorer provides responsive and reduced-motion styling", () => {
