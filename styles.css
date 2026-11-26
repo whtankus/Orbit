@@ -2174,3 +2174,7 @@ body.orbit-light .discover-toolbar a{border-color:#dce5ed;background:#f8fafc;col
 @media(max-width:760px){#discoverPage .page-shell{display:block}.discover-feature{grid-template-columns:1fr}.discover-feature-art{min-height:170px;grid-row:1}.discover-section-head{align-items:flex-start;flex-direction:column;gap:9px}.black-hole-lab,.scale-explorer{grid-template-columns:1fr}.black-hole-visual{min-height:250px}.discover-footer{flex-direction:column}.favorites-list{grid-template-columns:1fr}}
 @media(max-width:520px){.discover-card-grid,.event-grid{grid-template-columns:1fr}.discover-card-art{height:160px}.nebula-card-image{height:190px}.scale-stage{gap:12px}.scale-markers{grid-template-columns:repeat(2,1fr)}.discover-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.discover-toolbar a{font-size:8px;text-align:center}}
 @media(prefers-reduced-motion:reduce){.discover-card,.discover-feature-art span,.scale-orb,.nebula-card-image img{transition:none;animation:none}}
+
+#skyPage .sky-world-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+#skyPage .sky-world-actions .tool-btn{white-space:nowrap}
+@media(max-width:760px){#skyPage .sky-world-actions{width:100%;flex-wrap:wrap}#skyPage .sky-world-actions>*{flex:1}}
