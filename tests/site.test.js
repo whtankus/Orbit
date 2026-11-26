@@ -355,3 +355,32 @@ test("cosmic history has twelve timeline milestones and dedicated scenes for the
   assert.match(styles, /\.history-stage\[data-epoch="10"\]/);
   assert.match(styles, /\.history-stage\[data-epoch="11"\]/);
 });
+
+
+test("Cosmic Discovery provides exoplanets, sourced nebulae, black-hole controls and cosmic events", () => {
+  assert.ok(html.includes('data-page="discover"'));
+  assert.ok(html.includes('id="discoverPage"'));
+  assert.ok(html.includes('id="exoplanetGrid"'));
+  assert.ok(html.includes('id="nebulaGrid"'));
+  assert.ok(html.includes('id="blackHoleMassRange"'));
+  assert.ok(html.includes('id="blackHoleSpinRange"'));
+  assert.ok(html.includes('id="cosmicEventGrid"'));
+  assert.ok(app.includes("const exoplanets=["));
+  assert.ok(app.includes("const nebulae=["));
+  assert.ok(app.includes("const cosmicEvents=["));
+  assert.ok(app.includes("function updateBlackHole()"));
+  assert.ok(styles.includes(".black-hole-lab"));
+  assert.ok(styles.includes(".event-grid"));
+});
+
+test("Cosmic Discovery includes logarithmic scale steps and a persistent local field log", () => {
+  assert.ok(html.includes('id="scaleRange"'));
+  assert.ok(html.includes('id="favoritesList"'));
+  assert.ok(html.includes('id="discoverFavorites"'));
+  assert.ok(app.includes("const scaleProfiles=["));
+  assert.ok(app.includes("localStorage.getItem(favoriteKey)"));
+  assert.ok(app.includes("localStorage.setItem(favoriteKey"));
+  assert.ok(app.includes("function saveFieldNote"));
+  assert.ok(styles.includes(".scale-explorer"));
+  assert.ok(styles.includes(".favorite-item"));
+});
