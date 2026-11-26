@@ -1969,3 +1969,83 @@ body.orbit-light .deep-sky-card-copy>span{color:#607487}
 @media(max-width:900px){.deep-sky-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.deep-sky-grid{grid-template-columns:1fr}.deep-sky-image{height:190px}.soundtrack-list{max-height:38vh}}
 @media(prefers-reduced-motion:reduce){.deep-sky-card,.deep-sky-image img{transition:none}}
+
+
+/* NIGHT SKY REDESIGN — compact observatory layout and discovery-first galleries */
+#skyPage .page-shell{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);align-items:start;column-gap:22px;row-gap:22px}
+#skyPage .page-topline,#skyPage .sky-discovery-nav,#skyPage .sky-howto,#skyPage .sky-layout{grid-column:1/-1}
+#skyPage .page-topline{margin-bottom:0}
+#skyPage .sky-howto{margin-bottom:0}
+#skyPage .sky-discovery-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#skyPage .sky-discovery-nav a{display:flex;align-items:center;gap:10px;min-width:0;padding:12px 14px;border:1px solid rgba(151,196,238,.2);border-radius:10px;background:linear-gradient(115deg,rgba(20,43,69,.82),rgba(5,13,25,.9));color:#eaf6ff;text-decoration:none;font:10px var(--mono);letter-spacing:.08em;transition:transform .25s ease,border-color .25s ease,background .25s ease,box-shadow .25s ease}
+#skyPage .sky-discovery-nav a:hover{transform:translateY(-3px);border-color:#9edcff88;background:linear-gradient(115deg,rgba(34,75,111,.9),rgba(7,18,34,.96));box-shadow:0 12px 30px #0005,0 0 22px #65caff13}
+#skyPage .sky-discovery-nav a span{color:#9edcff;font-size:9px}
+#skyPage .sky-discovery-nav a b{margin-left:auto;color:#8da8c4;font-size:8px;font-weight:500;white-space:nowrap}
+#skyPage .sky-layout{grid-template-columns:minmax(0,1.7fr) minmax(300px,.8fr);gap:16px}
+#skyPage .sky-canvas-wrap{height:clamp(390px,54vh,590px)}
+#skyPage .sky-info{max-height:clamp(390px,54vh,590px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#456582 transparent}
+#skyPage .sky-info::-webkit-scrollbar{width:6px}
+#skyPage .sky-info::-webkit-scrollbar-thumb{border-radius:8px;background:#456582}
+#skyPage .sky-exploration{min-width:0;margin-top:0;padding:21px}
+#skyPage .sky-exploration .sky-section-heading{align-items:flex-start;flex-direction:column;gap:9px;margin-bottom:15px}
+#skyPage .sky-section-heading h3{font-size:clamp(24px,2.1vw,32px)}
+#skyPage .sky-section-heading p{font-size:11px;line-height:1.65}
+#skyPage .sky-section-count{font-size:8px}
+#skyPage .deep-sky-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#skyPage .deep-sky-image{aspect-ratio:1.35/1}
+#skyPage .deep-sky-card-copy{gap:5px;padding:11px}
+#skyPage .deep-sky-card-copy strong{font-size:13px}
+#skyPage .deep-sky-card-copy small{font-size:8px;line-height:1.5}
+#skyPage .deep-sky-card-copy span{font-size:10px;line-height:1.5}
+#skyPage .deep-sky-type{top:8px;left:8px;font-size:7px}
+#skyPage .deep-sky-detail,#skyPage .sky-world-detail{align-items:flex-start;flex-direction:column;gap:9px;padding:13px}
+#skyPage .deep-sky-detail h4,#skyPage .sky-world-detail h4{font-size:17px}
+#skyPage .deep-sky-detail p,#skyPage .sky-world-detail p{font-size:10px}
+#skyPage .deep-sky-detail-meta{text-align:left;font-size:8px}
+#skyPage .sky-world-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#skyPage .sky-world-card{min-height:150px;padding:12px 8px}
+#skyPage .sky-world-sphere{width:clamp(58px,5.5vw,82px)}
+#skyPage .sky-world-card strong{margin-top:9px;font-size:13px}
+#skyPage .sky-world-card small,#skyPage .sky-world-card em{font-size:7px}
+#skyPage .sky-world-detail{margin-top:12px}
+#skyPage .sky-world-focus{min-height:38px;font-size:8px}
+#skyPage .sky-world-note{font-size:9px}
+@media(max-width:1050px) and (min-width:761px){
+ #skyPage .sky-layout{grid-template-columns:minmax(0,1.35fr) minmax(260px,.8fr);gap:12px}
+ #skyPage .sky-canvas-wrap,#skyPage .sky-info{height:470px;max-height:470px;min-height:470px}
+ #skyPage .sky-info{display:block;padding:16px}
+ #skyPage .sky-info>.page-kicker,#skyPage .sky-info>h3,#skyPage .sky-info>p,#skyPage .sky-info>.sky-observer-title,#skyPage .sky-info>.sky-map-key,#skyPage .sky-info>.sky-readout,#skyPage .sky-info>.sky-planet-list,#skyPage .sky-info>.sky-science-note,#skyPage .sky-info>.sky-source-links{grid-column:auto}
+}
+@media(max-width:900px) and (min-width:761px){
+ #skyPage .page-shell{grid-template-columns:1fr}
+ #skyPage .page-topline,#skyPage .sky-discovery-nav,#skyPage .sky-howto,#skyPage .sky-layout{grid-column:1}
+ #skyPage .sky-exploration{grid-column:1}
+ #skyPage .sky-layout{grid-template-columns:minmax(0,1fr)}
+ #skyPage .sky-info{height:auto;max-height:540px;min-height:0}
+ #skyPage .sky-canvas-wrap{height:clamp(380px,58vw,540px)}
+ #skyPage .sky-exploration{margin-top:0}
+}
+@media(max-width:760px){
+ #skyPage .page-shell{display:flex;flex-direction:column;gap:15px}
+ #skyPage .sky-discovery-nav{grid-template-columns:1fr;width:100%}
+ #skyPage .sky-discovery-nav a{min-height:42px}
+ #skyPage .sky-layout{grid-template-columns:1fr}
+ #skyPage .sky-canvas-wrap{height:clamp(310px,75vw,480px)}
+ #skyPage .sky-info{height:auto;max-height:none;min-height:0;overflow:visible}
+ #skyPage .sky-exploration{width:100%;margin-top:0}
+ #skyPage .deep-sky-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #skyPage .sky-world-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ #skyPage .sky-world-card{min-height:145px}
+ #skyPage .sky-world-sphere{width:clamp(52px,11vw,78px)}
+}
+@media(max-width:520px){
+ #skyPage .sky-discovery-nav{grid-template-columns:1fr}
+ #skyPage .sky-howto{grid-template-columns:1fr}
+ #skyPage .deep-sky-grid{grid-template-columns:1fr}
+ #skyPage .sky-world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #skyPage .sky-world-card{min-height:170px}
+}
+@media(prefers-reduced-motion:reduce){
+ #skyPage .sky-discovery-nav a{transition:none}
+ #skyPage .sky-discovery-nav a:hover{transform:none}
+}
