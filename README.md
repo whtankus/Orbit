@@ -27,6 +27,16 @@ ORBIT is a browser-based astronomy observatory built with Three.js and browser-n
 - Browse selected galaxies, including Andromeda, the Whirlpool Galaxy, and the Sombrero Galaxy.
 - Connect an atlas object to its constellation in the sky chart.
 
+### Planet comparison
+- Compare any two planets side by side.
+- Review diameter, rotation period and orbital period.
+- Compare current heliocentric distance and orbital speed for the selected simulation date.
+- See paired visual bars normalized to the larger of the two selected values.
+
+### Appearance
+- The observatory opens with a clean white interface.
+- Switch to the original dark observatory theme at any time; the preference is saved in the browser.
+
 ### Cosmic history
 - Scrub or play an illustrated journey through major stages of cosmic and planetary evolution.
 - Explore the early universe, stars, galaxies, the Solar System, and the emergence of life on Earth.
