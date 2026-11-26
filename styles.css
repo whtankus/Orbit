@@ -1817,3 +1817,123 @@ body.orbit-light #cinemaExit{background:#fff;color:#344d62;border-color:#d8e4ed}
 .theme-toggle{display:inline-flex;align-items:center;gap:7px}
 .theme-toggle .theme-indicator{width:7px;height:7px;border-radius:50%;background:#7fbce0;box-shadow:0 0 0 3px #7fbce022}
 body.orbit-light .theme-indicator{background:#4c9bd6;box-shadow:0 0 0 3px #4c9bd620}
+
+
+/* ORBIT 5.0 — responsive planet comparison instrument */
+.sound-wrap{display:flex;align-items:center;gap:7px;position:relative}
+.theme-toggle{white-space:nowrap}
+.compare-toolbar{
+ display:grid;grid-template-columns:minmax(180px,1fr) auto minmax(180px,1fr) minmax(180px,.9fr);
+ align-items:end;gap:16px;margin:28px 0 22px;padding:18px;
+ border:1px solid var(--panel-edge);border-radius:16px;background:rgba(255,255,255,.045);
+}
+.compare-select-wrap{display:grid;gap:7px}
+.compare-select-wrap label,.compare-date span{font:500 10px var(--mono);letter-spacing:.12em;color:#a8dfff}
+.compare-select{
+ width:100%;min-height:48px;padding:0 13px;border:1px solid #a8c9e344;border-radius:9px;
+ background:#08182a;color:#edf7ff;font:500 14px var(--sans)
+}
+.compare-select option{background:#fff;color:#1e2b38}
+.compare-versus{align-self:center;padding:0 8px;color:#9fb4c9;font:500 11px var(--mono)}
+.compare-date{display:grid;gap:4px;padding:2px 5px 5px}
+.compare-date strong{font:500 16px var(--sans);color:var(--ink)}
+.compare-date small{font:9px var(--mono);letter-spacing:.07em;color:var(--muted)}
+.compare-worlds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.compare-world-card{
+ min-width:0;padding:22px;border:1px solid var(--panel-edge);border-radius:17px;
+ background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+ box-shadow:0 16px 45px #0002,inset 0 1px #fff1
+}
+.compare-world-top{display:flex;justify-content:space-between;gap:10px;color:#a8c4dc;font:9px var(--mono);letter-spacing:.1em}
+.compare-world-top span:last-child{text-align:right;color:#97a9bd}
+.compare-world-identity{display:flex;align-items:center;gap:20px;min-height:138px;padding:18px 0}
+.compare-planet-orb{
+ flex:0 0 auto;width:var(--planet-size);height:var(--planet-size);border-radius:50%;
+ background:radial-gradient(circle at 32% 28%,color-mix(in srgb,var(--planet-tone),white 48%),var(--planet-tone) 48%,#07101a 100%);
+ box-shadow:inset -14px -9px 20px #0008,0 0 34px color-mix(in srgb,var(--planet-tone),transparent 58%);
+}
+.compare-world-identity h3{margin:0 0 6px;color:#f4f9ff;font-size:clamp(23px,3vw,34px);letter-spacing:-.05em}
+.compare-world-identity p{max-width:390px;margin:0;color:#bac9da;font-size:13px;line-height:1.65}
+.compare-world-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:14px;border-top:1px solid #a9cce522}
+.compare-world-meta span{font:9px var(--mono);letter-spacing:.08em;color:#9eafc3}
+.compare-world-meta strong{color:#f1f7ff;font:500 12px var(--mono)}
+.compare-metrics-wrap{margin-top:28px;padding:22px;border:1px solid var(--panel-edge);border-radius:17px;background:rgba(255,255,255,.035)}
+.compare-section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:20px}
+.compare-section-head h3{margin:7px 0 0;color:#f3f8ff;font-size:25px;letter-spacing:-.04em}
+.compare-section-head>span{font:9px var(--mono);letter-spacing:.07em;color:#9fb2c6;text-align:right}
+.compare-metric-row{display:grid;grid-template-columns:minmax(150px,.72fr) repeat(2,minmax(0,1fr));gap:18px;align-items:center;padding:16px 0;border-top:1px solid #a9cce51b}
+.compare-metric-label{font:500 12px var(--sans);color:#bdcede}
+.compare-metric-value{min-width:0;display:grid;gap:9px}
+.compare-metric-value strong{font:500 13px var(--mono);color:#f1f7ff;overflow-wrap:anywhere}
+.compare-track{height:6px;overflow:hidden;border-radius:8px;background:#9edcff17}
+.compare-track i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,#7cc9f0,#b6e8ff);box-shadow:0 0 12px #70c7f155}
+.compare-track-b i{background:linear-gradient(90deg,#d4b07b,#f4d5a5);box-shadow:0 0 12px #d4b07b44}
+.compare-insight{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;align-items:center;margin-top:16px;padding:18px 20px;border:1px solid #a8dfff30;border-radius:13px;background:linear-gradient(100deg,#88cef012,#d4b07b08)}
+.compare-insight-label{font:500 9px var(--mono);letter-spacing:.14em;color:#a8e4ff}
+.compare-insight p{margin:0;color:#c8d8e7;font-size:13px;line-height:1.65}
+.compare-insight strong{color:#fff}
+.compare-science-note{max-width:980px;margin:16px 0 0;color:#aebed0;font-size:12px;line-height:1.8}
+.compare-science-note a{color:#a8e4ff!important;text-decoration:none}
+.compare-science-note a:hover{text-decoration:underline}
+body.orbit-light .compare-toolbar,body.orbit-light .compare-world-card,body.orbit-light .compare-metrics-wrap{
+ border-color:#dce5ed;background:#fff;box-shadow:0 15px 42px #17314b0a,inset 0 1px #fff
+}
+body.orbit-light .compare-select-wrap label,body.orbit-light .compare-date span{color:#5287ad}
+body.orbit-light .compare-select{border-color:#dce5ed;background:#f8fafc;color:#26394b}
+body.orbit-light .compare-versus{color:#8b99a8}
+body.orbit-light .compare-date strong{color:#24384c}
+body.orbit-light .compare-date small{color:#7b8998}
+body.orbit-light .compare-world-top{color:#5287ad}
+body.orbit-light .compare-world-top span:last-child{color:#718094}
+body.orbit-light .compare-world-identity h3{color:#1e3041}
+body.orbit-light .compare-world-identity p{color:#607184}
+body.orbit-light .compare-world-meta{border-color:#e5ebf0}
+body.orbit-light .compare-world-meta span{color:#728195}
+body.orbit-light .compare-world-meta strong{color:#344b60}
+body.orbit-light .compare-section-head h3{color:#20364a}
+body.orbit-light .compare-section-head>span{color:#7b8998}
+body.orbit-light .compare-metric-row{border-color:#e7edf2}
+body.orbit-light .compare-metric-label{color:#56687b}
+body.orbit-light .compare-metric-value strong{color:#263c50}
+body.orbit-light .compare-track{background:#e8f1f7}
+body.orbit-light .compare-track i{background:linear-gradient(90deg,#7abbe0,#3b91c7);box-shadow:none}
+body.orbit-light .compare-track-b i{background:linear-gradient(90deg,#d6b77f,#bd8b43);box-shadow:none}
+body.orbit-light .compare-insight{border-color:#d5e6f1;background:linear-gradient(100deg,#eef7fc,#fbf7ef)}
+body.orbit-light .compare-insight-label{color:#4288b7}
+body.orbit-light .compare-insight p{color:#5d6e7d}
+body.orbit-light .compare-insight strong{color:#24394b}
+body.orbit-light .compare-science-note{color:#748294}
+body.orbit-light .compare-science-note a{color:#397fad!important}
+@media(max-width:900px){
+ .compare-toolbar{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+ .compare-date{grid-column:1/-1;grid-row:2;display:flex;align-items:center;gap:12px}
+ .compare-date small{margin-left:auto}
+}
+@media(max-width:600px){
+ .theme-toggle{min-width:40px;width:40px;height:40px;justify-content:center;padding:0}
+ .theme-toggle #themeToggleLabel{display:none}
+ .compare-toolbar{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:9px;padding:12px}
+ .compare-select{min-height:44px;padding:0 8px;font-size:12px}
+ .compare-versus{padding:0 2px}
+ .compare-date{gap:7px;flex-wrap:wrap}
+ .compare-date small{width:100%;margin:0}
+ .compare-worlds{grid-template-columns:minmax(0,1fr);gap:11px}
+ .compare-world-card{padding:17px}
+ .compare-world-identity{min-height:115px;gap:14px;padding:13px 0}
+ .compare-world-identity p{font-size:12px}
+ .compare-metrics-wrap{margin-top:16px;padding:14px}
+ .compare-section-head{display:block}
+ .compare-section-head>span{display:block;margin-top:8px;text-align:left;line-height:1.5}
+ .compare-metric-row{grid-template-columns:1fr 1fr;gap:10px;padding:13px 0}
+ .compare-metric-label{grid-column:1/-1;font-size:11px}
+ .compare-metric-value strong{font-size:11px}
+ .compare-track{height:5px}
+ .compare-insight{grid-template-columns:1fr;gap:7px;padding:15px}
+ .compare-insight p{font-size:12px}
+ .compare-science-note{font-size:11px}
+}
+@media(max-width:380px){
+ .sound-wrap{gap:3px}
+ .theme-toggle,.sound-wrap #soundToggle,.sound-wrap .sound-mixer-toggle{min-width:36px;width:36px;padding:0}
+ .compare-world-top{font-size:8px}
+}
