@@ -25,7 +25,11 @@ The displayed Solar System compresses orbital distances and enlarges planet radi
 
 ## Night Sky chart
 
-The plotted star field and the 12 constellation line figures are still illustrative. They are not a measured stellar catalogue, do not define the official IAU constellation boundaries, and do not provide an all-sky observing chart. The observer console now calculates approximate Solar System body altitudes and azimuths separately from that schematic star illustration.
+The Night Sky is a horizon-filtered stereographic view built from a 9,029-row fixed-star catalogue subset and Stellarium constellation figures, with IAU/Delporte boundary data. It is not a Gaia-depth survey or a complete precision observing service. The catalogue subset does not propagate stellar proper motion, and the chart omits effects such as atmospheric refraction and terrain obstruction. The observer console calculates approximate Solar System body altitudes and azimuths separately from the fixed-star catalogue.
+
+## Deep-sky atlas and generated artwork
+
+The atlas combines NASA telescope imagery with three original procedural illustrations: the Pinwheel Galaxy (M101), barred spiral NGC 1300 and starburst galaxy M82. These procedural images are generated in the browser for visual explanation; they are not telescope photographs, calibrated observations or data products. Each card identifies its image type and credit.
 
 ## Verification
 

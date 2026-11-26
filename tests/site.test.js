@@ -322,3 +322,36 @@ test("planet comparison uses existing profiles and date-specific approximate eph
   assert.ok(styles.includes(".compare-worlds"));
   assert.ok(styles.includes(".compare-metric-row"));
 });
+
+
+test("the sound studio contains six original tracks and selects a matching score for each section", () => {
+  for (const track of ["horizon","solar","deep","galaxy","chronicle","planetarium"]) {
+    assert.match(html, new RegExp('data-track="' + track + '"'));
+    assert.ok(app.includes(track + ":{") || app.includes(track + ": {"));
+  }
+  assert.match(app, /const pageTrack=\{explore:'solar',compare:'solar',history:'chronicle',sky:'planetarium',research:'galaxy'\}/);
+  assert.match(html, /GENERATIVE AUDIO · SIX SCORES/);
+});
+
+test("the deep-sky atlas has six objects and labels generated artwork as illustration", () => {
+  assert.match(app, /function galaxyArtwork\(kind\)/);
+  for (const id of ["andromeda","whirlpool","sombrero","pinwheel","ngc1300","m82"]) assert.ok(app.includes("id:'" + id + "'"));
+  assert.match(app, /ORBIT procedural illustration · not telescope data/);
+  assert.match(styles, /\.deep-sky-grid\{grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+});
+
+test("the starfield uses soft stellar sprites and increased point density", () => {
+  assert.match(app, /function starSpriteTexture\(\)/);
+  assert.match(app, /map:stellarDisc/);
+  assert.match(app, /starField\(14500,190,.13,.94\)/);
+  assert.match(app, /starField\(4200,105,.065,.48\)/);
+});
+
+test("cosmic history has twelve timeline milestones and dedicated scenes for the new stages", () => {
+  assert.match(html, /id="historyRange" type="range" min="0" max="11"/);
+  assert.match(app, /ERA 10 · COMPLEX LIFE/);
+  assert.match(app, /ERA 11 · TECHNOLOGICAL CIVILISATION/);
+  assert.match(app, /ERA 12 · PRESENT DAY/);
+  assert.match(styles, /\.history-stage\[data-epoch="10"\]/);
+  assert.match(styles, /\.history-stage\[data-epoch="11"\]/);
+});
