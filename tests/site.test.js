@@ -298,3 +298,27 @@ test("planetary rendering uses high-detail globe geometry and mapped Earth night
   assert.match(app, /makeSaturnRingTexture/);
   assert.match(app, /RingGeometry\(d\.radius\*1\.12,d\.radius\*2\.35,384\)/);
 });
+
+
+test("the observatory defaults to the white theme and persists a dark-theme preference", () => {
+  assert.ok(html.includes('<body class="orbit-light">'));
+  assert.ok(html.includes('id="themeToggle"'));
+  assert.ok(app.includes("function applyOrbitTheme(theme,persist=false)"));
+  assert.ok(app.includes("localStorage.setItem('orbit-theme'"));
+  assert.ok(styles.includes("body.orbit-light .page-overlay"));
+  assert.ok(styles.includes(".theme-toggle"));
+});
+
+test("planet comparison uses existing profiles and date-specific approximate ephemerides", () => {
+  assert.ok(html.includes('data-page="compare"'));
+  assert.ok(html.includes('id="comparePage"'));
+  assert.ok(html.includes('id="comparePlanetA"'));
+  assert.ok(html.includes('id="comparePlanetB"'));
+  assert.ok(app.includes("function renderPlanetComparison()"));
+  assert.ok(app.includes("calculatePlanetStates(simulationDate)"));
+  assert.ok(app.includes("function periodInDays(value)"));
+  assert.ok(app.includes("function rotationInHours(value)"));
+  assert.ok(app.includes("function handleCompareChange(changed)"));
+  assert.ok(styles.includes(".compare-worlds"));
+  assert.ok(styles.includes(".compare-metric-row"));
+});
