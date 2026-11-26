@@ -1619,3 +1619,201 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 @keyframes debrisDrift{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.04)}100%{transform:rotate(360deg) scale(1)}}
 @media(max-width:700px){.history-stage{min-height:390px}.history-stage .epoch-core{max-width:45vw}.history-stage .stage-date{max-width:100%;font-size:clamp(20px,6vw,32px)}}
 @media(prefers-reduced-motion:reduce){.history-stage .epoch-particles,.history-stage .epoch-orbit,.history-stage .epoch-debris{animation:none!important}}
+
+
+/* ORBIT 5.0 — luminous white observatory theme and interaction polish */
+:root{
+  --orbit-paper:#ffffff;
+  --orbit-cloud:#f6f8fb;
+  --orbit-ink:#171b24;
+  --orbit-muted:#657181;
+  --orbit-line:rgba(24,38,58,.12);
+  --orbit-accent:#4c9bd6;
+  --orbit-accent-soft:#eaf5fc;
+}
+body.orbit-light{
+  color:var(--orbit-ink);
+  background:#f5f7fa;
+}
+body.orbit-light #space{background:radial-gradient(ellipse at 50% 45%,#243e5e 0%,#15283f 56%,#0d1b2d 100%)}
+body.orbit-light .vignette{
+  background:radial-gradient(ellipse at 50% 48%,transparent 35%,rgba(8,22,38,.1) 76%,rgba(8,22,38,.36) 130%);
+}
+body.orbit-light .grain{opacity:.018}
+body.orbit-light .top{
+  background:rgba(255,255,255,.91);
+  border-bottom:1px solid var(--orbit-line);
+  box-shadow:0 8px 28px rgba(23,40,59,.05);
+  backdrop-filter:blur(22px) saturate(145%);
+}
+body.orbit-light .brand-name{color:var(--orbit-ink)}
+body.orbit-light .brand-sub{color:#788494}
+body.orbit-light .mark{border-color:#6caedc;box-shadow:0 0 0 5px #e7f3fb}
+body.orbit-light .mark:before{border-color:#428fc5}
+body.orbit-light .mark:after{background:#428fc5;box-shadow:0 0 9px #6db8e9}
+body.orbit-light .status{color:#687788}
+body.orbit-light .status i{background:#3ca875;box-shadow:0 0 10px #3ca87566}
+body.orbit-light .top-btn,body.orbit-light .tool-btn{
+  border-color:#dce3eb;background:#fff;color:#485466;box-shadow:0 2px 8px #17283b08;
+}
+body.orbit-light .top-btn:hover,body.orbit-light .tool-btn:hover,body.orbit-light .tool-btn.active{
+  border-color:#83bce2;color:#175c8b;background:#eaf5fc;box-shadow:0 5px 16px #4d9bd51b;
+}
+body.orbit-light .nav-tab{color:#667487}
+body.orbit-light .nav-tab:hover,body.orbit-light .nav-tab.active{
+  color:#155b8a;border-color:#c9e2f3;background:#eef7fd;box-shadow:inset 0 1px #fff,0 3px 12px #4d9bd50d;
+}
+body.orbit-light .nav-tab.active:before{color:#3f94cb}
+body.orbit-light .hero .eyebrow{color:#d9efff;text-shadow:0 1px 8px #09182a}
+body.orbit-light .hero h1{color:#fff;text-shadow:0 5px 35px #06142699}
+body.orbit-light .hero p{color:#e3edf6;text-shadow:0 1px 8px #061426}
+body.orbit-light .meta-item{border-color:#b7def7}
+body.orbit-light .meta-item b{color:#fff}
+body.orbit-light .meta-item small{color:#d8e9f7}
+body.orbit-light .panel{
+  border:1px solid rgba(255,255,255,.78);
+  background:rgba(255,255,255,.96);
+  color:var(--orbit-ink);
+  box-shadow:0 24px 75px rgba(4,18,35,.18),0 2px 8px rgba(4,18,35,.06);
+  backdrop-filter:blur(26px) saturate(130%);
+}
+body.orbit-light .panel-head{border-color:#e8edf2}
+body.orbit-light .panel-head span,body.orbit-light .index{color:#6d7b8b}
+body.orbit-light .planet-kicker{color:#3787bd}
+body.orbit-light .planet-title{color:#18212c}
+body.orbit-light .planet-desc{color:#5f6c7b}
+body.orbit-light .stat{border-color:#e8edf2;background:#f8fafc}
+body.orbit-light .stat small{color:#84909d}
+body.orbit-light .stat b{color:#263341}
+body.orbit-light .fact{border-color:#d4a75e;background:#fff9ed;color:#586372}
+body.orbit-light .fact strong{color:#986a24}
+body.orbit-light .body-strip,body.orbit-light .controls,body.orbit-light .astro-timebar{
+  border-color:#dce4ec;background:rgba(255,255,255,.96);
+  box-shadow:0 12px 34px rgba(6,22,39,.13),inset 0 1px #fff;
+  backdrop-filter:blur(24px) saturate(135%);
+}
+body.orbit-light .body-btn{color:#647184}
+body.orbit-light .body-btn.active{color:#155d8d;border-color:#a8d0ec;background:#eaf5fc;box-shadow:inset 0 0 14px #4d9bd50c}
+body.orbit-light .range-wrap{color:#6a7787}
+body.orbit-light .speed-value{color:#273c50}
+body.orbit-light .astro-time-label span,body.orbit-light .astro-model-tag{color:#758293}
+body.orbit-light .astro-time-label b{color:#1c2b3a}
+body.orbit-light #simulationDate{color:#344457;background:#fff;border-color:#dce4ec}
+body.orbit-light .hint{color:#e4eff8;text-shadow:0 1px 7px #09182a}
+body.orbit-light .corner{color:#d6e5f2;text-shadow:0 1px 7px #09182a}
+body.orbit-light .telemetry{color:#e1edf6;text-shadow:0 1px 7px #09182a}
+body.orbit-light .toast{border-color:#c8e2f3;background:#fff;color:#24445f;box-shadow:0 12px 36px #07182b24}
+body.orbit-light .page-overlay{
+  color:#1a2633;
+  background:
+   radial-gradient(ellipse at 86% 0%,rgba(118,184,225,.15),transparent 34%),
+   radial-gradient(ellipse at 0% 80%,rgba(190,212,232,.18),transparent 38%),
+   linear-gradient(145deg,#fff,#f6f8fb 72%,#f0f4f8);
+  backdrop-filter:blur(28px) saturate(120%);
+}
+body.orbit-light .page-topline{border-color:#dfe6ed}
+body.orbit-light .page-kicker{color:#3989bd}
+body.orbit-light .page-title{color:#162331;text-shadow:none}
+body.orbit-light .page-intro{color:#5d6b7a}
+body.orbit-light .page-close{border-color:#d7e1e9;background:#fff;color:#405165;box-shadow:0 2px 8px #1a2b3c08}
+body.orbit-light .page-close:hover{border-color:#a9cfe8;background:#f1f8fd}
+body.orbit-light .history-stage,body.orbit-light .history-info,body.orbit-light .sky-frame,body.orbit-light .sky-info{
+  border-color:#dce5ed;background:#fff;box-shadow:0 18px 55px rgba(18,42,65,.08),inset 0 1px #fff;
+}
+body.orbit-light .history-info h3,body.orbit-light .research-card h3,body.orbit-light .sky-info h3{color:#1b2b3a}
+body.orbit-light .history-info p,body.orbit-light .research-card p,body.orbit-light .sky-info>p{color:#617081}
+body.orbit-light .history-info .era{color:#9a6c2b}
+body.orbit-light .history-stat>div{border-color:#e3eaf0;background:#f7f9fb}
+body.orbit-light .history-stat b{color:#263d52}
+body.orbit-light .history-stat small{color:#77879a}
+body.orbit-light .timeline-control{border-color:#dce5ed;background:#fff;box-shadow:0 8px 25px #18334d08}
+body.orbit-light .timeline-head{color:#617184}
+body.orbit-light .timeline-actions .stage-caption{color:#718095}
+body.orbit-light .research-card{border-color:#dce5ed;background:linear-gradient(145deg,#fff,#f8fafc);box-shadow:0 14px 36px #142b4108}
+body.orbit-light .research-index{color:#4588b3}
+body.orbit-light .research-card h3{color:#213344}
+body.orbit-light .research-card p{color:#5d6b7a}
+body.orbit-light .research-tags span{border-color:#dce7ef;background:#f2f7fa;color:#647386}
+body.orbit-light .research-links a{border-color:#e0e8ef;background:#f7fafc;color:#356f99}
+body.orbit-light .research-note{border-color:#dce5ed;background:#fff}
+body.orbit-light .research-note strong{color:#3989bd}
+body.orbit-light .research-note p{color:#627183}
+body.orbit-light .sky-howto-step{border-color:#dfe7ee;background:#fff}
+body.orbit-light .sky-howto-step b{color:#3989bd}
+body.orbit-light .sky-howto-step strong{color:#2a3a4b}
+body.orbit-light .sky-howto-step small{color:#718093}
+body.orbit-light .sky-info{color:#243648}
+body.orbit-light .sky-info .page-kicker{color:#3989bd}
+body.orbit-light .sky-select-label,body.orbit-light .sky-layer-title,body.orbit-light .sky-observer-title strong{color:#53667a}
+body.orbit-light .sky-select,body.orbit-light .sky-star-search,body.orbit-light .sky-field input{border-color:#dbe4ec;background:#fff;color:#27394b}
+body.orbit-light .sky-quick-picks button,body.orbit-light .sky-star-shortcuts button,body.orbit-light .sky-layer-panel,body.orbit-light .sky-map-key>div{border-color:#e1e8ef;background:#f8fafc;color:#536579}
+body.orbit-light .sky-quick-picks button:hover,body.orbit-light .sky-quick-picks button[aria-pressed=true]{border-color:#9bc7e4;background:#edf7fd;color:#215e88}
+body.orbit-light .sky-layer-panel label,body.orbit-light .sky-map-key span{color:#58697b}
+body.orbit-light .sky-map-key b{color:#397eac}
+body.orbit-light .sky-observer-title span,body.orbit-light .sky-planet-foot,body.orbit-light .sky-science-note{color:#778597}
+body.orbit-light .sky-planet-head{color:#526b82}
+body.orbit-light .sky-planet-empty{color:#718095}
+body.orbit-light .sky-planet-list{border-color:#e1e8ef;background:#f8fafc}
+body.orbit-light .sky-readout,body.orbit-light .sky-selected-star{border-color:#e0e8ef;background:#f8fafc;color:#4e6074}
+body.orbit-light .sky-location-status{color:#718095}
+body.orbit-light .sky-chart-foot,body.orbit-light .sky-chart-status{color:#65768a}
+body.orbit-light .deep-sky-card{border-color:#dce5ed;background:#fff;box-shadow:0 12px 34px #1c344b0b}
+body.orbit-light .deep-sky-card strong{color:#23384b}
+body.orbit-light .deep-sky-card p,body.orbit-light .deep-sky-detail p{color:#667588}
+body.orbit-light .deep-sky-detail{border-color:#dce5ed;background:#fff}
+body.orbit-light .deep-sky-detail-mark{color:#4489b4}
+body.orbit-light .deep-sky-detail-meta{color:#63768a}
+body.orbit-light .sky-world-card{border-color:#dce5ed;background:#fff;box-shadow:0 12px 30px #1b324909}
+body.orbit-light .sky-world-card strong{color:#24384b}
+body.orbit-light .sky-world-card small,body.orbit-light .sky-world-card em{color:#748397}
+body.orbit-light .sky-world-detail{border-color:#dce5ed;background:#fff}
+body.orbit-light .sky-world-detail h4{color:#213648}
+body.orbit-light .sky-world-detail p{color:#607184}
+body.orbit-light .sky-world-stats{color:#59758e}
+body.orbit-light .sky-science-note,body.orbit-light .page-reference-note{color:#718093}
+body.orbit-light .sky-source-links a{color:#397fad}
+body.orbit-light .page-overlay a{color:#397fad!important}
+body.orbit-light .help{background:#edf2f7e8}
+body.orbit-light .help-card{border-color:#dce5ed;background:#fff;color:#1e2d3a;box-shadow:0 30px 90px #12283b2b}
+body.orbit-light .help-card h2{color:#1c2e3e}
+body.orbit-light .help-card p,body.orbit-light .help-card li{color:#5f6e7e}
+body.orbit-light .load-inner{color:#fff}
+body.orbit-light .sound-mixer{background:rgba(255,255,255,.98);border-color:#dce4eb;color:#243546;box-shadow:0 20px 55px #17283b1b}
+body.orbit-light .sound-mixer-head,body.orbit-light .sound-studio-title,body.orbit-light .soundtrack-now small,body.orbit-light .sound-mixer label{color:#6b7b8c}
+body.orbit-light .sound-track{border-color:#e2e9ef;background:#f8fafc;color:#34495d}
+body.orbit-light .sound-track.active{border-color:#a7cde6;background:#edf7fd;color:#1d608e}
+body.orbit-light .soundtrack-now{border-color:#e2e9ef}
+body.orbit-light .soundtrack-now strong{color:#263d52}
+body.orbit-light .soundtrack-controls .tool-btn{background:#f5f9fc}
+body.orbit-light .sky-map-toolbar,body.orbit-light .sky-legend{color:#526b82}
+body.orbit-light .sky-section-heading h3{color:#1b2b3a}
+body.orbit-light .sky-section-heading p{color:#617182}
+body.orbit-light .sky-world-note{color:#728194}
+body.orbit-light .command-window{border-color:#d9e4ec;background:#fff;color:#26394c;box-shadow:0 30px 110px #14283b2b}
+body.orbit-light .command-head{border-color:#e1e8ee;color:#637489}
+body.orbit-light .command-search{border-color:#dce5ed;background:#f8fafc;color:#223649}
+body.orbit-light .command-card{border-color:#e1e8ef;background:#f8fafc;color:#40566a}
+body.orbit-light .command-card strong{color:#1e3549}
+body.orbit-light .command-foot{color:#718398}
+body.orbit-light .loading{background:#071321}
+body.orbit-light .astro-timebar{border-color:#dce4ec;background:rgba(255,255,255,.96)}
+body.orbit-light .astro-timebar .tool-btn{background:#fff;color:#405266}
+body.orbit-light .mobile-note{color:#e6f1fa}
+body.orbit-light #cinemaExit{background:#fff;color:#344d62;border-color:#d8e4ed}
+@media(max-width:900px){
+ body.orbit-light .top{background:rgba(255,255,255,.96)}
+ body.orbit-light .hero h1{font-size:clamp(32px,5vw,48px)}
+}
+@media(max-width:560px){
+ body.orbit-light .top{box-shadow:0 5px 20px #10273d0c}
+ body.orbit-light .panel{border-radius:14px}
+ body.orbit-light .body-strip,body.orbit-light .controls{border-radius:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.orbit-light *,body.orbit-light *:before,body.orbit-light *:after{scroll-behavior:auto}
+}
+
+/* Theme toggle and clean settings surface */
+.theme-toggle{display:inline-flex;align-items:center;gap:7px}
+.theme-toggle .theme-indicator{width:7px;height:7px;border-radius:50%;background:#7fbce0;box-shadow:0 0 0 3px #7fbce022}
+body.orbit-light .theme-indicator{background:#4c9bd6;box-shadow:0 0 0 3px #4c9bd620}
