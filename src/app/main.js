@@ -252,16 +252,16 @@ function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMa
 // ORBIT 2.0 — expanded instruments, moons, history archive and sky chart.
 const compareA=$('comparePlanetA'),compareB=$('comparePlanetB');
 function periodInDays(value){
- const match=String(value).match(/[~]?([\\d.]+)\\s*(?:Earth\\s*)?(years?|days?)/i);
+ const match=String(value).match(/[~]?([\d.]+)\s*(?:Earth\s*)?(years?|days?)/i);
  if(!match)return 0;const amount=Number(match[1]);return /year/i.test(match[2])?amount*365.25:amount;
 }
 function rotationInHours(value){
  const s=String(value);
- const days=s.match(/[~]?([\\d.]+)\\s*(?:Earth\\s*)?days?/i);if(days)return Number(days[1])*24;
- const clock=s.match(/([\\d.]+)\\s*h(?:ours?)?\\s*(?:(\\d+)\\s*m)?/i);if(clock)return Number(clock[1])+Number(clock[2]||0)/60;
- const hours=s.match(/[~]?([\\d.]+)\\s*(?:Earth\\s*)?hours?/i);return hours?Number(hours[1]):0;
+ const days=s.match(/[~]?([\d.]+)\s*(?:Earth\s*)?days?/i);if(days)return Number(days[1])*24;
+ const clock=s.match(/([\d.]+)\s*h(?:ours?)?\s*(?:(\d+)\s*m)?/i);if(clock)return Number(clock[1])+Number(clock[2]||0)/60;
+ const hours=s.match(/[~]?([\d.]+)\s*(?:Earth\s*)?hours?/i);return hours?Number(hours[1]):0;
 }
-function diameterInKm(value){const match=String(value).match(/[\\d,]+(?:\\.\\d+)?/);return match?Number(match[0].replace(/,/g,'')):0}
+function diameterInKm(value){const match=String(value).match(/[\d,]+(?:\.\d+)?/);return match?Number(match[0].replace(/,/g,'')):0}
 function renderPlanetComparison(){
  if(!compareA||!compareB)return;
  const nameA=compareA.value,nameB=compareB.value;
